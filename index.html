@@ -1272,13 +1272,25 @@ function renderFinDetail(){
       </div>
       <div class="macro-card wide">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Resumo Financeiro</h3>
+        ${(D.financeiro.orcamentoPrevisto||D.financeiro.orcamentoTotal)?`
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;padding:12px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)">
+          <div style="text-align:center">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Orçamento Previsto</div>
+            <div style="font-size:22px;font-weight:800;color:#2563eb">${brl(D.financeiro.orcamentoPrevisto||0)}</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:2px">Meta global do evento</div>
+          </div>
+          <div style="text-align:center;border-left:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Orçamento Total Gasto</div>
+            <div style="font-size:22px;font-weight:800;color:${(D.financeiro.orcamentoTotal||0)<=(D.financeiro.orcamentoPrevisto||1)?'#10b981':'#ef4444'}">${brl(D.financeiro.orcamentoTotal||0)}</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:2px">Efetivamente gasto</div>
+          </div>
+        </div>`:''}
         <div class="fin-kpi-grid">
-          <div class="fin-kpi"><div class="fin-kpi-label">Orçamento Total</div><div class="fin-kpi-val b">${brl(D.financeiro.orcamento)}</div></div>
-          <div class="fin-kpi"><div class="fin-kpi-label">Receita Captada</div><div class="fin-kpi-val g">${brl(recExec)}</div></div>
           <div class="fin-kpi"><div class="fin-kpi-label">Receita Projetada</div><div class="fin-kpi-val b">${brl(recTot)}</div></div>
-          <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Receita Captada</div><div class="fin-kpi-val g">${brl(recExec)}</div></div>
           <div class="fin-kpi"><div class="fin-kpi-label">Despesa Projetada</div><div class="fin-kpi-val r">${brl(desTot)}</div></div>
-          <div class="fin-kpi"><div class="fin-kpi-label">Saldo Atual</div><div class="fin-kpi-val ${saldo>=0?'g':'r'}">${brl(saldo)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Saldo (Rec − Desp)</div><div class="fin-kpi-val ${saldo>=0?'g':'r'}">${brl(saldo)}</div></div>
         </div>
         <div class="chart-wrap"><canvas id="finDetailChart"></canvas></div>
       </div>
@@ -1459,12 +1471,33 @@ async function sincronizarDados(){
       obs:x['OBSERVAÇÕES']||''
     })).filter(x=>x.entidade);ok=true;}
 
-    // Financeiro: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
-    // Colunas reais: TIPO, CATEGORIA, VALOR PREVISTO (R$), VALOR EXECUTADO (R$), % REALIZADO, OBSERVAÇÕES
-    // Valores vêm formatados "R$ 30.000,00" — parser remove símbolo e converte para número
+    // Financeiro — leitura bruta do CSV para capturar Orçamento Previsto (B2) e Total (B3)
+    // Após o App Script InserirOrcamento.gs, a estrutura é:
+    //   Linha 0: título do bloco
+    //   Linha 1: ORÇAMENTO PREVISTO | valor | instrução
+    //   Linha 2: ORÇAMENTO TOTAL GASTO | valor | instrução
+    //   Linha 3-4: separadores
+    //   Linha 5: título original da aba
+    //   Linha 6: cabeçalhos (TIPO, CATEGORIA, ...)
+    //   Linha 7+: dados de receitas/despesas
+    // Sem o App Script, a estrutura original ainda funciona (skipRows=1)
     const parseBRL = s => parseFloat((s||'0').replace(/[R$\s.]/g,'').replace(',','.')) || 0;
-    const dFin = await fetchAba(SHEET_GIDS.financeiro, 1);
-    if(dFin){
+    const finRaw = await (async()=>{ const u=sheetUrl(SHEET_GIDS.financeiro); if(!u)return null; const r=await fetch(u); return r.ok?r.text():null; })();
+    if(finRaw){
+      const finLinhas = finRaw.trim().split(/\r?\n/);
+      // Detecta se o bloco de orçamento foi inserido (linha 1 começa com "ORÇAMENTO")
+      const temBloco = finLinhas[1]?.toUpperCase().includes('ORÇAMENTO') || finLinhas[1]?.toUpperCase().includes('OR') ;
+      const skipFin  = temBloco ? 6 : 1;
+      if(temBloco){
+        const colsL1 = finLinhas[1].split(',').map(c=>c.replace(/"/g,'').trim());
+        const colsL2 = finLinhas[2].split(',').map(c=>c.replace(/"/g,'').trim());
+        D.financeiro.orcamentoPrevisto = parseBRL(colsL1[1]);
+        D.financeiro.orcamentoTotal    = parseBRL(colsL2[1]);
+      } else {
+        D.financeiro.orcamentoPrevisto = 0;
+        D.financeiro.orcamentoTotal    = 0;
+      }
+      const dFin = parseCSV(finRaw, skipFin);
       const linhasValidas = dFin.filter(x => (x['TIPO']||'').match(/^(Receita|Despesa)$/i) && (x['CATEGORIA']||'').trim());
       D.financeiro.receitas = linhasValidas
         .filter(x => x['TIPO'].toLowerCase()==='receita')
@@ -1472,8 +1505,6 @@ async function sincronizarDados(){
       D.financeiro.despesas = linhasValidas
         .filter(x => x['TIPO'].toLowerCase()==='despesa')
         .map(x=>({ label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) }));
-      D.financeiro.orcamento = D.financeiro.receitas.reduce((s,r)=>s+r.valor,0)
-                             + D.financeiro.despesas.reduce((s,r)=>s+r.valor,0);
       ok=true;
     }
 
