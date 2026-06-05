@@ -388,6 +388,10 @@ table.dt tr:hover td{background:#f8fafc}
     Financeiro
   </button>
   <button class="nav-btn" onclick="showTab(6)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Banco de Palestrantes
+  </button>
+  <button class="nav-btn" onclick="showTab(7)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
     Configurações
   </button>
@@ -553,8 +557,37 @@ table.dt tr:hover td{background:#f8fafc}
   <div id="fin-detail"></div>
 </div>
 
-<!-- ===================== TAB 6: CONFIGURAÇÕES ===================== -->
+<!-- ===================== TAB 6: BANCO DE PALESTRANTES ===================== -->
 <div class="tab-panel" id="tab-6">
+  <div class="section-hdr">
+    <div><h2>Banco de Palestrantes</h2><p>Catálogo de possíveis palestrantes e temas — base para planejamento da programação</p></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar nome ou tema..." oninput="filtrarBanco(this.value)">
+      </div>
+      <select id="fil-banco-tipo" onchange="filtrarBanco(document.querySelector('#tab-6 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os tipos</option>
+        <option value="Palestrante">Palestrante</option>
+        <option value="Painelista">Painelista</option>
+      </select>
+      <select id="fil-banco-status" onchange="filtrarBanco(document.querySelector('#tab-6 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option value="Contato Feito">Contato Feito</option>
+        <option value="Aguardando Retorno">Aguardando Retorno</option>
+        <option value="Confirmado">Confirmado</option>
+        <option value="Transmutado">Transmutado para Programação</option>
+      </select>
+      <span class="tbl-count" id="cnt-banco">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-banco"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 7: CONFIGURAÇÕES ===================== -->
+<div class="tab-panel" id="tab-7">
   <div class="section-hdr"><div><h2>Configurações</h2><p>GIDs das abas da planilha e sincronização automática</p></div></div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
     <div class="macro-card">
@@ -630,11 +663,12 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJfNXdz4qDD_Y
 // GIDs de cada aba da planilha (veja na URL ao clicar na aba no Sheets)
 // Exemplo: https://docs.google.com/spreadsheets/d/.../edit#gid=123456789
 const SHEET_GIDS = {
-  programacao:   "1130204337", // Aba "📅 Programação"
-  agraciados:    "525531415",  // Aba "Relação de Agraciados"
-  palestrantes:  "595947921",  // Aba "🎤 Palestrantes"
-  patrocinadores:"1219059663", // Aba "📦 Parceiros"
-  financeiro:    "",           // (sem aba financeira na planilha)
+  programacao:    "1130204337", // Aba "📅 Programação"
+  agraciados:     "525531415",  // Aba "Relação de Agraciados"
+  palestrantes:   "595947921",  // Aba "🎤 Palestrantes"
+  patrocinadores: "1219059663", // Aba "📦 Parceiros"
+  financeiro:     "1676233237", // Aba "💰 Financeiro"
+  bancoPalestrantes: "2005620839", // Aba "📋 Banco de Palestrantes"
 };
 
 // Intervalo de atualização automática (em milissegundos)
@@ -741,7 +775,8 @@ let D = {
   patrocinadores: [...DEMO.patrocinadores],
   programacao: [...DEMO.programacao],
   financeiro: {...DEMO.financeiro},
-  marcos: [...DEMO.marcos]
+  marcos: [...DEMO.marcos],
+  bancoPalestrantes: []
 };
 let currentView = 'grade', currentDay = 'Todos', autoTimer = null;
 let chartsMap = {};
@@ -1273,7 +1308,8 @@ const GID_FIELDS=[
   {key:'agraciados',    label:'GID — Aba Agraciados',     placeholder:'Ex: 123456789'},
   {key:'palestrantes',  label:'GID — Aba Palestrantes',   placeholder:'Ex: 987654321'},
   {key:'patrocinadores',label:'GID — Aba Patrocinadores', placeholder:'Ex: 456123789'},
-  {key:'financeiro',    label:'GID — Aba Financeiro',     placeholder:'Ex: 741852963 (opcional)'},
+  {key:'financeiro',         label:'GID — Aba Financeiro',          placeholder:'Ex: 741852963'},
+  {key:'bancoPalestrantes',  label:'GID — Banco de Palestrantes',   placeholder:'Ex: 2005620839'},
 ];
 
 function renderCfgFields(){
@@ -1423,6 +1459,40 @@ async function sincronizarDados(){
       obs:x['OBSERVAÇÕES']||''
     })).filter(x=>x.entidade);ok=true;}
 
+    // Financeiro: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
+    // Colunas reais: TIPO, CATEGORIA, VALOR PREVISTO (R$), VALOR EXECUTADO (R$), % REALIZADO, OBSERVAÇÕES
+    // Valores vêm formatados "R$ 30.000,00" — parser remove símbolo e converte para número
+    const parseBRL = s => parseFloat((s||'0').replace(/[R$\s.]/g,'').replace(',','.')) || 0;
+    const dFin = await fetchAba(SHEET_GIDS.financeiro, 1);
+    if(dFin){
+      const linhasValidas = dFin.filter(x => (x['TIPO']||'').match(/^(Receita|Despesa)$/i) && (x['CATEGORIA']||'').trim());
+      D.financeiro.receitas = linhasValidas
+        .filter(x => x['TIPO'].toLowerCase()==='receita')
+        .map(x=>({ label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) }));
+      D.financeiro.despesas = linhasValidas
+        .filter(x => x['TIPO'].toLowerCase()==='despesa')
+        .map(x=>({ label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) }));
+      D.financeiro.orcamento = D.financeiro.receitas.reduce((s,r)=>s+r.valor,0)
+                             + D.financeiro.despesas.reduce((s,r)=>s+r.valor,0);
+      ok=true;
+    }
+
+    // Banco de Palestrantes: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
+    // Colunas: #, NOME COMPLETO, TELEFONE/WHATSAPP, E-MAIL, TITULAÇÃO/CARGO, PALESTRA/NTE/PAINELISTA, INSTITUIÇÃO/ORGANIZAÇÃO, ÁREA DE ATUAÇÃO, POSSÍVEL TEMA, EDIÇÃO SUGERIDA, STATUS
+    const dBanco = await fetchAba(SHEET_GIDS.bancoPalestrantes, 1);
+    if(dBanco){ D.bancoPalestrantes = dBanco.map(x=>({
+      nome: x['NOME COMPLETO']||'',
+      telefone: x['TELEFONE / WHATSAPP']||'',
+      email: x['E-MAIL']||'',
+      cargo: x['TITULAÇÃO / CARGO']||'',
+      tipo: x['PALESTRA/NTE/PAINELISTA']||x['PALESTRANTE/PAINELISTA']||'',
+      instituicao: x['INSTITUIÇÃO / ORGANIZAÇÃO']||x['INSTITUIÇÃO']||'',
+      area: x['ÁREA DE ATUAÇÃO']||'',
+      tema: x['POSSÍVEL TEMA']||'',
+      edicao: x['EDIÇÃO SUGERIDA']||'',
+      status: x['STATUS']||''
+    })).filter(x=>x.nome); ok=true; }
+
     dot.className='sync-dot'+(ok?'':'warn');
     txt.textContent=ok?'Sheets · '+new Date().toLocaleTimeString('pt-BR'):'Sem dados retornados';
     document.getElementById('last-update-time').textContent=new Date().toLocaleString('pt-BR');
@@ -1435,6 +1505,45 @@ async function sincronizarDados(){
 }
 
 /* ================================================
+   BANCO DE PALESTRANTES
+================================================ */
+function renderBanco(dados){
+  const stBanco = s => {
+    if(!s) return '';
+    if(s==='Confirmado') return `<span class="bdg confirmado">✓ Confirmado</span>`;
+    if(s==='Transmutado') return `<span class="bdg confirmado" style="background:#dcfce7;color:#166534">↗ Transmutado</span>`;
+    if(s==='Contato Feito') return `<span class="bdg aguardando">📞 Contato Feito</span>`;
+    if(s==='Aguardando Retorno') return `<span class="bdg convite">⏳ Aguardando</span>`;
+    return `<span class="bdg pendente">${s}</span>`;
+  };
+  document.getElementById('tbl-banco').innerHTML=`<table class="dt"><thead><tr>
+    <th>#</th><th>Nome Completo</th><th>Cargo / Titulação</th><th>Instituição</th>
+    <th>Tipo</th><th>Possível Tema</th><th>Área</th><th>Edição</th><th>Status</th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <td style="color:var(--text2)">${i+1}</td>
+    <td style="font-weight:600">${p.nome}</td>
+    <td style="color:var(--text2);font-size:12px">${p.cargo}</td>
+    <td style="font-size:12px">${p.instituicao}</td>
+    <td><span class="bdg ${p.tipo==='Palestrante'?'aguardando':'convite'}" style="font-size:11px">${p.tipo}</span></td>
+    <td style="font-size:12px;max-width:200px">${p.tema}</td>
+    <td style="font-size:11px;color:var(--text2)">${p.area}</td>
+    <td style="font-size:11px;color:var(--text2)">${p.edicao}</td>
+    <td>${stBanco(p.status)}</td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-banco').textContent=`${dados.length} de ${D.bancoPalestrantes.length}`;
+}
+function filtrarBanco(q){
+  const tipo = document.getElementById('fil-banco-tipo').value;
+  const st   = document.getElementById('fil-banco-status').value;
+  const qq   = (q||'').toLowerCase();
+  renderBanco(D.bancoPalestrantes.filter(p=>
+    (!qq || p.nome.toLowerCase().includes(qq) || p.tema.toLowerCase().includes(qq) || p.instituicao.toLowerCase().includes(qq)) &&
+    (!tipo || p.tipo===tipo) &&
+    (!st   || p.status===st)
+  ));
+}
+
+/* ================================================
    RENDER ALL
 ================================================ */
 function renderAll(){
@@ -1443,6 +1552,7 @@ function renderAll(){
   renderDayPills();renderGrade(currentDay);renderTimeline(currentDay);
   renderAgraciados(D.agraciados);renderPalestrantes(D.palestrantes);
   renderPatrocinadores(D.patrocinadores);renderFinDetail();
+  renderBanco(D.bancoPalestrantes);
   document.getElementById('footer-note').innerHTML=
     'Dashboard IBDM — Dados atualizados em: <strong>'+new Date().toLocaleString('pt-BR')+'</strong>';
 }
