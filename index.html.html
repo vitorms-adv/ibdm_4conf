@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4ª Conferência IBDM — Dashboard Executivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;line-height:1.5;min-height:100vh}
+
+:root{
+  --primary:#2563eb;--primary-h:#1d4ed8;--navy:#1e3a5f;
+  --emerald:#10b981;--amber:#f59e0b;--slate:#94a3b8;--red:#ef4444;--purple:#7c3aed;
+  --bg:#f1f5f9;--card:#ffffff;--border:#e2e8f0;
+  --text:#0f172a;--text2:#475569;
+  --radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.05);
+}
+
+/* ===== HEADER ===== */
+.site-header{
+  background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);
+  color:#fff;padding:20px 28px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  border-bottom:3px solid #f59e0b;
+  position:sticky;top:0;z-index:200;
+}
+.header-left h1{font-size:18px;font-weight:700;letter-spacing:-.3px;line-height:1.3}
+.header-left p{font-size:12px;opacity:.8;margin-top:3px}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.last-update{font-size:11px;opacity:.75;text-align:right}
+.sync-status{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.8;}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;}
+.sync-dot.warn{background:#f59e0b;}
+.btn-refresh{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;
+  cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif;
+}
+.btn-refresh:hover{background:rgba(255,255,255,.25)}
+.btn-refresh svg{width:14px;height:14px}
+
+/* ===== COUNTDOWN BAR ===== */
+.countdown-bar{
+  background:linear-gradient(90deg,#1e3a5f,#1e40af);
+  color:#fff;padding:10px 28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.countdown-label{font-size:12px;font-weight:500;opacity:.75;text-transform:uppercase;letter-spacing:.5px}
+.countdown-units{display:flex;gap:12px}
+.cu{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.12);border-radius:6px;padding:6px 12px;min-width:52px}
+.cu-val{font-size:22px;font-weight:800;line-height:1}
+.cu-lbl{font-size:10px;opacity:.7;margin-top:2px;letter-spacing:.5px}
+.countdown-event-date{margin-left:auto;font-size:12px;opacity:.7;font-style:italic;}
+
+/* ===== NAV ===== */
+.nav{
+  display:flex;gap:4px;flex-wrap:wrap;
+  margin-bottom:24px;
+  background:var(--card);padding:6px;
+  border-radius:var(--radius);border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.nav-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:8px;border:none;
+  background:none;cursor:pointer;font-size:13px;font-weight:500;
+  color:var(--text2);transition:all .15s;white-space:nowrap;
+  font-family:'Inter',sans-serif;
+}
+.nav-btn svg{width:15px;height:15px;flex-shrink:0}
+.nav-btn:hover{background:#f1f5f9;color:var(--text)}
+.nav-btn.active{background:var(--primary);color:#fff}
+.nav-btn.active svg{color:#fff}
+
+/* ===== LAYOUT ===== */
+.main{padding:24px 28px;max-width:1600px;margin:0 auto}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ===== SECTION LABEL ===== */
+.section-title{
+  font-size:13px;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.7px;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.section-title svg{width:16px;height:16px;color:var(--primary)}
+
+/* ===== KPI CARDS ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
+.kpi-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);
+}
+.kpi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.kpi-icon svg{width:18px;height:18px}
+.kpi-icon.blue{background:#dbeafe;color:var(--primary)}
+.kpi-icon.emerald{background:#d1fae5;color:var(--emerald)}
+.kpi-icon.amber{background:#fef3c7;color:var(--amber)}
+.kpi-icon.red{background:#fee2e2;color:var(--red)}
+.kpi-icon.slate{background:#f1f5f9;color:var(--slate)}
+.kpi-icon.purple{background:#ede9fe;color:var(--purple)}
+.kpi-label{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:6px}
+/* FRACTION FORMAT */
+.kpi-fraction{font-size:26px;font-weight:800;color:var(--text);line-height:1;display:flex;align-items:baseline;gap:3px}
+.kpi-fraction .kpi-denom{font-size:16px;font-weight:400;color:var(--text2)}
+.kpi-pct-bar{height:4px;background:#e2e8f0;border-radius:2px;margin:8px 0 5px;overflow:hidden}
+.kpi-pct-fill{height:100%;border-radius:2px;transition:width .6s}
+.kpi-pct-text{font-size:11px;color:var(--text2);font-weight:600}
+/* Variant: simple number */
+.kpi-value{font-size:28px;font-weight:800;color:var(--text);line-height:1}
+.kpi-sub{font-size:12px;color:var(--text2);margin-top:4px}
+
+/* ===== MACRO GRID ===== */
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:20px}
+.macro-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.macro-card h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.macro-card h3 svg{width:15px;height:15px;color:var(--primary);flex-shrink:0}
+.macro-card.wide{grid-column:span 2}
+@media(max-width:900px){.macro-card.wide{grid-column:span 1}}
+
+/* ===== GAUGE ===== */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.gauge-canvas-wrap{position:relative;width:200px;height:110px;overflow:hidden;margin:0 auto}
+.gauge-score{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);text-align:center}
+.gauge-score-val{font-size:28px;font-weight:800}
+.gauge-score-lbl{font-size:11px;color:var(--text2)}
+.gauge-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;margin-top:6px}
+.gauge-subs{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.gauge-sub{display:flex;flex-direction:column;gap:3px}
+.gauge-sub-label{font-size:11px;color:var(--text2);display:flex;justify-content:space-between}
+.gauge-sub-bar{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.gauge-sub-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* ===== GANTT ===== */
+.gantt-wrap{overflow-x:auto}
+.gantt-table{width:100%;border-collapse:collapse;font-size:12px}
+.gantt-table td,.gantt-table th{padding:6px 8px;border-bottom:1px solid #f1f5f9}
+.gantt-table th{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;background:#fafbfc}
+.gantt-bar-cell{width:55%}
+.gantt-bar-bg{background:#f1f5f9;border-radius:4px;height:22px;position:relative;overflow:hidden}
+.gantt-bar-fill{height:100%;border-radius:4px;position:absolute;top:0;transition:width .4s}
+.gantt-today-line{position:absolute;top:0;bottom:0;width:2px;background:#ef4444;z-index:5}
+.gantt-legend{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:11px;color:var(--text2);flex-wrap:wrap}
+.gantt-legend-item{display:flex;align-items:center;gap:4px}
+.gantt-leg-dot{width:10px;height:10px;border-radius:2px}
+.gantt-leg-line{width:14px;height:3px;background:#ef4444;border-radius:2px}
+
+/* ===== RISCO ===== */
+.risk-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.risk-badge-count{background:#fee2e2;color:#991b1b;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.risk-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto}
+.risk-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#f8fafc;border-radius:8px;border-left:3px solid}
+.risk-item.critico{border-color:#ef4444}
+.risk-item.alto{border-color:#f59e0b}
+.risk-item.medio{border-color:#94a3b8}
+.risk-item.baixo{border-color:#10b981}
+.risk-item svg{width:14px;height:14px;flex-shrink:0;margin-top:2px}
+.risk-title{font-size:12px;font-weight:600;color:var(--text)}
+.risk-meta{font-size:11px;color:var(--text2);margin-top:2px}
+.risk-tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+.risk-tag.critico{background:#fee2e2;color:#991b1b}
+.risk-tag.alto{background:#fef3c7;color:#92400e}
+.risk-tag.medio{background:#f1f5f9;color:#475569}
+.risk-tag.baixo{background:#d1fae5;color:#065f46}
+.days-chip{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap;margin-left:auto;flex-shrink:0}
+
+/* ===== FINANCEIRO ===== */
+.fin-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.fin-kpi{background:#f8fafc;border-radius:8px;padding:12px 14px;text-align:center}
+.fin-kpi-label{font-size:11px;color:var(--text2);font-weight:500;margin-bottom:4px}
+.fin-kpi-val{font-size:20px;font-weight:800}
+.fin-kpi-val.g{color:var(--emerald)}
+.fin-kpi-val.r{color:var(--red)}
+.fin-kpi-val.b{color:var(--primary)}
+.fin-bar-section{margin-bottom:14px}
+.fin-bar-section-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fin-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.fin-bar-label{font-size:12px;color:var(--text2);min-width:160px}
+.fin-bar-track{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.fin-bar-fill{height:100%;border-radius:4px}
+.fin-bar-val{font-size:11px;font-weight:600;color:var(--text2);min-width:90px;text-align:right}
+.chart-wrap{position:relative;height:200px}
+
+/* ===== MARCOS (TIMELINE) ===== */
+.marcos-timeline{position:relative;padding-left:28px}
+.marcos-timeline::before{content:'';position:absolute;left:9px;top:10px;bottom:10px;width:2px;background:#e2e8f0}
+.marco{position:relative;margin-bottom:16px;padding-left:18px}
+.marco-dot{position:absolute;left:-28px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #e2e8f0;z-index:1;display:flex;align-items:center;justify-content:center}
+.marco-dot.done{background:#10b981;box-shadow:0 0 0 2px #10b981}
+.marco-dot.current{background:#f59e0b;box-shadow:0 0 0 2px #f59e0b;animation:pulse-dot 1.4s infinite}
+.marco-dot.critico{background:#ef4444;box-shadow:0 0 0 2px #ef4444}
+.marco-dot.pending{background:#cbd5e1;box-shadow:0 0 0 2px #cbd5e1}
+@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.marco-date{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.marco-title{font-size:13px;font-weight:600;color:var(--text);margin:1px 0}
+.marco-desc{font-size:11px;color:var(--text2)}
+.marco-chip{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;margin-top:3px}
+.marco-chip.done{background:#d1fae5;color:#065f46}
+.marco-chip.current{background:#fef3c7;color:#92400e}
+.marco-chip.critico{background:#fee2e2;color:#991b1b}
+.marco-chip.pending{background:#f1f5f9;color:#475569}
+
+/* ===== PROGRAMAÇÃO VISUAL ===== */
+.prog-controls{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.view-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.view-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.day-pills{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.day-pill{padding:5px 14px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .15s}
+.day-pill.active{background:var(--amber);color:#fff;border-color:var(--amber);font-weight:600}
+
+.sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.day-col{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+.day-col-hdr{background:linear-gradient(135deg,#1e3a5f,#2563eb);padding:12px 16px}
+.day-col-hdr .day-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.day-col-hdr .day-date{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.turno-hdr{padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:5px}
+.turno-manha{background:#fef9ec;color:#92400e;border-bottom:1px solid #fde68a}
+.turno-tarde{background:#eff6ff;color:#1d4ed8;border-bottom:1px solid #bfdbfe}
+.turno-noite{background:#f5f3ff;color:#5b21b6;border-bottom:1px solid #ddd6fe}
+.sess-item{padding:10px 14px;border-bottom:1px solid #f8fafc;display:flex;gap:10px;align-items:flex-start;background:#fff;transition:background .1s}
+.sess-item:hover{background:#f8fafc}
+.sess-item:last-child{border-bottom:none}
+.sess-stripe{width:3px;border-radius:2px;align-self:stretch;flex-shrink:0}
+.sess-time{font-size:10px;font-weight:700;color:var(--text2);min-width:36px;padding-top:2px}
+.sess-info{flex:1}
+.sess-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.3}
+.sess-spk{font-size:11px;color:var(--text2);margin-top:2px}
+.stripe-painel{background:#2563eb}
+.stripe-palestra{background:#f59e0b}
+.stripe-solene{background:#7c3aed}
+.stripe-cerimonia{background:#ef4444}
+.stripe-break{background:#cbd5e1}
+
+/* TL VIEW */
+.tl-day{margin-bottom:28px}
+.tl-day-hdr{font-size:15px;font-weight:700;color:#1e3a5f;margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid #f59e0b;display:flex;align-items:baseline;gap:10px}
+.tl-day-hdr span{font-size:12px;color:var(--text2);font-weight:400}
+.tl-row{display:grid;grid-template-columns:68px 1fr;margin-bottom:4px}
+.tl-time{font-size:11px;font-weight:700;color:var(--text2);padding:12px 10px 12px 0;text-align:right;border-right:2px solid #e2e8f0;position:relative}
+.tl-time::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:#e2e8f0}
+.tl-time.hl::after{background:#f59e0b}
+.tl-body{padding:10px 0 10px 16px}
+.tl-card{background:#fff;border-radius:8px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid #2563eb;box-shadow:var(--shadow)}
+.tl-card.gold{border-left-color:#f59e0b}
+.tl-card.purple{border-left-color:#7c3aed}
+.tl-card.red{border-left-color:#ef4444}
+.tl-card.gray{border-left-color:#94a3b8}
+
+/* ===== AGRACIADOS ===== */
+.medal-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.medal-ouro{background:#fef9c3;color:#78350f;border:1px solid #fde047}
+.medal-prata{background:#f1f5f9;color:#334155;border:1px solid #94a3b8}
+.medal-bronze{background:#fef3c7;color:#7c2d12;border:1px solid #fb923c}
+.medal-comenda{background:#ede9fe;color:#4c1d95;border:1px solid #a78bfa}
+
+/* ===== TABLES (abas) ===== */
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.table-toolbar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.search-box{display:flex;align-items:center;gap:8px;flex:1;min-width:180px}
+.search-box svg{width:15px;height:15px;color:var(--text2);flex-shrink:0}
+.search-box input{border:none;outline:none;font-size:13px;color:var(--text);width:100%;font-family:inherit;background:none}
+.tbl-count{font-size:12px;color:var(--text2);white-space:nowrap}
+.tbl-scroll{overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:13px}
+table.dt th{text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;background:#fafbfc}
+table.dt td{padding:10px 14px;border-bottom:1px solid #f8fafc;vertical-align:top}
+table.dt tr:last-child td{border-bottom:none}
+table.dt tr:hover td{background:#f8fafc}
+
+/* ===== BADGES (tabelas) ===== */
+.bdg{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.bdg.confirmado{background:#d1fae5;color:#065f46}
+.bdg.pendente{background:#f1f5f9;color:#475569}
+.bdg.convite{background:#dbeafe;color:#1e40af}
+.bdg.aguardando{background:#fef3c7;color:#92400e}
+
+/* ===== ALERTS ===== */
+.alert{padding:12px 16px;border-radius:8px;font-size:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
+.alert svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.alert-warn{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.alert-info{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+
+/* ===== MISC ===== */
+.sep{height:1px;background:#f1f5f9;margin:18px 0}
+.section-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;gap:16px}
+.section-hdr h2{font-size:17px;font-weight:700;color:#1e3a5f;letter-spacing:-.2px}
+.section-hdr p{font-size:12px;color:var(--text2)}
+.footer-note{text-align:center;padding:18px 0 0;font-size:11px;color:var(--text2)}
+
+/* ===== LOADING ===== */
+#loading-overlay{position:fixed;inset:0;background:rgba(241,245,249,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--text2);font-weight:500}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .site-header{flex-direction:column;align-items:flex-start}
+  .header-right{align-items:flex-start}
+  .main{padding:16px}
+  .macro-grid{grid-template-columns:1fr}
+  .fin-kpi-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .sched-grid{grid-template-columns:1fr}
+  .nav{gap:2px}
+  .nav-btn{padding:8px 10px;font-size:12px}
+}
+@media(max-width:560px){
+  .kpi-grid{grid-template-columns:1fr}
+  .day-pills{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Carregando dados da conferência...</div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-left">
+    <h1>4ª Conferência Nacional de Direito Militar e Segurança Pública</h1>
+    <p>São Luís — MA &nbsp;·&nbsp; 2 a 4 de dezembro de 2025 &nbsp;·&nbsp; IBDM</p>
+  </div>
+  <div class="header-right">
+    <div class="last-update">Última atualização: <span id="last-update-time">—</span></div>
+    <div class="sync-status">
+      <div class="sync-dot warn" id="syncDot"></div>
+      <span id="syncText">Dados de demonstração</span>
+    </div>
+    <button class="btn-refresh" onclick="sincronizarDados()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Atualizar
+    </button>
+  </div>
+</header>
+
+<!-- COUNTDOWN BAR -->
+<div class="countdown-bar">
+  <span class="countdown-label">Contagem regressiva</span>
+  <div class="countdown-units">
+    <div class="cu"><span class="cu-val" id="cd-dias">--</span><span class="cu-lbl">DIAS</span></div>
+    <div class="cu"><span class="cu-val" id="cd-horas">--</span><span class="cu-lbl">HORAS</span></div>
+    <div class="cu"><span class="cu-val" id="cd-min">--</span><span class="cu-lbl">MIN</span></div>
+    <div class="cu"><span class="cu-val" id="cd-seg">--</span><span class="cu-lbl">SEG</span></div>
+  </div>
+  <span class="countdown-event-date">02–04 de dezembro de 2025 · São Luís, MA</span>
+</div>
+
+<main class="main">
+
+<!-- NAV -->
+<nav class="nav" role="tablist">
+  <button class="nav-btn active" onclick="showTab(0)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Visão Geral
+  </button>
+  <button class="nav-btn" onclick="showTab(1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Programação
+  </button>
+  <button class="nav-btn" onclick="showTab(2)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+    Agraciados
+  </button>
+  <button class="nav-btn" onclick="showTab(3)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19 10a7 7 0 0 0-14 0"/><line x1="12" y1="22" x2="12" y2="10"/><path d="M5 15l7 7 7-7"/></svg>
+    Palestrantes
+  </button>
+  <button class="nav-btn" onclick="showTab(4)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+    Patrocinadores
+  </button>
+  <button class="nav-btn" onclick="showTab(5)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Financeiro
+  </button>
+  <button class="nav-btn" onclick="showTab(6)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    Configurações
+  </button>
+</nav>
+
+<!-- ===================== TAB 0: VISÃO GERAL ===================== -->
+<div class="tab-panel active" id="tab-0">
+
+  <!-- KPIs -->
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <div class="macro-grid">
+
+    <!-- MACRO 1: ÍNDICE DE PRONTIDÃO (gauge canvas) -->
+    <div class="macro-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Índice de Prontidão da Conferência
+      </h3>
+      <div class="gauge-wrap">
+        <div class="gauge-canvas-wrap">
+          <canvas id="gaugeCanvas" width="200" height="120"></canvas>
+          <div class="gauge-score">
+            <div class="gauge-score-val" id="gauge-val">0%</div>
+            <div class="gauge-score-lbl">Prontidão</div>
+          </div>
+        </div>
+        <div id="gauge-badge-wrap"></div>
+        <div class="gauge-subs" id="gauge-subs"></div>
+      </div>
+    </div>
+
+    <!-- MACRO 2: TIMELINE MARCOS (gantt) -->
+    <div class="macro-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Timeline de Marcos Críticos
+      </h3>
+      <div id="gantt-wrap"></div>
+    </div>
+
+    <!-- MACRO 3: MAPA DE RISCO -->
+    <div class="macro-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Mapa de Risco — Pendências Críticas
+      </h3>
+      <div class="risk-header">
+        <span style="font-size:12px;color:var(--text2)">Itens por nível de risco</span>
+        <span class="risk-badge-count" id="risk-total-badge">0 pendências</span>
+      </div>
+      <div class="risk-list" id="risk-list"></div>
+    </div>
+
+    <!-- MACRO 4: PAINEL FINANCEIRO (wide) -->
+    <div class="macro-card wide">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Painel Financeiro
+      </h3>
+      <div id="fin-panel"></div>
+    </div>
+
+  </div><!-- /macro-grid -->
+
+  <!-- ALERTAS -->
+  <div id="alertas-wrap"></div>
+
+  <!-- PRÓXIMAS SESSÕES -->
+  <div class="table-wrap" style="margin-bottom:20px">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span style="font-size:13px;font-weight:700;color:#1e3a5f">Próximas Sessões — Visão Rápida</span>
+    </div>
+    <div class="tbl-scroll"><div id="prox-sessoes"></div></div>
+  </div>
+
+  <div class="footer-note" id="footer-note">—</div>
+</div>
+
+<!-- ===================== TAB 1: PROGRAMAÇÃO ===================== -->
+<div class="tab-panel" id="tab-1">
+  <div class="section-hdr"><div><h2>Programação do Evento</h2><p>02–04 de dezembro · 3 dias de conferência</p></div></div>
+  <div class="prog-controls">
+    <button class="view-btn active" id="btn-grade" onclick="setView('grade')">Grade por Dia</button>
+    <button class="view-btn" id="btn-tl" onclick="setView('timeline')">Linha do Tempo</button>
+    <div class="day-pills" id="day-pills"></div>
+  </div>
+  <div id="grade-view"><div class="sched-grid" id="sched-grid"></div></div>
+  <div id="tl-view" style="display:none"><div id="tl-content"></div></div>
+</div>
+
+<!-- ===================== TAB 2: AGRACIADOS ===================== -->
+<div class="tab-panel" id="tab-2">
+  <div class="section-hdr">
+    <div><h2>Relação de Agraciados</h2><p>Recipientários das medalhas e honrarias</p></div>
+    <button class="view-btn" onclick="exportarAgraciados()">↓ Exportar CSV</button>
+  </div>
+  <div class="alert alert-info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Dados sincronizados automaticamente via Google Sheets CSV.
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar agraciado..." oninput="filtrarAgraciados(this.value)">
+      </div>
+      <select id="fil-medalha" onchange="filtrarAgraciados(document.querySelector('#tab-2 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todas as medalhas</option>
+        <option value="Ouro">Ouro</option><option value="Prata">Prata</option>
+        <option value="Bronze">Bronze</option><option value="Comenda">Comenda</option>
+      </select>
+      <select id="fil-status-ag" onchange="filtrarAgraciados(document.querySelector('#tab-2 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option value="Confirmado">Confirmado</option>
+        <option value="Pendente">Pendente</option>
+        <option value="Convite Enviado">Convite Enviado</option>
+      </select>
+      <span class="tbl-count" id="cnt-agraciados">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-agraciados"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 3: PALESTRANTES ===================== -->
+<div class="tab-panel" id="tab-3">
+  <div class="section-hdr"><div><h2>Palestrantes e Painelistas</h2><p>Convidados confirmados e em prospecção</p></div></div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar palestrante..." oninput="filtrarPalestrantes(this.value)">
+      </div>
+      <select id="fil-status-pal" onchange="filtrarPalestrantes(document.querySelector('#tab-3 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option value="Confirmado">Confirmado</option>
+        <option value="Pendente">Pendente</option>
+        <option value="Aguardando">Aguardando</option>
+      </select>
+      <span class="tbl-count" id="cnt-palestrantes">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-palestrantes"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 4: PATROCINADORES ===================== -->
+<div class="tab-panel" id="tab-4">
+  <div class="section-hdr"><div><h2>Patrocinadores e Apoiadores</h2><p>Parceiros confirmados e em negociação</p></div></div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar patrocinador..." oninput="filtrarPatrocinadores(this.value)">
+      </div>
+      <span class="tbl-count" id="cnt-patrocinadores">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-patrocinadores"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 5: FINANCEIRO ===================== -->
+<div class="tab-panel" id="tab-5">
+  <div class="section-hdr"><div><h2>Painel Financeiro Detalhado</h2><p>Orçamento, receitas e despesas</p></div></div>
+  <div id="fin-detail"></div>
+</div>
+
+<!-- ===================== TAB 6: CONFIGURAÇÕES ===================== -->
+<div class="tab-panel" id="tab-6">
+  <div class="section-hdr"><div><h2>Configurações</h2><p>GIDs das abas da planilha e sincronização automática</p></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+    <div class="macro-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Fonte de Dados — Google Sheets
+      </h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:14px">
+        A URL mestra (<code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">CSV_URL</code>) está definida no código.
+        Informe o <strong>gid</strong> de cada aba. O gid aparece na URL do Sheets ao clicar na aba:
+        <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">…/edit#gid=XXXXXXXX</code>
+      </p>
+      <div id="url-fields"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="view-btn active" onclick="salvarConfigs()">Salvar GIDs</button>
+        <button class="view-btn" onclick="sincronizarDados()">↻ Sincronizar Agora</button>
+      </div>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px" id="cfg-msg"></p>
+    </div>
+    <div class="macro-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Atualização Automática
+      </h3>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px">Intervalo de sincronização</label>
+        <select id="cfg-refresh" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:'Inter',sans-serif">
+          <option value="0">Desabilitada</option>
+          <option value="300000">A cada 5 minutos</option>
+          <option value="600000" selected>A cada 10 minutos</option>
+          <option value="1800000">A cada 30 minutos</option>
+        </select>
+        <p style="font-size:11px;color:var(--text2);margin-top:5px">O valor padrão (<code style="background:#e2e8f0;padding:1px 4px;border-radius:3px">AUTO_REFRESH_MS</code>) também pode ser editado no código.</p>
+      </div>
+      <div class="sep"></div>
+      <h3 style="margin-bottom:10px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Como publicar no Google Sites
+      </h3>
+      <p style="font-size:12px;color:var(--text2);line-height:1.8">
+        1. Na planilha: <strong>Arquivo → Publicar na web → Planilha inteira → CSV → Publicar</strong>.<br>
+        2. Copie a URL e cole como <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">CSV_URL</code> no código.<br>
+        3. Para cada aba, anote o <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">gid=</code> da URL e preencha ao lado.<br>
+        4. No Google Sites: <strong>Inserir → Incorporar → Cole o HTML completo</strong>.<br>
+        5. Clique em <strong>Atualizar</strong> no header para puxar os dados imediatamente.
+      </p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+/* ================================================================
+   ████████████████████████████████████████████████████████████████
+   ██                                                            ██
+   ██   FONTE DE DADOS — GOOGLE SHEETS (CSV PUBLICADO NA WEB)   ██
+   ██                                                            ██
+   ██   Substitua o valor de CSV_URL pela URL da sua planilha.   ██
+   ██   Formato: Arquivo → Publicar na web → Planilha inteira   ██
+   ██            → Formato: CSV → Publicar                       ██
+   ██                                                            ██
+   ██   IMPORTANTE: Cada aba tem um parâmetro "gid=" diferente.  ██
+   ██   Preencha os GIDs abaixo com os valores da sua planilha:  ██
+   ██   Planilha → clique na aba → veja "gid=XXXX" na URL.      ██
+   ██                                                            ██
+   ████████████████████████████████████████████████████████████████
+
+   ▼▼▼ EDITE APENAS ESTE BLOCO ▼▼▼ */
+
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJfNXdz4qDD_Y-I3iTIj8z212WSgmaaKjQBD9CV5VIYadp3ZSCO-6A8E3zIFDWcvxCpb4UPi_v7eh/pub?output=csv";
+
+// GIDs de cada aba da planilha (veja na URL ao clicar na aba no Sheets)
+// Exemplo: https://docs.google.com/spreadsheets/d/.../edit#gid=123456789
+const SHEET_GIDS = {
+  programacao:   "1130204337", // Aba "📅 Programação"
+  agraciados:    "525531415",  // Aba "Relação de Agraciados"
+  palestrantes:  "595947921",  // Aba "🎤 Palestrantes"
+  patrocinadores:"1219059663", // Aba "📦 Parceiros"
+  financeiro:    "",           // (sem aba financeira na planilha)
+};
+
+// Intervalo de atualização automática (em milissegundos)
+// 0 = desabilitada | 300000 = 5min | 600000 = 10min | 1800000 = 30min
+const AUTO_REFRESH_MS = 600000;
+
+/* ▲▲▲ FIM DO BLOCO DE CONFIGURAÇÃO ▲▲▲ */
+
+// Monta URL de uma aba pelo gid
+function sheetUrl(gid) {
+  if (!gid) return null;
+  const base = CSV_URL.split('?')[0];
+  return `${base}?output=csv&gid=${gid}&_t=${Date.now()}`;
+}
+
+/* ================================================================
+   DADOS DE DEMONSTRAÇÃO
+================================================================ */
+const DEMO = {
+  agraciados: [
+    {nome:"Cel. Adalberto de Rezende Rocha Júnior",funcao:"Diretor — Centro de Lançamento de Alcântara / FAB",telefone:"(98) 9xxxx-xxxx",medalha:"Comenda",status:"Confirmado"},
+    {nome:"Alberto Tavares Vieira da Silva",funcao:"Ex-Presidente do TRF1 — Ministro Aposentado",telefone:"(61) 9xxxx-xxxx",medalha:"Ouro",status:"Confirmado"},
+    {nome:"Hugo Abas Vieira Frazão",funcao:"Juiz Federal — Acesso à Justiça",telefone:"(98) 9xxxx-xxxx",medalha:"Prata",status:"Confirmado"},
+    {nome:"Autoridade Militar MA 01",funcao:"Comandante Regional",telefone:"(98) 9xxxx-xxxx",medalha:"Comenda",status:"Pendente"},
+    {nome:"Autoridade Jurídica 01",funcao:"Promotor de Justiça Militar",telefone:"(98) 9xxxx-xxxx",medalha:"Prata",status:"Convite Enviado"},
+    {nome:"Autoridade Acadêmica 01",funcao:"Professor — Dir. Constitucional Militar",telefone:"(98) 9xxxx-xxxx",medalha:"Bronze",status:"Pendente"},
+  ],
+  palestrantes: [
+    {nome:"Cel. Adalberto de Rezende Rocha Júnior",instituicao:"CLA / FAB",painel:"Conferência Inaugural",dia:"Dia 1",turno:"Manhã",status:"Confirmado"},
+    {nome:"Alberto Tavares Vieira da Silva",instituicao:"TRF1",painel:"Painel I",dia:"Dia 1",turno:"Manhã",status:"Confirmado"},
+    {nome:"Hugo Abas Vieira Frazão",instituicao:"Justiça Federal",painel:"Painel III",dia:"Dia 1",turno:"Tarde",status:"Confirmado"},
+    {nome:"Palestrante A",instituicao:"—",painel:"Painel II",dia:"Dia 1",turno:"Tarde",status:"Pendente"},
+    {nome:"Palestrante B",instituicao:"—",painel:"Painel IV",dia:"Dia 2",turno:"Manhã",status:"Aguardando"},
+    {nome:"Palestrante C",instituicao:"—",painel:"Painel V",dia:"Dia 2",turno:"Tarde",status:"Pendente"},
+  ],
+  patrocinadores: [
+    {entidade:"OAB — Seccional Maranhão",cota:"Ouro",status:"Confirmado",contato:"Presidência OAB/MA",obs:"Apoio institucional"},
+    {entidade:"FMSADV — Ferreira e Moreira Serra Advogados",cota:"Diamante",status:"Confirmado",contato:"Dr. Vitor Moreira Serra",obs:"Organizador"},
+    {entidade:"Ministério Público Militar",cota:"Prata",status:"Em análise",contato:"Assessoria MPM",obs:""},
+    {entidade:"AMAJMA",cota:"Bronze",status:"Confirmado",contato:"Diretoria",obs:""},
+  ],
+  programacao: [
+    {dia:"Dia 1",data:"02/12/2025",turno:"Manhã",hora:"09:00",titulo:"Solenidade de Abertura Oficial",palestrante:"Mesa Diretora / IBDM",tipo:"solene"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Manhã",hora:"09:30",titulo:"Conferência Inaugural: JME e o Federalismo Brasileiro",palestrante:"Conferencista Convidado",tipo:"palestra"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Manhã",hora:"11:00",titulo:"Painel I — Direito Penal Militar: Fundamentos e Atualizações",palestrante:"Dr. Coordenador",tipo:"painel"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Manhã",hora:"12:00",titulo:"Almoço",palestrante:"",tipo:"break"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Tarde",hora:"14:00",titulo:"Painel II — Processo Penal Militar na Prática",palestrante:"Drs. Especialistas",tipo:"painel"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Tarde",hora:"15:30",titulo:"Coffee Break",palestrante:"",tipo:"break"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Tarde",hora:"16:00",titulo:"Painel III — Segurança Pública e Direito Militar no Maranhão",palestrante:"Autoridades Estaduais",tipo:"painel"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Tarde",hora:"17:30",titulo:"Apresentação de Trabalhos Acadêmicos",palestrante:"Pesquisadores",tipo:"painel"},
+    {dia:"Dia 1",data:"02/12/2025",turno:"Tarde",hora:"18:30",titulo:"Encerramento do Dia 1",palestrante:"",tipo:"break"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Manhã",hora:"09:00",titulo:"Palestra: Tutela Constitucional dos Militares",palestrante:"Dr. Convidado",tipo:"palestra"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Manhã",hora:"10:30",titulo:"Painel IV — TJM e Competências da Justiça Militar",palestrante:"Juízes e Promotores",tipo:"painel"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Manhã",hora:"12:00",titulo:"Almoço",palestrante:"",tipo:"break"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Tarde",hora:"14:00",titulo:"Painel V — Direito Disciplinar Militar",palestrante:"Drs. Especialistas",tipo:"painel"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Tarde",hora:"15:30",titulo:"Coffee Break",palestrante:"",tipo:"break"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Tarde",hora:"16:00",titulo:"Mesa-Redonda: Desafios do Advogado Militarista",palestrante:"OAB / IBDM",tipo:"painel"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Tarde",hora:"17:30",titulo:"Painel VI — Jurisprudência Recente do STM",palestrante:"Ministros / Advogados",tipo:"painel"},
+    {dia:"Dia 2",data:"03/12/2025",turno:"Tarde",hora:"18:30",titulo:"Encerramento do Dia 2",palestrante:"",tipo:"break"},
+    {dia:"Dia 3",data:"04/12/2025",turno:"Manhã",hora:"09:00",titulo:"Painel VII — Direito Comparado Militar: Brasil e América Latina",palestrante:"Especialistas",tipo:"painel"},
+    {dia:"Dia 3",data:"04/12/2025",turno:"Manhã",hora:"10:30",titulo:"Solenidade de Entrega de Medalhas e Honrarias",palestrante:"Mesa Diretora / IBDM",tipo:"cerimonia"},
+    {dia:"Dia 3",data:"04/12/2025",turno:"Manhã",hora:"11:30",titulo:"Sessão de Encerramento e Próximas Conferências",palestrante:"Presidência IBDM",tipo:"solene"},
+    {dia:"Dia 3",data:"04/12/2025",turno:"Manhã",hora:"12:00",titulo:"Coquetel de Encerramento",palestrante:"",tipo:"break"},
+  ],
+  financeiro:{
+    orcamento:80000,
+    receitas:[
+      {label:"Cotas de Patrocínio",valor:32000,executado:24000},
+      {label:"Inscrições",valor:20000,executado:8500},
+      {label:"Apoios Institucionais",valor:15000,executado:10000},
+      {label:"Venda de Publicações",valor:5000,executado:0},
+    ],
+    despesas:[
+      {label:"Local / Infraestrutura",valor:18000,executado:5000},
+      {label:"Palestrantes / Hospedagem",valor:15000,executado:3200},
+      {label:"Medalhas e Honrarias",valor:12000,executado:4500},
+      {label:"Divulgação / Marketing",valor:8000,executado:5800},
+      {label:"Alimentação / Coffee",valor:6000,executado:0},
+      {label:"Material Gráfico",valor:4000,executado:2100},
+    ]
+  },
+  marcos:[
+    {data:"25/05/2025",titulo:"Contato com convidados estratégicos",desc:"Envio dos primeiros ofícios de convite",status:"done"},
+    {data:"26/05/2025",titulo:"Confirmação de palestrantes âncora",desc:"Cel. Adalberto, Min. Alberto Tavares, Juiz Hugo Frazão",status:"done"},
+    {data:"15/07/2025",titulo:"Fechamento do local do evento",desc:"Contrato com o espaço / auditório em São Luís",status:"done"},
+    {data:"01/08/2025",titulo:"Abertura das inscrições",desc:"Divulgação pública e início das inscrições online",status:"done"},
+    {data:"01/10/2025",titulo:"Prazo para submissão de trabalhos",desc:"Recebimento de artigos e comunicações científicas",status:"current"},
+    {data:"31/10/2025",titulo:"Confirmação final de agraciados",desc:"Todos os recipientários de medalhas confirmados",status:"critico"},
+    {data:"10/11/2025",titulo:"Fechamento da programação",desc:"Grade definitiva e horários finalizados",status:"pending"},
+    {data:"20/11/2025",titulo:"Material gráfico e crachás prontos",desc:"Impressão de banners, programas e crachás",status:"pending"},
+    {data:"01/12/2025",titulo:"Check-in técnico e ensaio da solenidade",desc:"Teste de equipamentos, disposição de palco",status:"pending"},
+    {data:"02/12/2025",titulo:"ABERTURA DA CONFERÊNCIA",desc:"09h00 — Solenidade de abertura oficial",status:"pending"},
+    {data:"04/12/2025",titulo:"Solenidade de Medalhas e Encerramento",desc:"Dia 3, manhã — cerimônia e coquetel final",status:"pending"},
+  ]
+};
+
+/* ================================================
+   STATE
+================================================ */
+const DATA_EVENTO = new Date("2025-12-02T09:00:00");
+let D = {
+  agraciados: [...DEMO.agraciados],
+  palestrantes: [...DEMO.palestrantes],
+  patrocinadores: [...DEMO.patrocinadores],
+  programacao: [...DEMO.programacao],
+  financeiro: {...DEMO.financeiro},
+  marcos: [...DEMO.marcos]
+};
+let currentView = 'grade', currentDay = 'Todos', autoTimer = null;
+let chartsMap = {};
+
+/* ================================================
+   COUNTDOWN
+================================================ */
+function tick(){
+  const diff = DATA_EVENTO - new Date();
+  if(diff<=0){['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id=>document.getElementById(id).textContent='00');return;}
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),
+        m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-dias').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-horas').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-seg').textContent=String(s).padStart(2,'0');
+}
+setInterval(tick,1000); tick();
+
+/* ================================================
+   TABS
+================================================ */
+function showTab(idx){
+  document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+/* ================================================
+   KPIs (formato N/TOTAL + barra + %)
+================================================ */
+function pctColor(p){return p>=80?'#10b981':p>=50?'#f59e0b':p>=25?'#f97316':'#ef4444';}
+function kpiHTML(label,conf,tot,iconClass,iconSVG){
+  const p=tot?Math.round(conf/tot*100):0, col=pctColor(p);
+  return`<div class="kpi-card">
+    <div class="kpi-icon ${iconClass}">${iconSVG}</div>
+    <div class="kpi-label">${label}</div>
+    <div class="kpi-fraction"><span>${conf}</span><span class="kpi-denom">&nbsp;/&nbsp;${tot}</span></div>
+    <div class="kpi-pct-bar"><div class="kpi-pct-fill" style="width:${p}%;background:${col}"></div></div>
+    <div class="kpi-pct-text" style="color:${col}">${p}% confirmado</div>
+  </div>`;
+}
+function renderKPIs(){
+  const agConf=D.agraciados.filter(a=>a.status==='Confirmado').length;
+  const palConf=D.palestrantes.filter(p=>p.status==='Confirmado').length;
+  const patConf=D.patrocinadores.filter(p=>p.status==='Confirmado').length;
+  const sessoes=D.programacao.filter(p=>p.tipo!=='break').length;
+  const recExec=D.financeiro.receitas.reduce((s,r)=>s+r.executado,0);
+  const recTot=D.financeiro.receitas.reduce((s,r)=>s+r.valor,0);
+  const pFinR=recTot?Math.round(recExec/recTot*100):0;
+
+  const svgMic=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19 10a7 7 0 0 0-14 0"/><line x1="12" y1="22" x2="12" y2="10"/><path d="M5 15l7 7 7-7"/></svg>`;
+  const svgShield=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+  const svgBriefcase=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>`;
+  const svgDollar=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+  const svgCal=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+  let html='';
+  html+=kpiHTML('Agraciados Confirmados',agConf,D.agraciados.length,'amber',svgShield);
+  html+=kpiHTML('Palestrantes Confirmados',palConf,D.palestrantes.length,'blue',svgMic);
+  html+=kpiHTML('Patrocinadores',patConf,D.patrocinadores.length,'emerald',svgBriefcase);
+  html+=`<div class="kpi-card">
+    <div class="kpi-icon slate">${svgCal}</div>
+    <div class="kpi-label">Sessões Programadas</div>
+    <div class="kpi-value">${sessoes}</div>
+    <div class="kpi-sub">3 dias de evento</div>
+  </div>`;
+  html+=`<div class="kpi-card">
+    <div class="kpi-icon ${pFinR>=50?'emerald':'red'}">${svgDollar}</div>
+    <div class="kpi-label">Captação Financeira</div>
+    <div class="kpi-fraction"><span>R$${(recExec/1000).toFixed(0)}k</span><span class="kpi-denom">&nbsp;/&nbsp;R$${(recTot/1000).toFixed(0)}k</span></div>
+    <div class="kpi-pct-bar"><div class="kpi-pct-fill" style="width:${pFinR}%;background:${pctColor(pFinR)}"></div></div>
+    <div class="kpi-pct-text" style="color:${pctColor(pFinR)}">${pFinR}% captado</div>
+  </div>`;
+  document.getElementById('kpi-grid').innerHTML=html;
+}
+
+/* ================================================
+   GAUGE DE PRONTIDÃO
+================================================ */
+function renderGauge(){
+  const agConf=D.agraciados.filter(a=>a.status==='Confirmado').length, agTot=D.agraciados.length;
+  const palConf=D.palestrantes.filter(p=>p.status==='Confirmado').length, palTot=D.palestrantes.length;
+  const patConf=D.patrocinadores.filter(p=>p.status==='Confirmado').length, patTot=D.patrocinadores.length;
+  const marcDone=D.marcos.filter(m=>m.status==='done').length, marcTot=D.marcos.length;
+  const recExec=D.financeiro.receitas.reduce((s,r)=>s+r.executado,0);
+  const recTot=D.financeiro.receitas.reduce((s,r)=>s+r.valor,0);
+
+  const items=[
+    {label:'Agraciados',peso:.25,pct:agTot?agConf/agTot:0},
+    {label:'Palestrantes',peso:.25,pct:palTot?palConf/palTot:0},
+    {label:'Patrocinadores',peso:.20,pct:patTot?patConf/patTot:0},
+    {label:'Marcos concluídos',peso:.20,pct:marcTot?marcDone/marcTot:0},
+    {label:'Captação financeira',peso:.10,pct:recTot?recExec/recTot:0},
+  ];
+  const score=items.reduce((s,i)=>s+i.pct*i.peso,0);
+  const pctVal=Math.round(score*100);
+  const cor=pctVal>=70?'#10b981':pctVal>=40?'#f59e0b':'#ef4444';
+  const label=pctVal>=70?'Alta':pctVal>=40?'Moderada':'Crítica';
+
+  const canvas=document.getElementById('gaugeCanvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,200,120);
+  ctx.beginPath();ctx.arc(100,100,80,Math.PI,2*Math.PI);
+  ctx.lineWidth=18;ctx.strokeStyle='#e2e8f0';ctx.stroke();
+  ctx.beginPath();ctx.arc(100,100,80,Math.PI,Math.PI+Math.PI*score);
+  ctx.lineWidth=18;ctx.strokeStyle=cor;ctx.lineCap='round';ctx.stroke();
+
+  const gv=document.getElementById('gauge-val');
+  gv.textContent=pctVal+'%'; gv.style.color=cor;
+  document.getElementById('gauge-badge-wrap').innerHTML=
+    `<div class="gauge-badge" style="background:${cor}20;color:${cor}">${label}</div>`;
+
+  const barCol=p=>p>=.7?'#10b981':p>=.4?'#f59e0b':'#ef4444';
+  document.getElementById('gauge-subs').innerHTML=items.map(i=>`
+    <div class="gauge-sub">
+      <div class="gauge-sub-label">
+        <span>${i.label} (${Math.round(i.peso*100)}%)</span>
+        <span style="font-weight:700;color:${barCol(i.pct)}">${Math.round(i.pct*100)}%</span>
+      </div>
+      <div class="gauge-sub-bar"><div class="gauge-sub-fill" style="width:${Math.round(i.pct*100)}%;background:${barCol(i.pct)}"></div></div>
+    </div>`).join('');
+}
+
+/* ================================================
+   GANTT (marcos como barras)
+================================================ */
+function renderGantt(){
+  const inicio=new Date('2025-07-01'), fim=DATA_EVENTO;
+  const totalMs=fim-inicio, hoje=new Date();
+  const todayPct=Math.min(100,Math.max(0,Math.round((hoje-inicio)/totalMs*100)));
+
+  const items=[
+    {nome:'Planejamento e kick-off',start:'2025-07-01',end:'2025-07-31',tipo:'done'},
+    {nome:'Fechar grade da programação',start:'2025-08-01',end:'2025-09-15',tipo:'done'},
+    {nome:'Confirmar palestrantes',start:'2025-08-15',end:'2025-10-01',tipo:'current'},
+    {nome:'Contratar logística',start:'2025-09-01',end:'2025-10-15',tipo:'pending'},
+    {nome:'Abrir inscrições',start:'2025-09-15',end:'2025-11-28',tipo:'current'},
+    {nome:'Confirmação final agraciados',start:'2025-10-01',end:'2025-11-01',tipo:'critico'},
+    {nome:'Envio de materiais / kit',start:'2025-11-01',end:'2025-11-25',tipo:'pending'},
+    {nome:'EVENTO — 4ª Conferência IBDM',start:'2025-12-02',end:'2025-12-04',tipo:'alvo'},
+  ];
+  const cols={done:'#10b981',current:'#f59e0b',critico:'#ef4444',pending:'#94a3b8',alvo:'#2563eb'};
+
+  let html=`<table class="gantt-table"><thead><tr>
+    <th style="width:36%">Marco</th><th>Progresso</th><th style="width:14%">Período</th>
+  </tr></thead><tbody>`;
+
+  items.forEach(m=>{
+    const s=new Date(m.start), e=new Date(m.end);
+    const bStart=Math.max(0,Math.round((s-inicio)/totalMs*100));
+    const bWidth=Math.min(100-bStart,Math.round((e-s)/totalMs*100));
+    const col=cols[m.tipo]||'#94a3b8';
+    const sf=s.toLocaleDateString('pt-BR',{month:'short',day:'numeric'});
+    const ef=e.toLocaleDateString('pt-BR',{month:'short',day:'numeric'});
+    html+=`<tr>
+      <td style="font-size:12px;font-weight:${m.tipo==='alvo'?'700':'500'}">${m.tipo==='alvo'?'<b>'+m.nome+'</b>':m.nome}</td>
+      <td>
+        <div class="gantt-bar-bg">
+          <div class="gantt-bar-fill" style="left:${bStart}%;width:${bWidth}%;background:${col}"></div>
+          <div class="gantt-today-line" style="left:${todayPct}%"></div>
+        </div>
+      </td>
+      <td style="font-size:10px;color:var(--text2);white-space:nowrap">${sf} – ${ef}</td>
+    </tr>`;
+  });
+  html+=`</tbody></table>
+  <div class="gantt-legend">
+    <div class="gantt-legend-item"><div class="gantt-leg-line"></div>Hoje</div>
+    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#10b981"></div>Concluído</div>
+    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#f59e0b"></div>Em andamento</div>
+    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#ef4444"></div>Crítico</div>
+    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#94a3b8"></div>Futuro</div>
+  </div>`;
+  document.getElementById('gantt-wrap').innerHTML=html;
+}
+
+/* ================================================
+   MAPA DE RISCO
+================================================ */
+function renderRisco(){
+  const hoje=new Date();
+  const dias=Math.ceil((DATA_EVENTO-hoje)/86400000);
+  const dChip=`<span class="days-chip">${dias}d restantes</span>`;
+
+  const agPend=D.agraciados.filter(a=>a.status!=='Confirmado').length;
+  const palPend=D.palestrantes.filter(p=>p.status!=='Confirmado').length;
+  const patPend=D.patrocinadores.filter(p=>p.status!=='Confirmado').length;
+  const marcCrit=D.marcos.filter(m=>m.status==='critico').length;
+  const recPct=D.financeiro.receitas.reduce((s,r)=>s+r.executado,0)/
+               D.financeiro.receitas.reduce((s,r)=>s+r.valor,0)*100;
+
+  const riscos=[];
+  if(marcCrit>0)riscos.push({nivel:'critico',titulo:`${marcCrit} marco(s) com prazo crítico`,desc:'Ação imediata necessária — prazos comprometidos.'});
+  if(agPend>0)riscos.push({nivel:agPend>3?'critico':'alto',titulo:`${agPend} agraciado(s) sem confirmação`,desc:'Recipientários ainda não confirmaram presença para a solenidade.'});
+  if(palPend>0)riscos.push({nivel:palPend>3?'alto':'medio',titulo:`${palPend} palestrante(s) pendente(s)`,desc:'Confirmações ausentes podem comprometer a composição dos painéis.'});
+  if(patPend>0)riscos.push({nivel:'medio',titulo:`${patPend} patrocinador(es) em negociação`,desc:'Contratos e cotas ainda não finalizados.'});
+  if(recPct<30)riscos.push({nivel:'critico',titulo:`Apenas ${Math.round(recPct)}% do orçamento captado`,desc:'Meta financeira abaixo do mínimo para viabilidade operacional.'});
+  else if(recPct<60)riscos.push({nivel:'alto',titulo:`${Math.round(recPct)}% do orçamento captado`,desc:'Captação abaixo do esperado para esta fase do planejamento.'});
+  if(dias<30)riscos.push({nivel:'critico',titulo:`Evento em ${dias} dias`,desc:'Tempo crítico — itens pendentes devem ser priorizados.'});
+  else if(dias<60)riscos.push({nivel:'alto',titulo:`Evento em ${dias} dias`,desc:'Menos de 2 meses. Confirmar todos os itens pendentes.'});
+
+  const total=agPend+palPend+patPend+marcCrit;
+  document.getElementById('risk-total-badge').textContent=total+' pendências';
+
+  const iconSVG=cor=>`<svg viewBox="0 0 24 24" fill="none" stroke="${cor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+  const nCor={critico:'#ef4444',alto:'#f59e0b',medio:'#94a3b8',baixo:'#10b981'};
+
+  document.getElementById('risk-list').innerHTML = riscos.length===0
+    ? `<div style="text-align:center;padding:20px;color:#10b981;font-size:13px;font-weight:600">Nenhuma pendência crítica</div>`
+    : riscos.map(r=>`
+      <div class="risk-item ${r.nivel}">
+        ${iconSVG(nCor[r.nivel])}
+        <div style="flex:1;min-width:0">
+          <div class="risk-title">${r.titulo}</div>
+          <div class="risk-meta">${r.desc}</div>
+          <span class="risk-tag ${r.nivel}">${r.nivel}</span>
+        </div>
+        ${dChip}
+      </div>`).join('');
+}
+
+/* ================================================
+   PAINEL FINANCEIRO (visão geral)
+================================================ */
+function brl(v){return'R$\u00a0'+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function renderFinVG(){
+  const rec=D.financeiro.receitas, des=D.financeiro.despesas;
+  const recExec=rec.reduce((s,r)=>s+r.executado,0);
+  const recTot=rec.reduce((s,r)=>s+r.valor,0);
+  const desExec=des.reduce((s,d)=>s+d.executado,0);
+  const desTot=des.reduce((s,d)=>s+d.valor,0);
+  const saldo=recExec-desExec;
+
+  document.getElementById('fin-panel').innerHTML=`
+    <div class="fin-kpi-grid">
+      <div class="fin-kpi"><div class="fin-kpi-label">Receita Captada</div><div class="fin-kpi-val g">${brl(recExec)}</div><div style="font-size:11px;color:var(--text2)">${Math.round(recExec/recTot*100)}% de ${brl(recTot)}</div></div>
+      <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div><div style="font-size:11px;color:var(--text2)">${Math.round(desExec/desTot*100)}% de ${brl(desTot)}</div></div>
+      <div class="fin-kpi"><div class="fin-kpi-label">Saldo Atual</div><div class="fin-kpi-val ${saldo>=0?'g':'r'}">${brl(saldo)}</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="finChart"></canvas></div>`;
+
+  if(chartsMap.fin)chartsMap.fin.destroy();
+  chartsMap.fin=new Chart(document.getElementById('finChart').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['Receita Captada','Receita Projetada','Despesa Exec.','Saldo'],
+      datasets:[{data:[recExec,recTot,desExec,saldo],
+        backgroundColor:['#10b981cc','#6366f1cc','#ef4444cc',saldo>=0?'#10b981cc':'#ef4444cc'],
+        borderColor:['#10b981','#6366f1','#ef4444',saldo>=0?'#10b981':'#ef4444'],
+        borderWidth:1,borderRadius:6}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toLocaleString('pt-BR',{minimumFractionDigits:2})}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>'R$ '+(v/1000).toFixed(0)+'k'}}}}
+  });
+}
+
+/* ================================================
+   ALERTAS
+================================================ */
+function renderAlertas(){
+  const pend=D.agraciados.filter(a=>a.status==='Pendente');
+  const crit=D.marcos.filter(m=>m.status==='critico');
+  let html='';
+  if(crit.length)html+=`<div class="alert alert-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>${crit.length} marco(s) em prazo crítico.</strong> Verifique a Timeline de Marcos na Visão Geral.</span></div>`;
+  if(pend.length)html+=`<div class="alert alert-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${pend.length} agraciado(s) pendente(s):</strong> ${pend.map(p=>p.nome.split(' ').slice(0,2).join(' ')).join(', ')}.</span></div>`;
+  document.getElementById('alertas-wrap').innerHTML=html;
+}
+
+/* ================================================
+   PRÓXIMAS SESSÕES
+================================================ */
+function renderProxSessoes(){
+  const ss=D.programacao.filter(p=>p.tipo!=='break').slice(0,6);
+  const bTurno=t=>t==='Manhã'?'<span class="bdg convite">'+t+'</span>':t==='Tarde'?'<span class="bdg aguardando">'+t+'</span>':'<span class="bdg pendente">'+t+'</span>';
+  const bTipo=t=>t==='painel'?'<span class="bdg confirmado">painel</span>':t==='palestra'?'<span class="bdg aguardando">palestra</span>':t==='cerimonia'?'<span class="bdg" style="background:#fee2e2;color:#991b1b">cerimônia</span>':'<span class="bdg pendente">'+t+'</span>';
+  document.getElementById('prox-sessoes').innerHTML=`<table class="dt"><thead><tr>
+    <th>Dia</th><th>Turno</th><th>Horário</th><th>Título</th><th>Palestrante</th><th>Tipo</th>
+  </tr></thead><tbody>${ss.map(s=>`<tr>
+    <td>${s.dia} <span style="font-size:10px;color:var(--text2)">${s.data}</span></td>
+    <td>${bTurno(s.turno)}</td>
+    <td style="font-weight:600">${s.hora}</td>
+    <td>${s.titulo}</td>
+    <td style="color:var(--text2)">${s.palestrante||'—'}</td>
+    <td>${bTipo(s.tipo)}</td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+/* ================================================
+   PROGRAMAÇÃO — GRADE
+================================================ */
+function renderGrade(dayFilter){
+  const dias=[...new Set(D.programacao.map(p=>p.dia))];
+  const dF=dayFilter==='Todos'?dias:[dayFilter];
+  const turnos=['Manhã','Tarde','Noite'];
+  const stripe={painel:'stripe-painel',palestra:'stripe-palestra',solene:'stripe-solene',cerimonia:'stripe-cerimonia',break:'stripe-break'};
+  document.getElementById('sched-grid').innerHTML=dF.map(dia=>{
+    const dd=D.programacao.filter(p=>p.dia===dia);
+    const dataStr=dd[0]?.data||'';
+    const blocos=turnos.map(t=>{
+      const st=dd.filter(p=>p.turno===t);
+      if(!st.length)return'';
+      const hdrCls=t==='Manhã'?'turno-manha':t==='Tarde'?'turno-tarde':'turno-noite';
+      const ico=t==='Manhã'?'☀':t==='Tarde'?'🌤':'🌙';
+      return`<div><div class="turno-hdr ${hdrCls}">${ico} ${t}</div>
+      ${st.map(s=>`<div class="sess-item">
+        <div class="sess-stripe ${stripe[s.tipo]||'stripe-break'}"></div>
+        <div class="sess-time">${s.hora}</div>
+        <div class="sess-info">
+          <div class="sess-title">${s.titulo}</div>
+          ${s.palestrante?`<div class="sess-spk">${s.palestrante}</div>`:''}
+        </div>
+      </div>`).join('')}</div>`;
+    }).join('');
+    return`<div class="day-col">
+      <div class="day-col-hdr"><div class="day-name">${dia}</div><div class="day-date">${dataStr}</div></div>
+      <div style="background:#fff">${blocos}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================
+   PROGRAMAÇÃO — TIMELINE
+================================================ */
+function renderTimeline(dayFilter){
+  const dias=[...new Set(D.programacao.map(p=>p.dia))];
+  const dF=dayFilter==='Todos'?dias:[dayFilter];
+  const tlCls={painel:'',palestra:'gold',solene:'purple',cerimonia:'red',break:'gray'};
+  const bTipo=t=>t==='painel'?'<span class="bdg confirmado">painel</span>':t==='palestra'?'<span class="bdg aguardando">palestra</span>':t==='cerimonia'?'<span class="bdg" style="background:#fee2e2;color:#991b1b">cerimônia</span>':t==='solene'?'<span class="bdg convite">solenidade</span>':'<span class="bdg pendente">'+t+'</span>';
+  document.getElementById('tl-content').innerHTML=dF.map(dia=>{
+    const dd=D.programacao.filter(p=>p.dia===dia);
+    return`<div class="tl-day">
+      <div class="tl-day-hdr">${dia} <span>${dd[0]?.data||''}</span></div>
+      ${dd.map(s=>`<div class="tl-row">
+        <div class="tl-time ${s.tipo!=='break'?'hl':''}">${s.hora}</div>
+        <div class="tl-body"><div class="tl-card ${tlCls[s.tipo]||''}">
+          <div style="font-size:12px;font-weight:600;color:var(--text)">${s.titulo}</div>
+          ${s.palestrante?`<div style="font-size:11px;color:var(--text2);margin-top:2px">${s.palestrante}</div>`:''}
+          <div style="margin-top:5px">${bTipo(s.tipo)}</div>
+        </div></div>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+/* ================================================
+   DAY PILLS
+================================================ */
+function renderDayPills(){
+  const dias=['Todos',...new Set(D.programacao.map(p=>p.dia))];
+  document.getElementById('day-pills').innerHTML=dias.map(d=>
+    `<div class="day-pill ${d===currentDay?'active':''}" onclick="setDay('${d}')">${d}</div>`).join('');
+}
+function setDay(d){
+  currentDay=d; renderDayPills();
+  if(currentView==='grade')renderGrade(d); else renderTimeline(d);
+}
+function setView(v){
+  currentView=v;
+  document.getElementById('btn-grade').classList.toggle('active',v==='grade');
+  document.getElementById('btn-tl').classList.toggle('active',v==='timeline');
+  document.getElementById('grade-view').style.display=v==='grade'?'':'none';
+  document.getElementById('tl-view').style.display=v==='timeline'?'':'none';
+  if(v==='grade')renderGrade(currentDay); else renderTimeline(currentDay);
+}
+
+/* ================================================
+   AGRACIADOS
+================================================ */
+function medTag(m){
+  const cls={Ouro:'medal-ouro',Prata:'medal-prata',Bronze:'medal-bronze',Comenda:'medal-comenda'};
+  const em={Ouro:'🥇',Prata:'🥈',Bronze:'🥉',Comenda:'🎖'};
+  return`<span class="medal-tag ${cls[m]||'medal-comenda'}">${em[m]||'🎖'} ${m}</span>`;
+}
+function stBadge(s){
+  if(s==='Confirmado')return`<span class="bdg confirmado">✓ Confirmado</span>`;
+  if(s==='Pendente')return`<span class="bdg pendente">⟳ Pendente</span>`;
+  return`<span class="bdg convite">${s}</span>`;
+}
+function renderAgraciados(dados){
+  document.getElementById('tbl-agraciados').innerHTML=`<table class="dt"><thead><tr>
+    <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Status</th>
+  </tr></thead><tbody>${dados.map((a,i)=>`<tr>
+    <td style="color:var(--text2)">${i+1}</td>
+    <td style="font-weight:600">${a.nome}</td>
+    <td style="color:var(--text2)">${a.funcao}</td>
+    <td style="font-family:monospace;font-size:12px">${a.telefone}</td>
+    <td>${medTag(a.medalha)}</td>
+    <td>${stBadge(a.status)}</td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-agraciados').textContent=`${dados.length} de ${D.agraciados.length}`;
+}
+function filtrarAgraciados(q){
+  const m=document.getElementById('fil-medalha').value;
+  const st=document.getElementById('fil-status-ag').value;
+  renderAgraciados(D.agraciados.filter(a=>
+    (!q||a.nome.toLowerCase().includes(q.toLowerCase())||a.funcao.toLowerCase().includes(q.toLowerCase()))&&
+    (!m||a.medalha===m)&&(!st||a.status===st)));
+}
+function exportarAgraciados(){
+  const rows=[['Nome Completo','Função','Telefone','Medalha','Status']];
+  D.agraciados.forEach(a=>rows.push([a.nome,a.funcao,a.telefone,a.medalha,a.status]));
+  const b=new Blob(['\ufeff'+rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n')],{type:'text/csv;charset=utf-8'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='agraciados-ibdm-2025.csv';a.click();
+}
+
+/* ================================================
+   PALESTRANTES
+================================================ */
+function renderPalestrantes(dados){
+  document.getElementById('tbl-palestrantes').innerHTML=`<table class="dt"><thead><tr>
+    <th>#</th><th>Nome</th><th>Instituição</th><th>Painel</th><th>Dia</th><th>Turno</th><th>Status</th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <td style="color:var(--text2)">${i+1}</td>
+    <td style="font-weight:600">${p.nome}</td>
+    <td style="color:var(--text2)">${p.instituicao}</td>
+    <td>${p.painel}</td>
+    <td>${p.dia}</td>
+    <td><span class="bdg ${p.turno==='Manhã'?'convite':p.turno==='Tarde'?'aguardando':'pendente'}">${p.turno}</span></td>
+    <td>${stBadge(p.status)}</td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-palestrantes').textContent=`${dados.length} de ${D.palestrantes.length}`;
+}
+function filtrarPalestrantes(q){
+  const st=document.getElementById('fil-status-pal').value;
+  renderPalestrantes(D.palestrantes.filter(p=>
+    (!q||p.nome.toLowerCase().includes(q.toLowerCase())||p.instituicao.toLowerCase().includes(q.toLowerCase()))&&
+    (!st||p.status===st)));
+}
+
+/* ================================================
+   PATROCINADORES
+================================================ */
+function renderPatrocinadores(dados){
+  document.getElementById('tbl-patrocinadores').innerHTML=`<table class="dt"><thead><tr>
+    <th>#</th><th>Entidade</th><th>Cota</th><th>Status</th><th>Contato</th><th>Obs.</th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <td style="color:var(--text2)">${i+1}</td>
+    <td style="font-weight:600">${p.entidade}</td>
+    <td>${medTag(p.cota==='Diamante'?'Comenda':p.cota)}</td>
+    <td>${stBadge(p.status)}</td>
+    <td style="color:var(--text2)">${p.contato}</td>
+    <td style="color:var(--text2);font-size:12px">${p.obs}</td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-patrocinadores').textContent=`${dados.length} de ${D.patrocinadores.length}`;
+}
+function filtrarPatrocinadores(q){
+  renderPatrocinadores(D.patrocinadores.filter(p=>
+    !q||p.entidade.toLowerCase().includes(q.toLowerCase())));
+}
+
+/* ================================================
+   FINANCEIRO DETALHADO (tab 5)
+================================================ */
+function renderFinDetail(){
+  const rec=D.financeiro.receitas, des=D.financeiro.despesas;
+  const recExec=rec.reduce((s,r)=>s+r.executado,0),recTot=rec.reduce((s,r)=>s+r.valor,0);
+  const desExec=des.reduce((s,d)=>s+d.executado,0),desTot=des.reduce((s,d)=>s+d.valor,0);
+  const saldo=recExec-desExec;
+  document.getElementById('fin-detail').innerHTML=`
+    <div class="macro-grid">
+      <div class="macro-card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Receitas por Categoria</h3>
+        <div class="fin-bar-section">
+          ${rec.map(r=>{const p=r.valor?Math.round(r.executado/r.valor*100):0;return`
+            <div class="fin-bar-row">
+              <div class="fin-bar-label">${r.label}</div>
+              <div class="fin-bar-track"><div class="fin-bar-fill" style="width:${p}%;background:#10b981"></div></div>
+              <div class="fin-bar-val">${brl(r.executado)} / ${brl(r.valor)}</div>
+            </div>`}).join('')}
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e3a5f;border-top:1px solid var(--border);padding-top:8px">
+          Total captado: <span style="color:#10b981">${brl(recExec)}</span> de ${brl(recTot)} (${Math.round(recExec/recTot*100)}%)
+        </div>
+      </div>
+      <div class="macro-card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>Despesas por Categoria</h3>
+        <div class="fin-bar-section">
+          ${des.map(d=>{const p=d.valor?Math.round(d.executado/d.valor*100):0;return`
+            <div class="fin-bar-row">
+              <div class="fin-bar-label">${d.label}</div>
+              <div class="fin-bar-track"><div class="fin-bar-fill" style="width:${p}%;background:#ef4444"></div></div>
+              <div class="fin-bar-val">${brl(d.executado)} / ${brl(d.valor)}</div>
+            </div>`}).join('')}
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e3a5f;border-top:1px solid var(--border);padding-top:8px">
+          Total executado: <span style="color:#ef4444">${brl(desExec)}</span> de ${brl(desTot)} (${Math.round(desExec/desTot*100)}%)
+        </div>
+      </div>
+      <div class="macro-card wide">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Resumo Financeiro</h3>
+        <div class="fin-kpi-grid">
+          <div class="fin-kpi"><div class="fin-kpi-label">Orçamento Total</div><div class="fin-kpi-val b">${brl(D.financeiro.orcamento)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Receita Captada</div><div class="fin-kpi-val g">${brl(recExec)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Receita Projetada</div><div class="fin-kpi-val b">${brl(recTot)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Despesa Projetada</div><div class="fin-kpi-val r">${brl(desTot)}</div></div>
+          <div class="fin-kpi"><div class="fin-kpi-label">Saldo Atual</div><div class="fin-kpi-val ${saldo>=0?'g':'r'}">${brl(saldo)}</div></div>
+        </div>
+        <div class="chart-wrap"><canvas id="finDetailChart"></canvas></div>
+      </div>
+    </div>`;
+
+  if(chartsMap.finDet)chartsMap.finDet.destroy();
+  chartsMap.finDet=new Chart(document.getElementById('finDetailChart').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:[...rec.map(r=>r.label),...des.map(d=>d.label)],
+      datasets:[
+        {label:'Previsto',data:[...rec.map(r=>r.valor),...des.map(d=>-d.valor)],backgroundColor:'rgba(99,102,241,.3)',borderColor:'#6366f1',borderWidth:1,borderRadius:4},
+        {label:'Executado',data:[...rec.map(r=>r.executado),...des.map(d=>-d.executado)],backgroundColor:[...rec.map(()=>'rgba(16,185,129,.7)'),...des.map(()=>'rgba(239,68,68,.7)')],borderRadius:4},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{callback:v=>'R$ '+(v/1000).toFixed(0)+'k'}}}}
+  });
+}
+
+/* ================================================
+   CONFIGURAÇÕES — GIDs DAS ABAS
+   (A CSV_URL mestra fica hardcoded no topo do script)
+================================================ */
+const GID_FIELDS=[
+  {key:'programacao',   label:'GID — Aba Programação',    placeholder:'Ex: 0 (primeira aba)'},
+  {key:'agraciados',    label:'GID — Aba Agraciados',     placeholder:'Ex: 123456789'},
+  {key:'palestrantes',  label:'GID — Aba Palestrantes',   placeholder:'Ex: 987654321'},
+  {key:'patrocinadores',label:'GID — Aba Patrocinadores', placeholder:'Ex: 456123789'},
+  {key:'financeiro',    label:'GID — Aba Financeiro',     placeholder:'Ex: 741852963 (opcional)'},
+];
+
+function renderCfgFields(){
+  // Exibe a CSV_URL ativa (somente leitura, para conferência)
+  const urlDisplay=CSV_URL.length>80?CSV_URL.slice(0,77)+'…':CSV_URL;
+  document.getElementById('url-fields').innerHTML=`
+    <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">
+        CSV_URL ativa (definida no código)
+      </div>
+      <div style="font-size:11px;font-family:monospace;color:#2563eb;word-break:break-all;">${urlDisplay}</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">
+        Para alterar, edite a variável <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;">CSV_URL</code> no início do script.
+      </div>
+    </div>
+    ${GID_FIELDS.map(f=>`
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:3px">${f.label}</label>
+      <input id="gid-${f.key}" type="text" value="${SHEET_GIDS[f.key]||''}"
+        oninput="SHEET_GIDS['${f.key}']=this.value"
+        style="width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:monospace;outline:none"
+        placeholder="${f.placeholder}">
+    </div>`).join('')}`;
+}
+
+function salvarConfigs(){
+  // Persiste os GIDs no localStorage como backup
+  GID_FIELDS.forEach(f=>{
+    const v=document.getElementById('gid-'+f.key)?.value||'';
+    SHEET_GIDS[f.key]=v;
+    localStorage.setItem('ibdm_gid_'+f.key,v);
+  });
+  const iv=parseInt(document.getElementById('cfg-refresh').value);
+  if(autoTimer)clearInterval(autoTimer);
+  if(iv>0)autoTimer=setInterval(sincronizarDados,iv);
+  document.getElementById('cfg-msg').textContent='GIDs salvos · '+new Date().toLocaleTimeString('pt-BR');
+}
+
+function carregarGidsSalvos(){
+  // Restaura GIDs do localStorage (se o usuário já tiver salvado via interface)
+  GID_FIELDS.forEach(f=>{
+    const salvo=localStorage.getItem('ibdm_gid_'+f.key);
+    if(salvo&&salvo.trim()&&!SHEET_GIDS[f.key]){
+      SHEET_GIDS[f.key]=salvo;
+    }
+  });
+}
+
+/* ================================================
+   SINCRONIZAÇÃO CSV — FONTE ÚNICA (CSV_URL + SHEET_GIDS)
+================================================ */
+function parseCSV(text, skipRows=0){
+  const lines=text.trim().split(/\r?\n/);
+  const headers=lines[skipRows].split(',').map(h=>h.replace(/"/g,'').trim());
+  return lines.slice(skipRows+1).map(line=>{
+    const vals=[];let cur='',inQ=false;
+    for(let i=0;i<line.length;i++){
+      if(line[i]==='"'){inQ=!inQ;}
+      else if(line[i]===','&&!inQ){vals.push(cur.trim());cur='';}
+      else{cur+=line[i];}
+    }
+    vals.push(cur.trim());
+    const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');return obj;
+  });
+}
+
+async function fetchAba(gid, skipRows=0){
+  const url=sheetUrl(gid);
+  if(!url)return null;
+  const r=await fetch(url);
+  if(!r.ok)return null;
+  const d=parseCSV(await r.text(), skipRows);
+  return d.length?d:null;
+}
+
+async function sincronizarDados(){
+  const dot=document.getElementById('syncDot'),txt=document.getElementById('syncText');
+  dot.className='sync-dot warn';txt.textContent='Sincronizando...';
+  let ok=false;
+
+  // Sem nenhum GID configurado → mostra aviso de demonstração
+  const algumGid=Object.values(SHEET_GIDS).some(g=>g&&g.trim()!=='');
+  if(!algumGid){
+    dot.className='sync-dot warn';
+    txt.textContent='Configure os GIDs na aba Configurações';
+    renderAll();return;
+  }
+
+  try{
+    // Programação: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
+    // Colunas reais: #, DATA, PERÍODO, INÍCIO, FIM, TIPO DE ATIVIDADE, TEMA / TÍTULO, RESPONSÁVEL, LOCAL / SALA, STATUS
+    const dProg=await fetchAba(SHEET_GIDS.programacao, 1);
+    if(dProg){D.programacao=dProg.map(x=>({
+      dia:'',data:x['DATA']||'',turno:x['PERÍODO']||'',
+      hora:x['INÍCIO']||'',horaFim:x['FIM']||'',
+      titulo:x['TEMA / TÍTULO']||'',
+      palestrante:x['RESPONSÁVEL']||'',
+      local:x['LOCAL / SALA']||'',
+      tipo:(x['TIPO DE ATIVIDADE']||'painel').toLowerCase(),
+      status:x['STATUS']||''
+    })).filter(x=>x.titulo||x.data);ok=true;}
+
+    // Agraciados: linha 0 = cabeçalhos → skipRows=0
+    // Colunas reais: #, NOME COMPLETO, Função, E-MAIL, TELEFONE, MEDALHA, STATUS
+    const dAgr=await fetchAba(SHEET_GIDS.agraciados, 0);
+    if(dAgr){D.agraciados=dAgr.map(x=>({
+      nome:x['NOME COMPLETO']||x['Nome Completo']||'',
+      funcao:x['Função']||x['FUNÇÃO']||'',
+      email:x['E-MAIL']||'',
+      telefone:x['TELEFONE']||'',
+      medalha:x['MEDALHA']||x['Medalha']||'',
+      status:x['STATUS']||x['Status']||''
+    })).filter(x=>x.nome);ok=true;}
+
+    // Palestrantes: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
+    // Colunas reais: #, NOME COMPLETO, TITULAÇÃO / CARGO, INSTITUIÇÃO, TIPO, DIA, HORÁRIO, TEMA / PAINEL, STATUS, CONTATO, PASSAGEM / HOSPEDAGEM, OBSERVAÇÕES
+    const dPal=await fetchAba(SHEET_GIDS.palestrantes, 1);
+    if(dPal){D.palestrantes=dPal.map(x=>({
+      nome:x['NOME COMPLETO']||x['Nome Completo']||'',
+      cargo:x['TITULAÇÃO / CARGO']||'',
+      instituicao:x['INSTITUIÇÃO']||x['Instituição']||'',
+      tipo:x['TIPO']||'',
+      painel:x['TEMA / PAINEL']||'',
+      dia:x['DIA']||'',
+      hora:x['HORÁRIO']||'',
+      status:x['STATUS']||x['Status']||''
+    })).filter(x=>x.nome);ok=true;}
+
+    // Parceiros/Patrocinadores: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
+    // Colunas reais: #, NOME DO PARCEIRO, MODALIDADE, ESTÁGIO, DIVULGAÇÃO, CONTATO, CARGO / FUNÇÃO, VALOR (R$), OBSERVAÇÕES
+    const dPat=await fetchAba(SHEET_GIDS.patrocinadores, 1);
+    if(dPat){D.patrocinadores=dPat.map(x=>({
+      entidade:x['NOME DO PARCEIRO']||'',
+      cota:x['MODALIDADE']||'',
+      status:x['ESTÁGIO']||'',
+      contato:x['CONTATO']||'',
+      valor:x['VALOR (R$)']||'',
+      obs:x['OBSERVAÇÕES']||''
+    })).filter(x=>x.entidade);ok=true;}
+
+    dot.className='sync-dot'+(ok?'':'warn');
+    txt.textContent=ok?'Sheets · '+new Date().toLocaleTimeString('pt-BR'):'Sem dados retornados';
+    document.getElementById('last-update-time').textContent=new Date().toLocaleString('pt-BR');
+  }catch(e){
+    dot.className='sync-dot';dot.style.background='#ef4444';
+    txt.textContent='Erro na sincronização — verifique os GIDs';
+    console.error('[IBDM CSV]',e);
+  }
+  renderAll();
+}
+
+/* ================================================
+   RENDER ALL
+================================================ */
+function renderAll(){
+  renderKPIs();renderGauge();renderGantt();renderRisco();renderFinVG();
+  renderAlertas();renderProxSessoes();
+  renderDayPills();renderGrade(currentDay);renderTimeline(currentDay);
+  renderAgraciados(D.agraciados);renderPalestrantes(D.palestrantes);
+  renderPatrocinadores(D.patrocinadores);renderFinDetail();
+  document.getElementById('footer-note').innerHTML=
+    'Dashboard IBDM — Dados atualizados em: <strong>'+new Date().toLocaleString('pt-BR')+'</strong>';
+}
+
+/* ================================================
+   INIT
+================================================ */
+function init(){
+  carregarGidsSalvos();
+  renderCfgFields();
+  if(AUTO_REFRESH_MS>0) autoTimer=setInterval(sincronizarDados, AUTO_REFRESH_MS);
+  renderAll();
+  document.getElementById('loading-overlay').style.display='none';
+  const algumGid=Object.values(SHEET_GIDS).some(g=>g&&g.trim()!=='');
+  document.getElementById('syncDot').className='sync-dot'+(algumGid?'':'warn');
+  document.getElementById('syncText').textContent=algumGid
+    ?'CSV_URL configurada — clique Atualizar'
+    :'Preencha os GIDs na aba Configurações';
+}
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
