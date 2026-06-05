@@ -498,8 +498,6 @@ table.dt tr:hover td{background:#f8fafc}
       </div>
       <select id="fil-medalha" onchange="filtrarAgraciados(document.querySelector('#tab-2 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
         <option value="">Todas as medalhas</option>
-        <option value="Ouro">Ouro</option><option value="Prata">Prata</option>
-        <option value="Bronze">Bronze</option><option value="Comenda">Comenda</option>
       </select>
       <select id="fil-status-ag" onchange="filtrarAgraciados(document.querySelector('#tab-2 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
         <option value="">Todos os status</option>
@@ -1123,6 +1121,11 @@ function stBadge(s){
   return`<span class="bdg convite">${s}</span>`;
 }
 function renderAgraciados(dados){
+  // Atualiza filtro de medalhas dinamicamente com os valores reais da planilha
+  const selMed=document.getElementById('fil-medalha');
+  const medalAtual=selMed.value;
+  const medalhas=[...new Set(D.agraciados.map(a=>a.medalha).filter(m=>m))].sort();
+  selMed.innerHTML='<option value="">Todas as medalhas</option>'+medalhas.map(m=>`<option value="${m}"${m===medalAtual?' selected':''}>${m}</option>`).join('');
   document.getElementById('tbl-agraciados').innerHTML=`<table class="dt"><thead><tr>
     <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Status</th>
   </tr></thead><tbody>${dados.map((a,i)=>`<tr>
@@ -1363,15 +1366,24 @@ async function sincronizarDados(){
     // Programação: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
     // Colunas reais: #, DATA, PERÍODO, INÍCIO, FIM, TIPO DE ATIVIDADE, TEMA / TÍTULO, RESPONSÁVEL, LOCAL / SALA, STATUS
     const dProg=await fetchAba(SHEET_GIDS.programacao, 1);
-    if(dProg){D.programacao=dProg.map(x=>({
-      dia:'',data:x['DATA']||'',turno:x['PERÍODO']||'',
-      hora:x['INÍCIO']||'',horaFim:x['FIM']||'',
-      titulo:x['TEMA / TÍTULO']||'',
-      palestrante:x['RESPONSÁVEL']||'',
-      local:x['LOCAL / SALA']||'',
-      tipo:(x['TIPO DE ATIVIDADE']||'painel').toLowerCase(),
-      status:x['STATUS']||''
-    })).filter(x=>x.titulo||x.data);ok=true;}
+    if(dProg){
+      // Derivar "Dia 1", "Dia 2", etc. a partir da coluna DATA (ordenando datas únicas)
+      const datasUnicas=[...new Set(dProg.map(x=>x['DATA']||'').filter(d=>d))].sort((a,b)=>{
+        const p=s=>{const[d,m,y]=s.split('/');return new Date(y,m-1,d)};
+        return p(a)-p(b);
+      });
+      const diaMap={};datasUnicas.forEach((d,i)=>diaMap[d]=`Dia ${i+1}`);
+      D.programacao=dProg.map(x=>({
+        dia:diaMap[x['DATA']||'']||x['DATA']||'Dia 1',
+        data:x['DATA']||'',turno:x['PERÍODO']||'',
+        hora:x['INÍCIO']||'',horaFim:x['FIM']||'',
+        titulo:x['TEMA / TÍTULO']||'',
+        palestrante:x['RESPONSÁVEL']||'',
+        local:x['LOCAL / SALA']||'',
+        tipo:(x['TIPO DE ATIVIDADE']||'painel').toLowerCase(),
+        status:x['STATUS']||''
+      })).filter(x=>x.titulo||x.data);ok=true;
+    }
 
     // Agraciados: linha 0 = cabeçalhos → skipRows=0
     // Colunas reais: #, NOME COMPLETO, Função, E-MAIL, TELEFONE, MEDALHA, STATUS
