@@ -14,7 +14,8 @@ html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;line-height:1.5;min-height:100vh}
 
 :root{
-  --primary:#2563eb;--primary-h:#1d4ed8;--navy:#1e3a5f;
+  --primary:#1e3a5f;--primary-h:#152a45;--navy:#0f1f38;
+  --gold:#c19a3f;--gold-dark:#a17d1a;
   --emerald:#10b981;--amber:#f59e0b;--slate:#94a3b8;--red:#ef4444;--purple:#7c3aed;
   --bg:#f1f5f9;--card:#ffffff;--border:#e2e8f0;
   --text:#0f172a;--text2:#475569;
@@ -25,19 +26,21 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 
 /* ===== HEADER ===== */
 .site-header{
-  background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);
-  color:#fff;padding:20px 28px;
+  background:linear-gradient(135deg,var(--navy) 0%,#1a3457 100%);
+  color:#fff;padding:16px 28px;
   display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-  border-bottom:3px solid #f59e0b;
+  border-bottom:3px solid var(--gold);
   position:sticky;top:0;z-index:200;
 }
+.header-left{display:flex;align-items:center;gap:14px}
+.header-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
 .header-left h1{font-size:18px;font-weight:700;letter-spacing:-.3px;line-height:1.3}
 .header-left p{font-size:12px;opacity:.8;margin-top:3px}
 .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .last-update{font-size:11px;opacity:.75;text-align:right}
 .sync-status{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.8;}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;}
-.sync-dot.warn{background:#f59e0b;}
+.sync-dot.warn{background:var(--gold);}
 .btn-refresh{
   display:flex;align-items:center;gap:6px;
   background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
@@ -49,7 +52,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 
 /* ===== COUNTDOWN BAR ===== */
 .countdown-bar{
-  background:linear-gradient(90deg,#1e3a5f,#1e40af);
+  background:linear-gradient(90deg,var(--navy),#16304f);
   color:#fff;padding:10px 28px;
   display:flex;align-items:center;gap:20px;flex-wrap:wrap;
   border-bottom:1px solid rgba(255,255,255,.1);
@@ -57,7 +60,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 .countdown-label{font-size:12px;font-weight:500;opacity:.75;text-transform:uppercase;letter-spacing:.5px}
 .countdown-units{display:flex;gap:12px}
 .cu{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.12);border-radius:6px;padding:6px 12px;min-width:52px}
-.cu-val{font-size:22px;font-weight:800;line-height:1}
+.cu-val{font-size:22px;font-weight:800;line-height:1;color:var(--gold)}
 .cu-lbl{font-size:10px;opacity:.7;margin-top:2px;letter-spacing:.5px}
 .countdown-event-date{margin-left:auto;font-size:12px;opacity:.7;font-style:italic;}
 
@@ -78,7 +81,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 }
 .nav-btn svg{width:15px;height:15px;flex-shrink:0}
 .nav-btn:hover{background:#f1f5f9;color:var(--text)}
-.nav-btn.active{background:var(--primary);color:#fff}
+.nav-btn.active{background:var(--primary);color:#fff;box-shadow:inset 0 -3px 0 var(--gold)}
 .nav-btn.active svg{color:#fff}
 
 /* ===== LAYOUT ===== */
@@ -140,20 +143,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 .gauge-sub-bar{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
 .gauge-sub-fill{height:100%;border-radius:3px;transition:width .5s}
 
-/* ===== GANTT ===== */
-.gantt-wrap{overflow-x:auto}
-.gantt-table{width:100%;border-collapse:collapse;font-size:12px}
-.gantt-table td,.gantt-table th{padding:6px 8px;border-bottom:1px solid #f1f5f9}
-.gantt-table th{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;background:#fafbfc}
-.gantt-bar-cell{width:55%}
-.gantt-bar-bg{background:#f1f5f9;border-radius:4px;height:22px;position:relative;overflow:hidden}
-.gantt-bar-fill{height:100%;border-radius:4px;position:absolute;top:0;transition:width .4s}
-.gantt-today-line{position:absolute;top:0;bottom:0;width:2px;background:#ef4444;z-index:5}
-.gantt-legend{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:11px;color:var(--text2);flex-wrap:wrap}
-.gantt-legend-item{display:flex;align-items:center;gap:4px}
-.gantt-leg-dot{width:10px;height:10px;border-radius:2px}
-.gantt-leg-line{width:14px;height:3px;background:#ef4444;border-radius:2px}
-
 /* ===== RISCO ===== */
 .risk-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .risk-badge-count{background:#fee2e2;color:#991b1b;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
@@ -190,25 +179,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 .fin-bar-val{font-size:11px;font-weight:600;color:var(--text2);min-width:90px;text-align:right}
 .chart-wrap{position:relative;height:200px}
 
-/* ===== MARCOS (TIMELINE) ===== */
-.marcos-timeline{position:relative;padding-left:28px}
-.marcos-timeline::before{content:'';position:absolute;left:9px;top:10px;bottom:10px;width:2px;background:#e2e8f0}
-.marco{position:relative;margin-bottom:16px;padding-left:18px}
-.marco-dot{position:absolute;left:-28px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #e2e8f0;z-index:1;display:flex;align-items:center;justify-content:center}
-.marco-dot.done{background:#10b981;box-shadow:0 0 0 2px #10b981}
-.marco-dot.current{background:#f59e0b;box-shadow:0 0 0 2px #f59e0b;animation:pulse-dot 1.4s infinite}
-.marco-dot.critico{background:#ef4444;box-shadow:0 0 0 2px #ef4444}
-.marco-dot.pending{background:#cbd5e1;box-shadow:0 0 0 2px #cbd5e1}
-@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
-.marco-date{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
-.marco-title{font-size:13px;font-weight:600;color:var(--text);margin:1px 0}
-.marco-desc{font-size:11px;color:var(--text2)}
-.marco-chip{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;margin-top:3px}
-.marco-chip.done{background:#d1fae5;color:#065f46}
-.marco-chip.current{background:#fef3c7;color:#92400e}
-.marco-chip.critico{background:#fee2e2;color:#991b1b}
-.marco-chip.pending{background:#f1f5f9;color:#475569}
-
 /* ===== PROGRAMAÇÃO VISUAL ===== */
 .prog-controls{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
 .view-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
@@ -219,7 +189,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 
 .sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .day-col{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
-.day-col-hdr{background:linear-gradient(135deg,#1e3a5f,#2563eb);padding:12px 16px}
+.day-col-hdr{background:linear-gradient(135deg,var(--navy),var(--primary));padding:12px 16px;border-bottom:2px solid var(--gold)}
 .day-col-hdr .day-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.2px}
 .day-col-hdr .day-date{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
 .turno-hdr{padding:7px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:5px}
@@ -242,7 +212,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;l
 
 /* TL VIEW */
 .tl-day{margin-bottom:28px}
-.tl-day-hdr{font-size:15px;font-weight:700;color:#1e3a5f;margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid #f59e0b;display:flex;align-items:baseline;gap:10px}
+.tl-day-hdr{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid var(--gold);display:flex;align-items:baseline;gap:10px}
 .tl-day-hdr span{font-size:12px;color:var(--text2);font-weight:400}
 .tl-row{display:grid;grid-template-columns:68px 1fr;margin-bottom:4px}
 .tl-time{font-size:11px;font-weight:700;color:var(--text2);padding:12px 10px 12px 0;text-align:right;border-right:2px solid #e2e8f0;position:relative}
@@ -302,6 +272,42 @@ table.dt tr:hover td{background:#f8fafc}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:14px;color:var(--text2);font-weight:500}
 
+/* ===== GATE DE SENHA ===== */
+#auth-gate{position:fixed;inset:0;background:linear-gradient(135deg,var(--navy) 0%,#1a3457 100%);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.auth-card{background:#fff;border-radius:16px;padding:32px 28px;width:100%;max-width:340px;box-shadow:0 20px 40px rgba(0,0,0,.25);text-align:center;border-top:4px solid var(--gold)}
+.auth-logo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);margin-bottom:14px}
+.auth-card h2{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.auth-card p{font-size:12px;color:var(--text2);margin-bottom:20px}
+.auth-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Inter',sans-serif;outline:none;margin-bottom:12px}
+.auth-input:focus{border-color:var(--primary)}
+.auth-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.auth-btn:hover{background:var(--primary-h)}
+.auth-btn:disabled{opacity:.6;cursor:default}
+.auth-error{font-size:12px;color:var(--red);margin-top:10px;min-height:16px}
+
+/* ===== MODAL CRUD (genérico) ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
+.modal-card{background:#fff;border-radius:14px;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border)}
+.modal-header h3{font-size:15px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--text2);font-size:20px;line-height:1;padding:2px}
+.modal-body{padding:18px 22px;overflow-y:auto}
+.modal-field{margin-bottom:14px}
+.modal-field label{font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px}
+.modal-field input,.modal-field select,.modal-field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--primary)}
+.modal-field textarea{resize:vertical;min-height:60px}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:16px 22px;border-top:1px solid var(--border)}
+.modal-error{font-size:12px;color:var(--red);margin-top:4px;min-height:16px}
+.btn-secondary{background:#f1f5f9;color:var(--text2);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-primary:hover{background:var(--primary-h)}
+.btn-primary:disabled{opacity:.6;cursor:default}
+.btn-danger-text{background:none;border:none;color:var(--red);font-size:12px;font-weight:600;cursor:pointer;padding:4px 6px}
+.btn-link-text{background:none;border:none;color:var(--primary);font-size:12px;font-weight:600;cursor:pointer;padding:4px 6px}
+.row-inativa{opacity:.55}
+.bdg.arquivado{background:#f1f5f9;color:#64748b}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
   .site-header{flex-direction:column;align-items:flex-start}
@@ -328,11 +334,42 @@ table.dt tr:hover td{background:#f8fafc}
   <div class="loading-text">Carregando dados da conferência...</div>
 </div>
 
+<!-- GATE DE SENHA -->
+<div id="auth-gate">
+  <div class="auth-card">
+    <img class="auth-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxASDxAREhETFRIVGBkYFRcVFRAYFhUWFxcWGBgXFRUZHSggGR0lGxYVITEhJykrLi4uGCAzOzMsNyg1MCsBCgoKDg0OGxAQGy0lHyUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBEQACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABAUCAwYBB//EAEMQAAIBAgMFBAUICQIHAAAAAAECAAMRBBIhBRMxQVEGImFxMoGRocEUJDNCUmKCsgcjNHJzsbPR8FOSFSVjotLh8f/EABkBAQADAQEAAAAAAAAAAAAAAAACAwQBBf/EAC0RAQACAgEDAgYCAgIDAAAAAAABAgMRBBIhMTJBEyIzUWFxI4EFFKHhQpHw/9oADAMBAAIRAxEAPwD5JPRYSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBso0Wdgqi7HgNP5mRtaKxuXYrMzqGeNwdSi5p1UZHFrhuNjqD4iK2i0bgtWYnUtEk4zamwCkggNfKSDY2NjY89Rac2aYToQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAuezNWmtYM65iCPZ4D4zByrTM6a+PXtt0/bXAp8kR3QLWX6Ngbh6V/Rv4X8x69a+NkmL9PslmpE12+fkz02JebTqEbNwQZAoZ6jIb6lQSraW01APE3uJjwzvJZpyR8kKObGYgICAgICAgICAgICAgICAgICAgICAgICBuwtbK3EgEcRYWPI3mLk0/8mnBb2dd202zvqOEw6HeMEBcqVYE902GW/ADrKeNHebT7Lc89umEbZmznWhSYVUoNdzUYKrVLfUBY3sLK2gtx1nM2Xqt28JYqdNe6Jju1mLKrTWsAtO4DrTpqzgni2lvZYHneXYeLXXVb3U5ORO9QjbeosEwtRlphqlK75FCX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XqiAgICBtw9Yo1x6x1Eqy44vXUp479E7Wu0GXEIagIFUDvX4VLdej29TefHBHVj+WzVNa3+aEOmj8QNTxJIFpX2T7pWHwLH6yDzJ/tE2h2KyucDsqtcZalL/AHN/4yvcJasuqlAmjUo1sgLC6kOtg44cddZ2k9M7hy8dUalzi7Mde/WutMc+Rt94aATTfNvtRmx4NTu6o2vtHekKulNeA6nhe3LwE0cfB0RufKObL1do8K6alBAudnVbYVwj00q70G7mmBu8hB9IH61pjzRvJ3iZjXs1Yp+TtMb2s1xOFtW3ZteqCuV6NPTdKGI3inu581gJnmuTcdX2/P3Wxaup191TsepaliQHRap3eQsUA0Zs9s2nCac0btXtOu/hTinUW+6wWvhs3FM2bC5yLBWdXY1inhbL4cZR0ZNe/wD5f9LOqm/b2b0xWF3tEl843lYlmFKmUTdsEp2BNxexDHpITjy9MxrXaEuunVHf3lBxOJQJiCG7+Wlu8z0Ha4qEtqigcOVpdSkzNe3bvvz9kLWiImf03VMdSaqRmW+4XdFgmRa5VMxY24+lx0BkYxWivifPf9O/Eibefbt+1dtaohXD3KtWGbesmWxGYZASBYsBe/ql+KJjq149lWWY3H391xXxGA39Z1GrLUQDTIpCPaoDzLfqxbrmmWK5+iKz7d/+v6XTbF1TKLidw9KoqMgcphrZmQaqrbzU+NpZTrreJnetyjOrVmImPZ7g8XSSrhVzLk3LCrqhBdd9l18yvnF8drVtOu++36K3isxH4Y7Kq4bdn5RUG8rkh+7cqgUqvDRDnIa/RRO5a5Or5I7VKWpr5p8t1KvhloojOGZaNQNTAp5HqZmCnek3U8CBbW3GQmuSbzbXvH/p2LUiut+zmJ6TEQEBAQEBA9BkLUi0alKtpr4ZIRe4Nj7piyce1fHdorliUmlXZePCZ5quizecc3ATkVSm8tdSuBxN28JdTBa3tpXbLFUOpUJ5ADoOfn1m3HhrT9st8k2YS5WQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA9BMhalbeYdi0x4elz1nK4618QlN7T5ljLECAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB//9k=" alt="Brasão do IBDM">
+    <h2>Painel Interno — 4ª Conferência IBDM</h2>
+    <p>Acesso restrito ao Conselho do IBDM. Informe a senha para continuar.</p>
+    <input type="password" id="auth-input" class="auth-input" placeholder="Senha de acesso" autocomplete="off">
+    <button class="auth-btn" id="auth-btn" onclick="tentarEntrar()">Entrar</button>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- MODAL CRUD (genérico, conteúdo montado por JS) -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 id="modal-title">—</h3>
+      <button class="modal-close" onclick="fecharModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <div class="modal-error" id="modal-error" style="margin-right:auto"></div>
+      <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-primary" id="modal-save-btn" onclick="salvarModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header class="site-header">
   <div class="header-left">
-    <h1>4ª Conferência Nacional de Direito Militar e Segurança Pública</h1>
-    <p>São Luís — MA &nbsp;·&nbsp; 2 a 4 de dezembro de 2025 &nbsp;·&nbsp; IBDM</p>
+    <img class="header-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxASDxAREhETFRIVGBkYFRcVFRAYFhUWFxcWGBgXFRUZHSggGR0lGxYVITEhJykrLi4uGCAzOzMsNyg1MCsBCgoKDg0OGxAQGy0lHyUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBEQACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABAUCAwYBB//EAEMQAAIBAgMFBAUICQIHAAAAAAECAAMRBBIhBRMxQVEGImFxMoGRocEUJDNCUmKCsgcjNHJzsbPR8FOSFSVjotLh8f/EABkBAQADAQEAAAAAAAAAAAAAAAACAwQBBf/EAC0RAQACAgEDAgYCAgIDAAAAAAABAgMRBBIhMTJBEyIzUWFxI4EFFKHhQpHw/9oADAMBAAIRAxEAPwD5JPRYSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBso0Wdgqi7HgNP5mRtaKxuXYrMzqGeNwdSi5p1UZHFrhuNjqD4iK2i0bgtWYnUtEk4zamwCkggNfKSDY2NjY89Rac2aYToQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAuezNWmtYM65iCPZ4D4zByrTM6a+PXtt0/bXAp8kR3QLWX6Ngbh6V/Rv4X8x69a+NkmL9PslmpE12+fkz02JebTqEbNwQZAoZ6jIb6lQSraW01APE3uJjwzvJZpyR8kKObGYgICAgICAgICAgICAgICAgICAgICAgICBuwtbK3EgEcRYWPI3mLk0/8mnBb2dd202zvqOEw6HeMEBcqVYE902GW/ADrKeNHebT7Lc89umEbZmznWhSYVUoNdzUYKrVLfUBY3sLK2gtx1nM2Xqt28JYqdNe6Jju1mLKrTWsAtO4DrTpqzgni2lvZYHneXYeLXXVb3U5ORO9QjbeosEwtRlphqlK75FCX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XqiAgICBtw9Yo1x6x1Eqy44vXUp479E7Wu0GXEIagIFUDvX4VLdej29TefHBHVj+WzVNa3+aEOmj8QNTxJIFpX2T7pWHwLH6yDzJ/tE2h2KyucDsqtcZalL/AHN/4yvcJasuqlAmjUo1sgLC6kOtg44cddZ2k9M7hy8dUalzi7Mde/WutMc+Rt94aATTfNvtRmx4NTu6o2vtHekKulNeA6nhe3LwE0cfB0RufKObL1do8K6alBAudnVbYVwj00q70G7mmBu8hB9IH61pjzRvJ3iZjXs1Yp+TtMb2s1xOFtW3ZteqCuV6NPTdKGI3inu581gJnmuTcdX2/P3Wxaup191TsepaliQHRap3eQsUA0Zs9s2nCac0btXtOu/hTinUW+6wWvhs3FM2bC5yLBWdXY1inhbL4cZR0ZNe/wD5f9LOqm/b2b0xWF3tEl843lYlmFKmUTdsEp2BNxexDHpITjy9MxrXaEuunVHf3lBxOJQJiCG7+Wlu8z0Ha4qEtqigcOVpdSkzNe3bvvz9kLWiImf03VMdSaqRmW+4XdFgmRa5VMxY24+lx0BkYxWivifPf9O/Eibefbt+1dtaohXD3KtWGbesmWxGYZASBYsBe/ql+KJjq149lWWY3H391xXxGA39Z1GrLUQDTIpCPaoDzLfqxbrmmWK5+iKz7d/+v6XTbF1TKLidw9KoqMgcphrZmQaqrbzU+NpZTrreJnetyjOrVmImPZ7g8XSSrhVzLk3LCrqhBdd9l18yvnF8drVtOu++36K3isxH4Y7Kq4bdn5RUG8rkh+7cqgUqvDRDnIa/RRO5a5Or5I7VKWpr5p8t1KvhloojOGZaNQNTAp5HqZmCnek3U8CBbW3GQmuSbzbXvH/p2LUiut+zmJ6TEQEBAQEBA9BkLUi0alKtpr4ZIRe4Nj7piyce1fHdorliUmlXZePCZ5quizecc3ATkVSm8tdSuBxN28JdTBa3tpXbLFUOpUJ5ADoOfn1m3HhrT9st8k2YS5WQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA9BMhalbeYdi0x4elz1nK4618QlN7T5ljLECAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB//9k=" alt="Brasão do IBDM">
+    <div>
+      <h1>4ª Conferência Nacional de Direito Militar e Segurança Pública</h1>
+      <p>São Luís — MA &nbsp;·&nbsp; 2 a 4 de dezembro de 2025 &nbsp;·&nbsp; IBDM</p>
+    </div>
   </div>
   <div class="header-right">
     <div class="last-update">Última atualização: <span id="last-update-time">—</span></div>
@@ -392,6 +429,10 @@ table.dt tr:hover td{background:#f8fafc}
     Banco de Palestrantes
   </button>
   <button class="nav-btn" onclick="showTab(7)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+    Logística
+  </button>
+  <button class="nav-btn" onclick="showTab(8)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
     Configurações
   </button>
@@ -424,13 +465,13 @@ table.dt tr:hover td{background:#f8fafc}
       </div>
     </div>
 
-    <!-- MACRO 2: TIMELINE MARCOS (gantt) -->
+    <!-- MACRO 2: RESUMO DE LOGÍSTICA -->
     <div class="macro-card">
       <h3>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        Timeline de Marcos Críticos
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+        Resumo de Logística
       </h3>
-      <div id="gantt-wrap"></div>
+      <div id="logistica-resumo"></div>
     </div>
 
     <!-- MACRO 3: MAPA DE RISCO -->
@@ -474,10 +515,18 @@ table.dt tr:hover td{background:#f8fafc}
 
 <!-- ===================== TAB 1: PROGRAMAÇÃO ===================== -->
 <div class="tab-panel" id="tab-1">
-  <div class="section-hdr"><div><h2>Programação do Evento</h2><p>02–04 de dezembro · 3 dias de conferência</p></div></div>
+  <div class="section-hdr">
+    <div><h2>Programação do Evento</h2><p>02–04 de dezembro · 3 dias de conferência</p></div>
+    <button class="view-btn active" onclick="abrirModal('programacao')">+ Adicionar sessão</button>
+  </div>
   <div class="prog-controls">
     <button class="view-btn active" id="btn-grade" onclick="setView('grade')">Grade por Dia</button>
     <button class="view-btn" id="btn-tl" onclick="setView('timeline')">Linha do Tempo</button>
+    <select id="fil-programacao-ativo" onchange="renderDayPills();setView(currentView)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+      <option value="ativos">Somente ativos</option>
+      <option value="todos">Todos (incl. arquivados)</option>
+      <option value="arquivados">Somente arquivados</option>
+    </select>
     <div class="day-pills" id="day-pills"></div>
   </div>
   <div id="grade-view"><div class="sched-grid" id="sched-grid"></div></div>
@@ -488,7 +537,10 @@ table.dt tr:hover td{background:#f8fafc}
 <div class="tab-panel" id="tab-2">
   <div class="section-hdr">
     <div><h2>Relação de Agraciados</h2><p>Recipientários das medalhas e honrarias</p></div>
-    <button class="view-btn" onclick="exportarAgraciados()">↓ Exportar CSV</button>
+    <div style="display:flex;gap:8px">
+      <button class="view-btn" onclick="exportarAgraciados()">↓ Exportar CSV</button>
+      <button class="view-btn active" onclick="abrirModal('agraciados')">+ Adicionar agraciado</button>
+    </div>
   </div>
   <div class="alert alert-info">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -509,6 +561,11 @@ table.dt tr:hover td{background:#f8fafc}
         <option value="Pendente">Pendente</option>
         <option value="Convite Enviado">Convite Enviado</option>
       </select>
+      <select id="fil-agraciados-ativo" onchange="filtrarAgraciados(document.querySelector('#tab-2 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
       <span class="tbl-count" id="cnt-agraciados">—</span>
     </div>
     <div class="tbl-scroll"><div id="tbl-agraciados"></div></div>
@@ -517,7 +574,10 @@ table.dt tr:hover td{background:#f8fafc}
 
 <!-- ===================== TAB 3: PALESTRANTES ===================== -->
 <div class="tab-panel" id="tab-3">
-  <div class="section-hdr"><div><h2>Palestrantes e Painelistas</h2><p>Convidados confirmados e em prospecção</p></div></div>
+  <div class="section-hdr">
+    <div><h2>Palestrantes e Painelistas</h2><p>Convidados confirmados e em prospecção</p></div>
+    <button class="view-btn active" onclick="abrirModal('palestrantes')">+ Adicionar palestrante</button>
+  </div>
   <div class="table-wrap">
     <div class="table-toolbar">
       <div class="search-box">
@@ -530,6 +590,11 @@ table.dt tr:hover td{background:#f8fafc}
         <option value="Pendente">Pendente</option>
         <option value="Aguardando">Aguardando</option>
       </select>
+      <select id="fil-palestrantes-ativo" onchange="filtrarPalestrantes(document.querySelector('#tab-3 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
       <span class="tbl-count" id="cnt-palestrantes">—</span>
     </div>
     <div class="tbl-scroll"><div id="tbl-palestrantes"></div></div>
@@ -538,13 +603,21 @@ table.dt tr:hover td{background:#f8fafc}
 
 <!-- ===================== TAB 4: PATROCINADORES ===================== -->
 <div class="tab-panel" id="tab-4">
-  <div class="section-hdr"><div><h2>Patrocinadores e Apoiadores</h2><p>Parceiros confirmados e em negociação</p></div></div>
+  <div class="section-hdr">
+    <div><h2>Patrocinadores e Apoiadores</h2><p>Parceiros confirmados e em negociação</p></div>
+    <button class="view-btn active" onclick="abrirModal('patrocinadores')">+ Adicionar patrocinador</button>
+  </div>
   <div class="table-wrap">
     <div class="table-toolbar">
       <div class="search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Buscar patrocinador..." oninput="filtrarPatrocinadores(this.value)">
       </div>
+      <select id="fil-patrocinadores-ativo" onchange="filtrarPatrocinadores(document.querySelector('#tab-4 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
       <span class="tbl-count" id="cnt-patrocinadores">—</span>
     </div>
     <div class="tbl-scroll"><div id="tbl-patrocinadores"></div></div>
@@ -553,7 +626,10 @@ table.dt tr:hover td{background:#f8fafc}
 
 <!-- ===================== TAB 5: FINANCEIRO ===================== -->
 <div class="tab-panel" id="tab-5">
-  <div class="section-hdr"><div><h2>Painel Financeiro Detalhado</h2><p>Orçamento, receitas e despesas</p></div></div>
+  <div class="section-hdr">
+    <div><h2>Painel Financeiro Detalhado</h2><p>Orçamento, receitas e despesas</p></div>
+    <button class="view-btn active" onclick="abrirModal('financeiro')">+ Adicionar lançamento</button>
+  </div>
   <div id="fin-detail"></div>
 </div>
 
@@ -561,6 +637,7 @@ table.dt tr:hover td{background:#f8fafc}
 <div class="tab-panel" id="tab-6">
   <div class="section-hdr">
     <div><h2>Banco de Palestrantes</h2><p>Catálogo de possíveis palestrantes e temas — base para planejamento da programação</p></div>
+    <button class="view-btn active" onclick="abrirModal('bancoPalestrantes')">+ Adicionar</button>
   </div>
   <div class="table-wrap">
     <div class="table-toolbar">
@@ -580,29 +657,63 @@ table.dt tr:hover td{background:#f8fafc}
         <option value="Confirmado">Confirmado</option>
         <option value="Transmutado">Transmutado para Programação</option>
       </select>
+      <select id="fil-banco-ativo" onchange="filtrarBanco(document.querySelector('#tab-6 input').value)" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
       <span class="tbl-count" id="cnt-banco">—</span>
     </div>
     <div class="tbl-scroll"><div id="tbl-banco"></div></div>
   </div>
 </div>
 
-<!-- ===================== TAB 7: CONFIGURAÇÕES ===================== -->
+<!-- ===================== TAB 7: LOGÍSTICA ===================== -->
 <div class="tab-panel" id="tab-7">
-  <div class="section-hdr"><div><h2>Configurações</h2><p>GIDs das abas da planilha e sincronização automática</p></div></div>
+  <div class="section-hdr">
+    <div><h2>Logística</h2><p>Itens de infraestrutura, transporte, materiais e equipe do evento</p></div>
+    <button class="view-btn active" onclick="abrirModalLogistica()">+ Adicionar item</button>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar item..." oninput="filtrarLogistica()">
+      </div>
+      <select id="fil-log-sub" onchange="filtrarLogistica()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todas as subcategorias</option>
+        <option>Logística</option><option>Transporte</option><option>Alimentação</option><option>Catering</option>
+        <option>Ativações</option><option>Material Gráfico</option><option>Pessoal</option><option>Equipamentos</option>
+      </select>
+      <select id="fil-log-status" onchange="filtrarLogistica()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option>Aprovado</option><option>Planejado</option>
+      </select>
+      <select id="fil-log-ativo" onchange="filtrarLogistica()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
+      <span class="tbl-count" id="cnt-logistica">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-logistica"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 8: CONFIGURAÇÕES ===================== -->
+<div class="tab-panel" id="tab-8">
+  <div class="section-hdr"><div><h2>Configurações</h2><p>Backend do painel e sincronização automática</p></div></div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
     <div class="macro-card">
       <h3>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        Fonte de Dados — Google Sheets
+        Fonte de Dados — Apps Script
       </h3>
       <p style="font-size:12px;color:var(--text2);margin-bottom:14px">
-        A URL mestra (<code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">CSV_URL</code>) está definida no código.
-        Informe o <strong>gid</strong> de cada aba. O gid aparece na URL do Sheets ao clicar na aba:
-        <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">…/edit#gid=XXXXXXXX</code>
+        O painel lê e grava direto na planilha através de um Web App do Apps Script (não mais CSV publicado). A senha de acesso é validada no servidor, nunca fica exposta neste código.
       </p>
       <div id="url-fields"></div>
       <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-        <button class="view-btn active" onclick="salvarConfigs()">Salvar GIDs</button>
         <button class="view-btn" onclick="sincronizarDados()">↻ Sincronizar Agora</button>
       </div>
       <p style="font-size:11px;color:var(--text2);margin-top:8px" id="cfg-msg"></p>
@@ -614,7 +725,7 @@ table.dt tr:hover td{background:#f8fafc}
       </h3>
       <div style="margin-bottom:12px">
         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px">Intervalo de sincronização</label>
-        <select id="cfg-refresh" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:'Inter',sans-serif">
+        <select id="cfg-refresh" onchange="salvarConfigs()" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:'Inter',sans-serif">
           <option value="0">Desabilitada</option>
           <option value="300000">A cada 5 minutos</option>
           <option value="600000" selected>A cada 10 minutos</option>
@@ -628,11 +739,10 @@ table.dt tr:hover td{background:#f8fafc}
         Como publicar no Google Sites
       </h3>
       <p style="font-size:12px;color:var(--text2);line-height:1.8">
-        1. Na planilha: <strong>Arquivo → Publicar na web → Planilha inteira → CSV → Publicar</strong>.<br>
-        2. Copie a URL e cole como <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">CSV_URL</code> no código.<br>
-        3. Para cada aba, anote o <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">gid=</code> da URL e preencha ao lado.<br>
-        4. No Google Sites: <strong>Inserir → Incorporar → Cole o HTML completo</strong>.<br>
-        5. Clique em <strong>Atualizar</strong> no header para puxar os dados imediatamente.
+        1. No Apps Script vinculado à planilha: <strong>Implantar → Nova implantação → Aplicativo da Web</strong>.<br>
+        2. Copie a URL gerada e cole como <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;font-size:11px">APPS_SCRIPT_URL</code> no início do código.<br>
+        3. No Google Sites: <strong>Inserir → Incorporar → Cole o HTML completo</strong>.<br>
+        4. Ao abrir o painel, informe a senha de acesso na tela de bloqueio.
       </p>
     </div>
   </div>
@@ -644,32 +754,17 @@ table.dt tr:hover td{background:#f8fafc}
 /* ================================================================
    ████████████████████████████████████████████████████████████████
    ██                                                            ██
-   ██   FONTE DE DADOS — GOOGLE SHEETS (CSV PUBLICADO NA WEB)   ██
+   ██   FONTE DE DADOS — APPS SCRIPT WEB APP                    ██
    ██                                                            ██
-   ██   Substitua o valor de CSV_URL pela URL da sua planilha.   ██
-   ██   Formato: Arquivo → Publicar na web → Planilha inteira   ██
-   ██            → Formato: CSV → Publicar                       ██
-   ██                                                            ██
-   ██   IMPORTANTE: Cada aba tem um parâmetro "gid=" diferente.  ██
-   ██   Preencha os GIDs abaixo com os valores da sua planilha:  ██
-   ██   Planilha → clique na aba → veja "gid=XXXX" na URL.      ██
+   ██   Substitua pela URL gerada em Implantar → Nova            ██
+   ██   implantação → Aplicativo da Web, dentro do Apps Script   ██
+   ██   vinculado à planilha (Code.gs, não commitado no repo).   ██
    ██                                                            ██
    ████████████████████████████████████████████████████████████████
 
    ▼▼▼ EDITE APENAS ESTE BLOCO ▼▼▼ */
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJfNXdz4qDD_Y-I3iTIj8z212WSgmaaKjQBD9CV5VIYadp3ZSCO-6A8E3zIFDWcvxCpb4UPi_v7eh/pub?output=csv";
-
-// GIDs de cada aba da planilha (veja na URL ao clicar na aba no Sheets)
-// Exemplo: https://docs.google.com/spreadsheets/d/.../edit#gid=123456789
-const SHEET_GIDS = {
-  programacao:    "1130204337", // Aba "📅 Programação"
-  agraciados:     "525531415",  // Aba "Relação de Agraciados"
-  palestrantes:   "595947921",  // Aba "🎤 Palestrantes"
-  patrocinadores: "1219059663", // Aba "📦 Parceiros"
-  financeiro:     "1676233237", // Aba "💰 Financeiro"
-  bancoPalestrantes: "2005620839", // Aba "📋 Banco de Palestrantes"
-};
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-rnfYsZuwCkV7z136kDw1l5S9M2cSN8jdb4705SHXnqjnKawnuyWtCcqHBNpzCOIf/exec";
 
 // Intervalo de atualização automática (em milissegundos)
 // 0 = desabilitada | 300000 = 5min | 600000 = 10min | 1800000 = 30min
@@ -677,11 +772,40 @@ const AUTO_REFRESH_MS = 600000;
 
 /* ▲▲▲ FIM DO BLOCO DE CONFIGURAÇÃO ▲▲▲ */
 
-// Monta URL de uma aba pelo gid
-function sheetUrl(gid) {
-  if (!gid) return null;
-  const base = CSV_URL.split('?')[0];
-  return `${base}?output=csv&gid=${gid}&_t=${Date.now()}`;
+// Senha só vive em memória — nunca em localStorage/sessionStorage. É
+// pedida de novo a cada carregamento da página, de propósito (dados de
+// contato de terceiros na planilha).
+let SENHA = '';
+
+async function chamarApi(params) {
+  const url = APPS_SCRIPT_URL + '?' + new URLSearchParams({ senha: SENHA, ...params }).toString();
+  const r = await fetch(url);
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'erro_desconhecido');
+  return j.data;
+}
+
+function fetchModulo(modulo) {
+  return chamarApi({ action: 'listar', modulo });
+}
+
+// O redirect do Apps Script Web App às vezes falha de forma intermitente no
+// fetch() do navegador (TypeError "Failed to fetch", sem relação com os
+// dados enviados) — uma tentativa extra resolve na maioria dos casos.
+async function chamarApiEscrita(params, tentativa) {
+  const body = new URLSearchParams({ senha: SENHA, ...params });
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, { method: 'POST', body });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'erro_desconhecido');
+    return j.data;
+  } catch (e) {
+    if (!tentativa && e instanceof TypeError) {
+      await new Promise(res => setTimeout(res, 600));
+      return chamarApiEscrita(params, 1);
+    }
+    throw e;
+  }
 }
 
 /* ================================================================
@@ -749,20 +873,7 @@ const DEMO = {
       {label:"Alimentação / Coffee",valor:6000,executado:0},
       {label:"Material Gráfico",valor:4000,executado:2100},
     ]
-  },
-  marcos:[
-    {data:"25/05/2025",titulo:"Contato com convidados estratégicos",desc:"Envio dos primeiros ofícios de convite",status:"done"},
-    {data:"26/05/2025",titulo:"Confirmação de palestrantes âncora",desc:"Cel. Adalberto, Min. Alberto Tavares, Juiz Hugo Frazão",status:"done"},
-    {data:"15/07/2025",titulo:"Fechamento do local do evento",desc:"Contrato com o espaço / auditório em São Luís",status:"done"},
-    {data:"01/08/2025",titulo:"Abertura das inscrições",desc:"Divulgação pública e início das inscrições online",status:"done"},
-    {data:"01/10/2025",titulo:"Prazo para submissão de trabalhos",desc:"Recebimento de artigos e comunicações científicas",status:"current"},
-    {data:"31/10/2025",titulo:"Confirmação final de agraciados",desc:"Todos os recipientários de medalhas confirmados",status:"critico"},
-    {data:"10/11/2025",titulo:"Fechamento da programação",desc:"Grade definitiva e horários finalizados",status:"pending"},
-    {data:"20/11/2025",titulo:"Material gráfico e crachás prontos",desc:"Impressão de banners, programas e crachás",status:"pending"},
-    {data:"01/12/2025",titulo:"Check-in técnico e ensaio da solenidade",desc:"Teste de equipamentos, disposição de palco",status:"pending"},
-    {data:"02/12/2025",titulo:"ABERTURA DA CONFERÊNCIA",desc:"09h00 — Solenidade de abertura oficial",status:"pending"},
-    {data:"04/12/2025",titulo:"Solenidade de Medalhas e Encerramento",desc:"Dia 3, manhã — cerimônia e coquetel final",status:"pending"},
-  ]
+  }
 };
 
 /* ================================================
@@ -775,8 +886,8 @@ let D = {
   patrocinadores: [...DEMO.patrocinadores],
   programacao: [...DEMO.programacao],
   financeiro: {...DEMO.financeiro},
-  marcos: [...DEMO.marcos],
-  bancoPalestrantes: []
+  bancoPalestrantes: [],
+  logistica: []
 };
 let currentView = 'grade', currentDay = 'Todos', autoTimer = null;
 let chartsMap = {};
@@ -860,16 +971,14 @@ function renderGauge(){
   const agConf=D.agraciados.filter(a=>a.status==='Confirmado').length, agTot=D.agraciados.length;
   const palConf=D.palestrantes.filter(p=>p.status==='Confirmado').length, palTot=D.palestrantes.length;
   const patConf=D.patrocinadores.filter(p=>p.status==='Confirmado').length, patTot=D.patrocinadores.length;
-  const marcDone=D.marcos.filter(m=>m.status==='done').length, marcTot=D.marcos.length;
   const recExec=D.financeiro.receitas.reduce((s,r)=>s+r.executado,0);
   const recTot=D.financeiro.receitas.reduce((s,r)=>s+r.valor,0);
 
   const items=[
-    {label:'Agraciados',peso:.25,pct:agTot?agConf/agTot:0},
-    {label:'Palestrantes',peso:.25,pct:palTot?palConf/palTot:0},
-    {label:'Patrocinadores',peso:.20,pct:patTot?patConf/patTot:0},
-    {label:'Marcos concluídos',peso:.20,pct:marcTot?marcDone/marcTot:0},
-    {label:'Captação financeira',peso:.10,pct:recTot?recExec/recTot:0},
+    {label:'Agraciados',peso:.3125,pct:agTot?agConf/agTot:0},
+    {label:'Palestrantes',peso:.3125,pct:palTot?palConf/palTot:0},
+    {label:'Patrocinadores',peso:.25,pct:patTot?patConf/patTot:0},
+    {label:'Captação financeira',peso:.125,pct:recTot?recExec/recTot:0},
   ];
   const score=items.reduce((s,i)=>s+i.pct*i.peso,0);
   const pctVal=Math.round(score*100);
@@ -901,56 +1010,36 @@ function renderGauge(){
 }
 
 /* ================================================
-   GANTT (marcos como barras)
+   RESUMO DE LOGÍSTICA (Visão Geral)
 ================================================ */
-function renderGantt(){
-  const inicio=new Date('2025-07-01'), fim=DATA_EVENTO;
-  const totalMs=fim-inicio, hoje=new Date();
-  const todayPct=Math.min(100,Math.max(0,Math.round((hoje-inicio)/totalMs*100)));
-
-  const items=[
-    {nome:'Planejamento e kick-off',start:'2025-07-01',end:'2025-07-31',tipo:'done'},
-    {nome:'Fechar grade da programação',start:'2025-08-01',end:'2025-09-15',tipo:'done'},
-    {nome:'Confirmar palestrantes',start:'2025-08-15',end:'2025-10-01',tipo:'current'},
-    {nome:'Contratar logística',start:'2025-09-01',end:'2025-10-15',tipo:'pending'},
-    {nome:'Abrir inscrições',start:'2025-09-15',end:'2025-11-28',tipo:'current'},
-    {nome:'Confirmação final agraciados',start:'2025-10-01',end:'2025-11-01',tipo:'critico'},
-    {nome:'Envio de materiais / kit',start:'2025-11-01',end:'2025-11-25',tipo:'pending'},
-    {nome:'EVENTO — 4ª Conferência IBDM',start:'2025-12-02',end:'2025-12-04',tipo:'alvo'},
-  ];
-  const cols={done:'#10b981',current:'#f59e0b',critico:'#ef4444',pending:'#94a3b8',alvo:'#2563eb'};
-
-  let html=`<table class="gantt-table"><thead><tr>
-    <th style="width:36%">Marco</th><th>Progresso</th><th style="width:14%">Período</th>
-  </tr></thead><tbody>`;
-
-  items.forEach(m=>{
-    const s=new Date(m.start), e=new Date(m.end);
-    const bStart=Math.max(0,Math.round((s-inicio)/totalMs*100));
-    const bWidth=Math.min(100-bStart,Math.round((e-s)/totalMs*100));
-    const col=cols[m.tipo]||'#94a3b8';
-    const sf=s.toLocaleDateString('pt-BR',{month:'short',day:'numeric'});
-    const ef=e.toLocaleDateString('pt-BR',{month:'short',day:'numeric'});
-    html+=`<tr>
-      <td style="font-size:12px;font-weight:${m.tipo==='alvo'?'700':'500'}">${m.tipo==='alvo'?'<b>'+m.nome+'</b>':m.nome}</td>
-      <td>
-        <div class="gantt-bar-bg">
-          <div class="gantt-bar-fill" style="left:${bStart}%;width:${bWidth}%;background:${col}"></div>
-          <div class="gantt-today-line" style="left:${todayPct}%"></div>
-        </div>
-      </td>
-      <td style="font-size:10px;color:var(--text2);white-space:nowrap">${sf} – ${ef}</td>
-    </tr>`;
-  });
-  html+=`</tbody></table>
-  <div class="gantt-legend">
-    <div class="gantt-legend-item"><div class="gantt-leg-line"></div>Hoje</div>
-    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#10b981"></div>Concluído</div>
-    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#f59e0b"></div>Em andamento</div>
-    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#ef4444"></div>Crítico</div>
-    <div class="gantt-legend-item"><div class="gantt-leg-dot" style="background:#94a3b8"></div>Futuro</div>
-  </div>`;
-  document.getElementById('gantt-wrap').innerHTML=html;
+function renderLogisticaResumo(){
+  const itens=D.logistica.filter(x=>x['Ativo']!==false);
+  const tot=itens.length;
+  const aprovados=itens.filter(x=>x['STATUS']==='Aprovado').length;
+  const planejados=itens.filter(x=>x['STATUS']==='Planejado').length;
+  const prontos=itens.filter(x=>x['STATUS CONCLUSÃO']==='Pronto').length;
+  const totalPrev=itens.reduce((s,x)=>s+parseBRL(x['CUSTO PREV. (R$)']),0);
+  const totalExec=itens.reduce((s,x)=>s+parseBRL(x['CUSTO EST. (R$)']),0);
+  const pExec=totalPrev?Math.round(totalExec/totalPrev*100):0;
+  if(!tot){
+    document.getElementById('logistica-resumo').innerHTML=`<div style="text-align:center;padding:20px;color:var(--text2);font-size:12px">Nenhum item de logística cadastrado ainda.</div>`;
+    return;
+  }
+  document.getElementById('logistica-resumo').innerHTML=`
+    <div class="gauge-subs" style="margin-bottom:12px">
+      <div class="gauge-sub">
+        <div class="gauge-sub-label"><span>Aprovados</span><span style="font-weight:700;color:#10b981">${aprovados}/${tot}</span></div>
+        <div class="gauge-sub-bar"><div class="gauge-sub-fill" style="width:${Math.round(aprovados/tot*100)}%;background:#10b981"></div></div>
+      </div>
+      <div class="gauge-sub">
+        <div class="gauge-sub-label"><span>Planejados</span><span style="font-weight:700;color:#f59e0b">${planejados}/${tot}</span></div>
+        <div class="gauge-sub-bar"><div class="gauge-sub-fill" style="width:${Math.round(planejados/tot*100)}%;background:#f59e0b"></div></div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Itens prontos: <strong style="color:var(--text)">${prontos}</strong> de ${tot}</div>
+    <div style="font-size:13px;font-weight:700;color:#1e3a5f;border-top:1px solid var(--border);padding-top:8px">
+      Executado: <span style="color:${pExec<=100?'#2563eb':'#ef4444'}">${brl(totalExec)}</span> de ${brl(totalPrev)} previsto (${pExec}%)
+    </div>`;
 }
 
 /* ================================================
@@ -964,12 +1053,10 @@ function renderRisco(){
   const agPend=D.agraciados.filter(a=>a.status!=='Confirmado').length;
   const palPend=D.palestrantes.filter(p=>p.status!=='Confirmado').length;
   const patPend=D.patrocinadores.filter(p=>p.status!=='Confirmado').length;
-  const marcCrit=D.marcos.filter(m=>m.status==='critico').length;
   const recPct=D.financeiro.receitas.reduce((s,r)=>s+r.executado,0)/
                D.financeiro.receitas.reduce((s,r)=>s+r.valor,0)*100;
 
   const riscos=[];
-  if(marcCrit>0)riscos.push({nivel:'critico',titulo:`${marcCrit} marco(s) com prazo crítico`,desc:'Ação imediata necessária — prazos comprometidos.'});
   if(agPend>0)riscos.push({nivel:agPend>3?'critico':'alto',titulo:`${agPend} agraciado(s) sem confirmação`,desc:'Recipientários ainda não confirmaram presença para a solenidade.'});
   if(palPend>0)riscos.push({nivel:palPend>3?'alto':'medio',titulo:`${palPend} palestrante(s) pendente(s)`,desc:'Confirmações ausentes podem comprometer a composição dos painéis.'});
   if(patPend>0)riscos.push({nivel:'medio',titulo:`${patPend} patrocinador(es) em negociação`,desc:'Contratos e cotas ainda não finalizados.'});
@@ -978,7 +1065,7 @@ function renderRisco(){
   if(dias<30)riscos.push({nivel:'critico',titulo:`Evento em ${dias} dias`,desc:'Tempo crítico — itens pendentes devem ser priorizados.'});
   else if(dias<60)riscos.push({nivel:'alto',titulo:`Evento em ${dias} dias`,desc:'Menos de 2 meses. Confirmar todos os itens pendentes.'});
 
-  const total=agPend+palPend+patPend+marcCrit;
+  const total=agPend+palPend+patPend;
   document.getElementById('risk-total-badge').textContent=total+' pendências';
 
   const iconSVG=cor=>`<svg viewBox="0 0 24 24" fill="none" stroke="${cor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
@@ -1006,14 +1093,19 @@ function renderFinVG(){
   const rec=D.financeiro.receitas, des=D.financeiro.despesas;
   const recExec=rec.reduce((s,r)=>s+r.executado,0);
   const recTot=rec.reduce((s,r)=>s+r.valor,0);
-  const desExec=des.reduce((s,d)=>s+d.executado,0);
   const desTot=des.reduce((s,d)=>s+d.valor,0);
+  // Despesa executada = lançamentos do Financeiro + itens de Logística
+  // Aprovado/Pago (soma feita no backend, ver financeiroComLogistica em Code.gs).
+  const resumo=D.financeiroResumo;
+  const desExecFin=resumo?resumo.totalDespesasFinanceiro:des.reduce((s,d)=>s+d.executado,0);
+  const desLog=resumo?resumo.totalDespesasLogisticaAprovada:0;
+  const desExec=resumo?resumo.totalDespesasGeral:desExecFin;
   const saldo=recExec-desExec;
 
   document.getElementById('fin-panel').innerHTML=`
     <div class="fin-kpi-grid">
       <div class="fin-kpi"><div class="fin-kpi-label">Receita Captada</div><div class="fin-kpi-val g">${brl(recExec)}</div><div style="font-size:11px;color:var(--text2)">${Math.round(recExec/recTot*100)}% de ${brl(recTot)}</div></div>
-      <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div><div style="font-size:11px;color:var(--text2)">${Math.round(desExec/desTot*100)}% de ${brl(desTot)}</div></div>
+      <div class="fin-kpi"><div class="fin-kpi-label">Despesa Executada</div><div class="fin-kpi-val r">${brl(desExec)}</div><div style="font-size:11px;color:var(--text2)">${Math.round(desExec/desTot*100)}% de ${brl(desTot)} previsto${desLog?' · inclui '+brl(desLog)+' de Logística':''}</div></div>
       <div class="fin-kpi"><div class="fin-kpi-label">Saldo Atual</div><div class="fin-kpi-val ${saldo>=0?'g':'r'}">${brl(saldo)}</div></div>
     </div>
     <div class="chart-wrap"><canvas id="finChart"></canvas></div>`;
@@ -1038,9 +1130,7 @@ function renderFinVG(){
 ================================================ */
 function renderAlertas(){
   const pend=D.agraciados.filter(a=>a.status==='Pendente');
-  const crit=D.marcos.filter(m=>m.status==='critico');
   let html='';
-  if(crit.length)html+=`<div class="alert alert-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>${crit.length} marco(s) em prazo crítico.</strong> Verifique a Timeline de Marcos na Visão Geral.</span></div>`;
   if(pend.length)html+=`<div class="alert alert-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>${pend.length} agraciado(s) pendente(s):</strong> ${pend.map(p=>p.nome.split(' ').slice(0,2).join(' ')).join(', ')}.</span></div>`;
   document.getElementById('alertas-wrap').innerHTML=html;
 }
@@ -1067,13 +1157,25 @@ function renderProxSessoes(){
 /* ================================================
    PROGRAMAÇÃO — GRADE
 ================================================ */
+function programacaoView(){
+  return baseComArquivados('programacao', x=>mapProgramacao(x,D.programacaoDiaMap), 'fil-programacao-ativo');
+}
+function miniAcoesHtml(modulo,id,ativo){
+  return `<span style="font-size:11px;white-space:nowrap">
+    <a href="javascript:void(0)" onclick="event.stopPropagation();abrirModal('${modulo}',${id})" style="color:var(--primary);font-weight:600">editar</a>
+    ${ativo===false
+      ? ` · <a href="javascript:void(0)" onclick="event.stopPropagation();restaurarRegistro('${modulo}',${id})" style="color:var(--primary);font-weight:600">restaurar</a>`
+      : ` · <a href="javascript:void(0)" onclick="event.stopPropagation();arquivarRegistro('${modulo}',${id})" style="color:var(--red);font-weight:600">arquivar</a>`}
+  </span>`;
+}
 function renderGrade(dayFilter){
-  const dias=[...new Set(D.programacao.map(p=>p.dia))];
+  const view=programacaoView();
+  const dias=[...new Set(view.map(p=>p.dia))];
   const dF=dayFilter==='Todos'?dias:[dayFilter];
   const turnos=['Manhã','Tarde','Noite'];
   const stripe={painel:'stripe-painel',palestra:'stripe-palestra',solene:'stripe-solene',cerimonia:'stripe-cerimonia',break:'stripe-break'};
   document.getElementById('sched-grid').innerHTML=dF.map(dia=>{
-    const dd=D.programacao.filter(p=>p.dia===dia);
+    const dd=view.filter(p=>p.dia===dia);
     const dataStr=dd[0]?.data||'';
     const blocos=turnos.map(t=>{
       const st=dd.filter(p=>p.turno===t);
@@ -1081,12 +1183,13 @@ function renderGrade(dayFilter){
       const hdrCls=t==='Manhã'?'turno-manha':t==='Tarde'?'turno-tarde':'turno-noite';
       const ico=t==='Manhã'?'☀':t==='Tarde'?'🌤':'🌙';
       return`<div><div class="turno-hdr ${hdrCls}">${ico} ${t}</div>
-      ${st.map(s=>`<div class="sess-item">
+      ${st.map(s=>`<div class="sess-item${s.ativo===false?' row-inativa':''}">
         <div class="sess-stripe ${stripe[s.tipo]||'stripe-break'}"></div>
         <div class="sess-time">${s.hora}</div>
         <div class="sess-info">
           <div class="sess-title">${s.titulo}</div>
           ${s.palestrante?`<div class="sess-spk">${s.palestrante}</div>`:''}
+          ${miniAcoesHtml('programacao',s.id,s.ativo)}
         </div>
       </div>`).join('')}</div>`;
     }).join('');
@@ -1101,20 +1204,21 @@ function renderGrade(dayFilter){
    PROGRAMAÇÃO — TIMELINE
 ================================================ */
 function renderTimeline(dayFilter){
-  const dias=[...new Set(D.programacao.map(p=>p.dia))];
+  const view=programacaoView();
+  const dias=[...new Set(view.map(p=>p.dia))];
   const dF=dayFilter==='Todos'?dias:[dayFilter];
   const tlCls={painel:'',palestra:'gold',solene:'purple',cerimonia:'red',break:'gray'};
   const bTipo=t=>t==='painel'?'<span class="bdg confirmado">painel</span>':t==='palestra'?'<span class="bdg aguardando">palestra</span>':t==='cerimonia'?'<span class="bdg" style="background:#fee2e2;color:#991b1b">cerimônia</span>':t==='solene'?'<span class="bdg convite">solenidade</span>':'<span class="bdg pendente">'+t+'</span>';
   document.getElementById('tl-content').innerHTML=dF.map(dia=>{
-    const dd=D.programacao.filter(p=>p.dia===dia);
+    const dd=view.filter(p=>p.dia===dia);
     return`<div class="tl-day">
       <div class="tl-day-hdr">${dia} <span>${dd[0]?.data||''}</span></div>
-      ${dd.map(s=>`<div class="tl-row">
+      ${dd.map(s=>`<div class="tl-row${s.ativo===false?' row-inativa':''}">
         <div class="tl-time ${s.tipo!=='break'?'hl':''}">${s.hora}</div>
         <div class="tl-body"><div class="tl-card ${tlCls[s.tipo]||''}">
           <div style="font-size:12px;font-weight:600;color:var(--text)">${s.titulo}</div>
           ${s.palestrante?`<div style="font-size:11px;color:var(--text2);margin-top:2px">${s.palestrante}</div>`:''}
-          <div style="margin-top:5px">${bTipo(s.tipo)}</div>
+          <div style="margin-top:5px;display:flex;align-items:center;gap:8px">${bTipo(s.tipo)}${miniAcoesHtml('programacao',s.id,s.ativo)}</div>
         </div></div>
       </div>`).join('')}
     </div>`;
@@ -1125,7 +1229,7 @@ function renderTimeline(dayFilter){
    DAY PILLS
 ================================================ */
 function renderDayPills(){
-  const dias=['Todos',...new Set(D.programacao.map(p=>p.dia))];
+  const dias=['Todos',...new Set(programacaoView().map(p=>p.dia))];
   document.getElementById('day-pills').innerHTML=dias.map(d=>
     `<div class="day-pill ${d===currentDay?'active':''}" onclick="setDay('${d}')">${d}</div>`).join('');
 }
@@ -1162,21 +1266,23 @@ function renderAgraciados(dados){
   const medalhas=[...new Set(D.agraciados.map(a=>a.medalha).filter(m=>m))].sort();
   selMed.innerHTML='<option value="">Todas as medalhas</option>'+medalhas.map(m=>`<option value="${m}"${m===medalAtual?' selected':''}>${m}</option>`).join('');
   document.getElementById('tbl-agraciados').innerHTML=`<table class="dt"><thead><tr>
-    <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Status</th>
-  </tr></thead><tbody>${dados.map((a,i)=>`<tr>
+    <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Status</th><th></th>
+  </tr></thead><tbody>${dados.map((a,i)=>`<tr class="${a.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${a.nome}</td>
     <td style="color:var(--text2)">${a.funcao}</td>
     <td style="font-family:monospace;font-size:12px">${a.telefone}</td>
     <td>${medTag(a.medalha)}</td>
     <td>${stBadge(a.status)}</td>
+    <td style="white-space:nowrap">${acoesHtml('agraciados',a.id,a.ativo)}</td>
   </tr>`).join('')}</tbody></table>`;
   document.getElementById('cnt-agraciados').textContent=`${dados.length} de ${D.agraciados.length}`;
 }
 function filtrarAgraciados(q){
   const m=document.getElementById('fil-medalha').value;
   const st=document.getElementById('fil-status-ag').value;
-  renderAgraciados(D.agraciados.filter(a=>
+  const base=baseComArquivados('agraciados',mapAgraciado,'fil-agraciados-ativo');
+  renderAgraciados(base.filter(a=>
     (!q||a.nome.toLowerCase().includes(q.toLowerCase())||a.funcao.toLowerCase().includes(q.toLowerCase()))&&
     (!m||a.medalha===m)&&(!st||a.status===st)));
 }
@@ -1192,8 +1298,8 @@ function exportarAgraciados(){
 ================================================ */
 function renderPalestrantes(dados){
   document.getElementById('tbl-palestrantes').innerHTML=`<table class="dt"><thead><tr>
-    <th>#</th><th>Nome</th><th>Instituição</th><th>Painel</th><th>Dia</th><th>Turno</th><th>Status</th>
-  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <th>#</th><th>Nome</th><th>Instituição</th><th>Painel</th><th>Dia</th><th>Turno</th><th>Status</th><th></th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr class="${p.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${p.nome}</td>
     <td style="color:var(--text2)">${p.instituicao}</td>
@@ -1201,12 +1307,14 @@ function renderPalestrantes(dados){
     <td>${p.dia}</td>
     <td><span class="bdg ${p.turno==='Manhã'?'convite':p.turno==='Tarde'?'aguardando':'pendente'}">${p.turno}</span></td>
     <td>${stBadge(p.status)}</td>
+    <td style="white-space:nowrap">${acoesHtml('palestrantes',p.id,p.ativo)}</td>
   </tr>`).join('')}</tbody></table>`;
   document.getElementById('cnt-palestrantes').textContent=`${dados.length} de ${D.palestrantes.length}`;
 }
 function filtrarPalestrantes(q){
   const st=document.getElementById('fil-status-pal').value;
-  renderPalestrantes(D.palestrantes.filter(p=>
+  const base=baseComArquivados('palestrantes',mapPalestrante,'fil-palestrantes-ativo');
+  renderPalestrantes(base.filter(p=>
     (!q||p.nome.toLowerCase().includes(q.toLowerCase())||p.instituicao.toLowerCase().includes(q.toLowerCase()))&&
     (!st||p.status===st)));
 }
@@ -1216,19 +1324,21 @@ function filtrarPalestrantes(q){
 ================================================ */
 function renderPatrocinadores(dados){
   document.getElementById('tbl-patrocinadores').innerHTML=`<table class="dt"><thead><tr>
-    <th>#</th><th>Entidade</th><th>Cota</th><th>Status</th><th>Contato</th><th>Obs.</th>
-  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <th>#</th><th>Entidade</th><th>Cota</th><th>Status</th><th>Contato</th><th>Obs.</th><th></th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr class="${p.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${p.entidade}</td>
     <td>${medTag(p.cota==='Diamante'?'Comenda':p.cota)}</td>
     <td>${stBadge(p.status)}</td>
     <td style="color:var(--text2)">${p.contato}</td>
     <td style="color:var(--text2);font-size:12px">${p.obs}</td>
+    <td style="white-space:nowrap">${acoesHtml('patrocinadores',p.id,p.ativo)}</td>
   </tr>`).join('')}</tbody></table>`;
   document.getElementById('cnt-patrocinadores').textContent=`${dados.length} de ${D.patrocinadores.length}`;
 }
 function filtrarPatrocinadores(q){
-  renderPatrocinadores(D.patrocinadores.filter(p=>
+  const base=baseComArquivados('patrocinadores',mapPatrocinador,'fil-patrocinadores-ativo');
+  renderPatrocinadores(base.filter(p=>
     !q||p.entidade.toLowerCase().includes(q.toLowerCase())));
 }
 
@@ -1238,7 +1348,10 @@ function filtrarPatrocinadores(q){
 function renderFinDetail(){
   const rec=D.financeiro.receitas, des=D.financeiro.despesas;
   const recExec=rec.reduce((s,r)=>s+r.executado,0),recTot=rec.reduce((s,r)=>s+r.valor,0);
-  const desExec=des.reduce((s,d)=>s+d.executado,0),desTot=des.reduce((s,d)=>s+d.valor,0);
+  const desTot=des.reduce((s,d)=>s+d.valor,0);
+  const resumo=D.financeiroResumo;
+  const desLog=resumo?resumo.totalDespesasLogisticaAprovada:0;
+  const desExec=resumo?resumo.totalDespesasGeral:des.reduce((s,d)=>s+d.executado,0);
   const saldo=recExec-desExec;
   document.getElementById('fin-detail').innerHTML=`
     <div class="macro-grid">
@@ -1250,6 +1363,7 @@ function renderFinDetail(){
               <div class="fin-bar-label">${r.label}</div>
               <div class="fin-bar-track"><div class="fin-bar-fill" style="width:${p}%;background:#10b981"></div></div>
               <div class="fin-bar-val">${brl(r.executado)} / ${brl(r.valor)}</div>
+              <div style="white-space:nowrap">${acoesHtml('financeiro',r.id,r.ativo)}</div>
             </div>`}).join('')}
         </div>
         <div style="font-size:13px;font-weight:700;color:#1e3a5f;border-top:1px solid var(--border);padding-top:8px">
@@ -1264,10 +1378,17 @@ function renderFinDetail(){
               <div class="fin-bar-label">${d.label}</div>
               <div class="fin-bar-track"><div class="fin-bar-fill" style="width:${p}%;background:#ef4444"></div></div>
               <div class="fin-bar-val">${brl(d.executado)} / ${brl(d.valor)}</div>
+              <div style="white-space:nowrap">${acoesHtml('financeiro',d.id,d.ativo)}</div>
             </div>`}).join('')}
+          ${desLog?`
+            <div class="fin-bar-row">
+              <div class="fin-bar-label">Logística (Aprovado/Pago)</div>
+              <div class="fin-bar-track"><div class="fin-bar-fill" style="width:100%;background:#7c3aed"></div></div>
+              <div class="fin-bar-val">${brl(desLog)}</div>
+            </div>`:''}
         </div>
         <div style="font-size:13px;font-weight:700;color:#1e3a5f;border-top:1px solid var(--border);padding-top:8px">
-          Total executado: <span style="color:#ef4444">${brl(desExec)}</span> de ${brl(desTot)} (${Math.round(desExec/desTot*100)}%)
+          Total executado: <span style="color:#ef4444">${brl(desExec)}</span> de ${brl(desTot)} previsto (${Math.round(desExec/desTot*100)}%)${desLog?` — inclui <span style="color:#7c3aed">${brl(desLog)}</span> de Logística`:''}
         </div>
       </div>
       <div class="macro-card wide">
@@ -1312,89 +1433,77 @@ function renderFinDetail(){
 }
 
 /* ================================================
-   CONFIGURAÇÕES — GIDs DAS ABAS
-   (A CSV_URL mestra fica hardcoded no topo do script)
+   CONFIGURAÇÕES
 ================================================ */
-const GID_FIELDS=[
-  {key:'programacao',   label:'GID — Aba Programação',    placeholder:'Ex: 0 (primeira aba)'},
-  {key:'agraciados',    label:'GID — Aba Agraciados',     placeholder:'Ex: 123456789'},
-  {key:'palestrantes',  label:'GID — Aba Palestrantes',   placeholder:'Ex: 987654321'},
-  {key:'patrocinadores',label:'GID — Aba Patrocinadores', placeholder:'Ex: 456123789'},
-  {key:'financeiro',         label:'GID — Aba Financeiro',          placeholder:'Ex: 741852963'},
-  {key:'bancoPalestrantes',  label:'GID — Banco de Palestrantes',   placeholder:'Ex: 2005620839'},
-];
-
 function renderCfgFields(){
-  // Exibe a CSV_URL ativa (somente leitura, para conferência)
-  const urlDisplay=CSV_URL.length>80?CSV_URL.slice(0,77)+'…':CSV_URL;
+  const urlDisplay=APPS_SCRIPT_URL.length>80?APPS_SCRIPT_URL.slice(0,77)+'…':APPS_SCRIPT_URL;
   document.getElementById('url-fields').innerHTML=`
-    <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:16px;">
+    <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">
-        CSV_URL ativa (definida no código)
+        URL do Apps Script ativa (definida no código)
       </div>
       <div style="font-size:11px;font-family:monospace;color:#2563eb;word-break:break-all;">${urlDisplay}</div>
       <div style="font-size:11px;color:var(--text2);margin-top:4px;">
-        Para alterar, edite a variável <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;">CSV_URL</code> no início do script.
+        Para alterar, edite a variável <code style="background:#e2e8f0;padding:1px 4px;border-radius:3px;">APPS_SCRIPT_URL</code> no início do script.
       </div>
-    </div>
-    ${GID_FIELDS.map(f=>`
-    <div style="margin-bottom:10px">
-      <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:3px">${f.label}</label>
-      <input id="gid-${f.key}" type="text" value="${SHEET_GIDS[f.key]||''}"
-        oninput="SHEET_GIDS['${f.key}']=this.value"
-        style="width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:monospace;outline:none"
-        placeholder="${f.placeholder}">
-    </div>`).join('')}`;
+    </div>`;
 }
 
 function salvarConfigs(){
-  // Persiste os GIDs no localStorage como backup
-  GID_FIELDS.forEach(f=>{
-    const v=document.getElementById('gid-'+f.key)?.value||'';
-    SHEET_GIDS[f.key]=v;
-    localStorage.setItem('ibdm_gid_'+f.key,v);
-  });
   const iv=parseInt(document.getElementById('cfg-refresh').value);
   if(autoTimer)clearInterval(autoTimer);
   if(iv>0)autoTimer=setInterval(sincronizarDados,iv);
-  document.getElementById('cfg-msg').textContent='GIDs salvos · '+new Date().toLocaleTimeString('pt-BR');
-}
-
-function carregarGidsSalvos(){
-  // Restaura GIDs do localStorage (se o usuário já tiver salvado via interface)
-  GID_FIELDS.forEach(f=>{
-    const salvo=localStorage.getItem('ibdm_gid_'+f.key);
-    if(salvo&&salvo.trim()&&!SHEET_GIDS[f.key]){
-      SHEET_GIDS[f.key]=salvo;
-    }
-  });
+  document.getElementById('cfg-msg').textContent='Intervalo salvo · '+new Date().toLocaleTimeString('pt-BR');
 }
 
 /* ================================================
-   SINCRONIZAÇÃO CSV — FONTE ÚNICA (CSV_URL + SHEET_GIDS)
+   SINCRONIZAÇÃO — APPS SCRIPT WEB APP
 ================================================ */
-function parseCSV(text, skipRows=0){
-  const lines=text.trim().split(/\r?\n/);
-  const headers=lines[skipRows].split(',').map(h=>h.replace(/"/g,'').trim());
-  return lines.slice(skipRows+1).map(line=>{
-    const vals=[];let cur='',inQ=false;
-    for(let i=0;i<line.length;i++){
-      if(line[i]==='"'){inQ=!inQ;}
-      else if(line[i]===','&&!inQ){vals.push(cur.trim());cur='';}
-      else{cur+=line[i];}
-    }
-    vals.push(cur.trim());
-    const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||'');return obj;
-  });
-}
+const ativos = arr => arr.filter(x => x['Ativo'] !== false);
+const parseBRL = s => typeof s === 'number' ? s : (parseFloat((s || '0').toString().replace(/[R$\s.]/g, '').replace(',', '.')) || 0);
 
-async function fetchAba(gid, skipRows=0){
-  const url=sheetUrl(gid);
-  if(!url)return null;
-  const r=await fetch(url);
-  if(!r.ok)return null;
-  const d=parseCSV(await r.text(), skipRows);
-  return d.length?d:null;
+// Tradutores real-header → objeto de tela. Extraídos como funções nomeadas
+// (em vez de inline no map()) para poderem ser reaplicados sob demanda aos
+// itens arquivados quando o filtro "Todos/Arquivados" pede pra mostrá-los.
+function mapProgramacao(x, diaMap){
+  return {
+    id:x.ID, ativo:x['Ativo'],
+    dia:(diaMap&&diaMap[x['DATA']||''])||x['DATA']||'Dia 1',
+    data:x['DATA']||'',turno:x['PERÍODO']||'',
+    hora:x['INÍCIO']||'',horaFim:x['FIM']||'',
+    titulo:x['TEMA / TÍTULO']||'',
+    palestrante:x['RESPONSÁVEL']||'',
+    local:x['LOCAL / SALA']||'',
+    tipo:(x['TIPO DE ATIVIDADE']||'painel').toLowerCase(),
+    status:x['STATUS']||''
+  };
+}
+function mapAgraciado(x){
+  return { id:x.ID, ativo:x['Ativo'],
+    nome:x['NOME COMPLETO']||'', funcao:x['Função']||'', email:x['E-MAIL']||'',
+    telefone:x['TELEFONE']||'', medalha:x['MEDALHA']||'', status:x['STATUS']||''
+  };
+}
+function mapPalestrante(x){
+  return { id:x.ID, ativo:x['Ativo'],
+    nome:x['NOME COMPLETO']||'', cargo:x['TITULAÇÃO / CARGO']||'', instituicao:x['INSTITUIÇÃO']||'',
+    tipo:x['TIPO']||'', painel:x['TEMA / PAINEL']||'', dia:x['DIA']||'', hora:x['HORÁRIO']||'',
+    status:x['STATUS']||''
+  };
+}
+function mapPatrocinador(x){
+  return { id:x.ID, ativo:x['Ativo'],
+    entidade:x['NOME DO PARCEIRO']||'', cota:x['MODALIDADE']||'', status:x['ESTÁGIO']||'',
+    contato:x['CONTATO']||'', valor:x['VALOR (R$)']||'', obs:x['OBSERVAÇÕES']||''
+  };
+}
+function mapBanco(x){
+  return { id:x.ID, ativo:x['Ativo'],
+    nome:x['NOME COMPLETO']||'', telefone:x['TELEFONE / WHATSAPP']||'', email:x['E-MAIL']||'',
+    cargo:x['TITULAÇÃO / CARGO']||'', tipo:x['PALESTRA/NTE/PAINELISTA']||'',
+    instituicao:x['INSTITUIÇÃO / ORGANIZAÇÃO']||'', area:x['ÁREA DE ATUAÇÃO']||'',
+    tema:x['POSSÍVEL TEMA']||'', edicao:x['EDIÇÃO SUGERIDA']||'', status:x['STATUS']||''
+  };
 }
 
 async function sincronizarDados(){
@@ -1402,135 +1511,76 @@ async function sincronizarDados(){
   dot.className='sync-dot warn';txt.textContent='Sincronizando...';
   let ok=false;
 
-  // Sem nenhum GID configurado → mostra aviso de demonstração
-  const algumGid=Object.values(SHEET_GIDS).some(g=>g&&g.trim()!=='');
-  if(!algumGid){
-    dot.className='sync-dot warn';
-    txt.textContent='Configure os GIDs na aba Configurações';
-    renderAll();return;
-  }
-
   try{
-    // Programação: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
     // Colunas reais: #, DATA, PERÍODO, INÍCIO, FIM, TIPO DE ATIVIDADE, TEMA / TÍTULO, RESPONSÁVEL, LOCAL / SALA, STATUS
-    const dProg=await fetchAba(SHEET_GIDS.programacao, 1);
-    if(dProg){
+    const dProgRaw=await fetchModulo('programacao');
+    D.programacaoRaw=dProgRaw;
+    const dProg=ativos(dProgRaw);
+    if(dProg.length){
       // Derivar "Dia 1", "Dia 2", etc. a partir da coluna DATA (ordenando datas únicas)
       const datasUnicas=[...new Set(dProg.map(x=>x['DATA']||'').filter(d=>d))].sort((a,b)=>{
         const p=s=>{const[d,m,y]=s.split('/');return new Date(y,m-1,d)};
         return p(a)-p(b);
       });
       const diaMap={};datasUnicas.forEach((d,i)=>diaMap[d]=`Dia ${i+1}`);
-      D.programacao=dProg.map(x=>({
-        dia:diaMap[x['DATA']||'']||x['DATA']||'Dia 1',
-        data:x['DATA']||'',turno:x['PERÍODO']||'',
-        hora:x['INÍCIO']||'',horaFim:x['FIM']||'',
-        titulo:x['TEMA / TÍTULO']||'',
-        palestrante:x['RESPONSÁVEL']||'',
-        local:x['LOCAL / SALA']||'',
-        tipo:(x['TIPO DE ATIVIDADE']||'painel').toLowerCase(),
-        status:x['STATUS']||''
-      })).filter(x=>x.titulo||x.data);ok=true;
+      D.programacaoDiaMap=diaMap;
+      D.programacao=dProg.map(x=>mapProgramacao(x,diaMap)).filter(x=>x.titulo||x.data);ok=true;
     }
 
-    // Agraciados: linha 0 = cabeçalhos → skipRows=0
     // Colunas reais: #, NOME COMPLETO, Função, E-MAIL, TELEFONE, MEDALHA, STATUS
-    const dAgr=await fetchAba(SHEET_GIDS.agraciados, 0);
-    if(dAgr){D.agraciados=dAgr.map(x=>({
-      nome:x['NOME COMPLETO']||x['Nome Completo']||'',
-      funcao:x['Função']||x['FUNÇÃO']||'',
-      email:x['E-MAIL']||'',
-      telefone:x['TELEFONE']||'',
-      medalha:x['MEDALHA']||x['Medalha']||'',
-      status:x['STATUS']||x['Status']||''
-    })).filter(x=>x.nome);ok=true;}
+    const dAgrRaw=await fetchModulo('agraciados');
+    D.agraciadosRaw=dAgrRaw;
+    const dAgr=ativos(dAgrRaw).map(mapAgraciado).filter(x=>x.nome);
+    if(dAgr.length){D.agraciados=dAgr;ok=true;}
 
-    // Palestrantes: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
     // Colunas reais: #, NOME COMPLETO, TITULAÇÃO / CARGO, INSTITUIÇÃO, TIPO, DIA, HORÁRIO, TEMA / PAINEL, STATUS, CONTATO, PASSAGEM / HOSPEDAGEM, OBSERVAÇÕES
-    const dPal=await fetchAba(SHEET_GIDS.palestrantes, 1);
-    if(dPal){D.palestrantes=dPal.map(x=>({
-      nome:x['NOME COMPLETO']||x['Nome Completo']||'',
-      cargo:x['TITULAÇÃO / CARGO']||'',
-      instituicao:x['INSTITUIÇÃO']||x['Instituição']||'',
-      tipo:x['TIPO']||'',
-      painel:x['TEMA / PAINEL']||'',
-      dia:x['DIA']||'',
-      hora:x['HORÁRIO']||'',
-      status:x['STATUS']||x['Status']||''
-    })).filter(x=>x.nome);ok=true;}
+    const dPalRaw=await fetchModulo('palestrantes');
+    D.palestrantesRaw=dPalRaw;
+    const dPal=ativos(dPalRaw).map(mapPalestrante).filter(x=>x.nome);
+    if(dPal.length){D.palestrantes=dPal;ok=true;}
 
-    // Parceiros/Patrocinadores: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
     // Colunas reais: #, NOME DO PARCEIRO, MODALIDADE, ESTÁGIO, DIVULGAÇÃO, CONTATO, CARGO / FUNÇÃO, VALOR (R$), OBSERVAÇÕES
-    const dPat=await fetchAba(SHEET_GIDS.patrocinadores, 1);
-    if(dPat){D.patrocinadores=dPat.map(x=>({
-      entidade:x['NOME DO PARCEIRO']||'',
-      cota:x['MODALIDADE']||'',
-      status:x['ESTÁGIO']||'',
-      contato:x['CONTATO']||'',
-      valor:x['VALOR (R$)']||'',
-      obs:x['OBSERVAÇÕES']||''
-    })).filter(x=>x.entidade);ok=true;}
+    const dPatRaw=await fetchModulo('patrocinadores');
+    D.patrocinadoresRaw=dPatRaw;
+    const dPat=ativos(dPatRaw).map(mapPatrocinador).filter(x=>x.entidade);
+    if(dPat.length){D.patrocinadores=dPat;ok=true;}
 
-    // Financeiro — leitura bruta do CSV para capturar Orçamento Previsto (B2) e Total (B3)
-    // Após o App Script InserirOrcamento.gs, a estrutura é:
-    //   Linha 0: título do bloco
-    //   Linha 1: ORÇAMENTO PREVISTO | valor | instrução
-    //   Linha 2: ORÇAMENTO TOTAL GASTO | valor | instrução
-    //   Linha 3-4: separadores
-    //   Linha 5: título original da aba
-    //   Linha 6: cabeçalhos (TIPO, CATEGORIA, ...)
-    //   Linha 7+: dados de receitas/despesas
-    // Sem o App Script, a estrutura original ainda funciona (skipRows=1)
-    const parseBRL = s => parseFloat((s||'0').replace(/[R$\s.]/g,'').replace(',','.')) || 0;
-    const finRaw = await (async()=>{ const u=sheetUrl(SHEET_GIDS.financeiro); if(!u)return null; const r=await fetch(u); return r.ok?r.text():null; })();
-    if(finRaw){
-      const finLinhas = finRaw.trim().split(/\r?\n/);
-      // Detecta se o bloco de orçamento foi inserido (linha 1 começa com "ORÇAMENTO")
-      const temBloco = finLinhas[1]?.toUpperCase().includes('ORÇAMENTO') || finLinhas[1]?.toUpperCase().includes('OR') ;
-      const skipFin  = temBloco ? 6 : 1;
-      if(temBloco){
-        const colsL1 = finLinhas[1].split(',').map(c=>c.replace(/"/g,'').trim());
-        const colsL2 = finLinhas[2].split(',').map(c=>c.replace(/"/g,'').trim());
-        D.financeiro.orcamentoPrevisto = parseBRL(colsL1[1]);
-        D.financeiro.orcamentoTotal    = parseBRL(colsL2[1]);
-      } else {
-        D.financeiro.orcamentoPrevisto = 0;
-        D.financeiro.orcamentoTotal    = 0;
-      }
-      const dFin = parseCSV(finRaw, skipFin);
-      const linhasValidas = dFin.filter(x => (x['TIPO']||'').match(/^(Receita|Despesa)$/i) && (x['CATEGORIA']||'').trim());
-      D.financeiro.receitas = linhasValidas
-        .filter(x => x['TIPO'].toLowerCase()==='receita')
-        .map(x=>({ label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) }));
-      D.financeiro.despesas = linhasValidas
-        .filter(x => x['TIPO'].toLowerCase()==='despesa')
-        .map(x=>({ label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) }));
+    // Colunas reais: TIPO, CATEGORIA, VALOR PREVISTO (R$), VALOR EXECUTADO (R$), % REALIZADO, OBSERVAÇÕES, STATUS
+    const dFinRaw=await fetchModulo('financeiro');
+    D.financeiroRaw=dFinRaw;
+    const dFin=ativos(dFinRaw);
+    if(dFin.length){
+      const linhasValidas = dFin.filter(x => /^(Receita|Despesa)$/i.test(x['TIPO']||'') && (x['CATEGORIA']||'').trim());
+      const mapFin = x=>({ id:x.ID, ativo:x['Ativo'], label:x['CATEGORIA'], valor:parseBRL(x['VALOR PREVISTO (R$)']), executado:parseBRL(x['VALOR EXECUTADO (R$)']) });
+      D.financeiro.receitas = linhasValidas.filter(x => x['TIPO'].toLowerCase()==='receita').map(mapFin);
+      D.financeiro.despesas = linhasValidas.filter(x => x['TIPO'].toLowerCase()==='despesa').map(mapFin);
       ok=true;
     }
 
-    // Banco de Palestrantes: linha 0 = título, linha 1 = cabeçalhos → skipRows=1
     // Colunas: #, NOME COMPLETO, TELEFONE/WHATSAPP, E-MAIL, TITULAÇÃO/CARGO, PALESTRA/NTE/PAINELISTA, INSTITUIÇÃO/ORGANIZAÇÃO, ÁREA DE ATUAÇÃO, POSSÍVEL TEMA, EDIÇÃO SUGERIDA, STATUS
-    const dBanco = await fetchAba(SHEET_GIDS.bancoPalestrantes, 1);
-    if(dBanco){ D.bancoPalestrantes = dBanco.map(x=>({
-      nome: x['NOME COMPLETO']||'',
-      telefone: x['TELEFONE / WHATSAPP']||'',
-      email: x['E-MAIL']||'',
-      cargo: x['TITULAÇÃO / CARGO']||'',
-      tipo: x['PALESTRA/NTE/PAINELISTA']||x['PALESTRANTE/PAINELISTA']||'',
-      instituicao: x['INSTITUIÇÃO / ORGANIZAÇÃO']||x['INSTITUIÇÃO']||'',
-      area: x['ÁREA DE ATUAÇÃO']||'',
-      tema: x['POSSÍVEL TEMA']||'',
-      edicao: x['EDIÇÃO SUGERIDA']||'',
-      status: x['STATUS']||''
-    })).filter(x=>x.nome); ok=true; }
+    const dBancoRaw=await fetchModulo('bancoPalestrantes');
+    D.bancoPalestrantesRaw=dBancoRaw;
+    const dBanco=ativos(dBancoRaw).map(mapBanco).filter(x=>x.nome);
+    if(dBanco.length){D.bancoPalestrantes=dBanco;ok=true;}
+
+    // Logística: mantém os nomes de coluna reais (ITEM, SUBCATEGORIA, ...) sem
+    // tradução — o modal de edição envia de volta exatamente essas chaves.
+    // Inclui ativos e arquivados; o filtro "Somente ativos/arquivados" é client-side.
+    const dLog = await fetchModulo('logistica');
+    if(dLog.length){ D.logistica = dLog; ok=true; }
+
+    // Integração Logística → Financeiro: soma centralizada no backend
+    // (financeiroComLogistica em Code.gs), não recalculada aqui.
+    D.financeiroResumo = await chamarApi({ action:'financeiroResumo' });
 
     dot.className='sync-dot'+(ok?'':'warn');
     txt.textContent=ok?'Sheets · '+new Date().toLocaleTimeString('pt-BR'):'Sem dados retornados';
     document.getElementById('last-update-time').textContent=new Date().toLocaleString('pt-BR');
   }catch(e){
     dot.className='sync-dot';dot.style.background='#ef4444';
-    txt.textContent='Erro na sincronização — verifique os GIDs';
-    console.error('[IBDM CSV]',e);
+    txt.textContent = e.message === 'senha_invalida' ? 'Senha inválida' : 'Erro na sincronização';
+    console.error('[IBDM]',e);
+    if(e.message === 'senha_invalida'){ SENHA=''; mostrarGate('Senha inválida — tente de novo.'); }
   }
   renderAll();
 }
@@ -1549,8 +1599,8 @@ function renderBanco(dados){
   };
   document.getElementById('tbl-banco').innerHTML=`<table class="dt"><thead><tr>
     <th>#</th><th>Nome Completo</th><th>Cargo / Titulação</th><th>Instituição</th>
-    <th>Tipo</th><th>Possível Tema</th><th>Área</th><th>Edição</th><th>Status</th>
-  </tr></thead><tbody>${dados.map((p,i)=>`<tr>
+    <th>Tipo</th><th>Possível Tema</th><th>Área</th><th>Edição</th><th>Status</th><th></th>
+  </tr></thead><tbody>${dados.map((p,i)=>`<tr class="${p.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${p.nome}</td>
     <td style="color:var(--text2);font-size:12px">${p.cargo}</td>
@@ -1560,6 +1610,7 @@ function renderBanco(dados){
     <td style="font-size:11px;color:var(--text2)">${p.area}</td>
     <td style="font-size:11px;color:var(--text2)">${p.edicao}</td>
     <td>${stBanco(p.status)}</td>
+    <td style="white-space:nowrap">${acoesHtml('bancoPalestrantes',p.id,p.ativo)}</td>
   </tr>`).join('')}</tbody></table>`;
   document.getElementById('cnt-banco').textContent=`${dados.length} de ${D.bancoPalestrantes.length}`;
 }
@@ -1567,7 +1618,8 @@ function filtrarBanco(q){
   const tipo = document.getElementById('fil-banco-tipo').value;
   const st   = document.getElementById('fil-banco-status').value;
   const qq   = (q||'').toLowerCase();
-  renderBanco(D.bancoPalestrantes.filter(p=>
+  const base = baseComArquivados('bancoPalestrantes',mapBanco,'fil-banco-ativo');
+  renderBanco(base.filter(p=>
     (!qq || p.nome.toLowerCase().includes(qq) || p.tema.toLowerCase().includes(qq) || p.instituicao.toLowerCase().includes(qq)) &&
     (!tipo || p.tipo===tipo) &&
     (!st   || p.status===st)
@@ -1575,33 +1627,297 @@ function filtrarBanco(q){
 }
 
 /* ================================================
+   LOGÍSTICA
+================================================ */
+function logStatusBadge(s){
+  if(s==='Aprovado') return `<span class="bdg confirmado">✓ Aprovado</span>`;
+  if(s==='Planejado') return `<span class="bdg pendente">Planejado</span>`;
+  return `<span class="bdg convite">—</span>`;
+}
+function renderLogistica(dados){
+  document.getElementById('tbl-logistica').innerHTML = `<table class="dt"><thead><tr>
+    <th>Item</th><th>Subcategoria</th><th>Responsável</th><th>Fornecedor</th><th>Status</th>
+    <th>Previsto</th><th>Executado</th><th>Prazo</th><th>Conclusão</th><th></th>
+  </tr></thead><tbody>${dados.map(x=>`<tr class="${x['Ativo']===false?'row-inativa':''}">
+    <td style="font-weight:600">${x['ITEM']||''}</td>
+    <td style="color:var(--text2)">${x['SUBCATEGORIA']||'—'}</td>
+    <td style="color:var(--text2)">${x['RESPONSÁVEL']||''}</td>
+    <td style="color:var(--text2)">${x['FORNECEDOR']||''}</td>
+    <td>${logStatusBadge(x['STATUS'])}</td>
+    <td style="color:var(--text2)">${x['CUSTO PREV. (R$)']?brl(x['CUSTO PREV. (R$)']):'—'}</td>
+    <td style="color:var(--text2)">${x['CUSTO EST. (R$)']?brl(x['CUSTO EST. (R$)']):'—'}</td>
+    <td style="color:var(--text2);font-size:12px">${x['PRAZO']||''}</td>
+    <td>${x['STATUS CONCLUSÃO']==='Pronto'?'<span class="bdg confirmado">✓ Pronto</span>':'<span class="bdg pendente">Pendente</span>'}</td>
+    <td style="white-space:nowrap">
+      <button class="btn-link-text" onclick="abrirModalLogistica(${x.ID})">Editar</button>
+      ${x['Ativo']===false
+        ? `<button class="btn-link-text" onclick="restaurarRegistro('logistica',${x.ID})">Restaurar</button>`
+        : `<button class="btn-danger-text" onclick="arquivarRegistro('logistica',${x.ID})">Arquivar</button>`}
+    </td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-logistica').textContent = `${dados.length} de ${D.logistica.length}`;
+}
+function filtrarLogistica(){
+  const q=(document.querySelector('#tab-7 input')?.value||'').toLowerCase();
+  const sub=document.getElementById('fil-log-sub').value;
+  const st=document.getElementById('fil-log-status').value;
+  const av=document.getElementById('fil-log-ativo').value;
+  renderLogistica(D.logistica.filter(x=>
+    (!q || (x['ITEM']||'').toLowerCase().includes(q)) &&
+    (!sub || x['SUBCATEGORIA']===sub) &&
+    (!st || x['STATUS']===st) &&
+    (av==='todos' || (av==='ativos' ? x['Ativo']!==false : x['Ativo']===false))
+  ));
+}
+
+/* ================================================
+   MODAL CRUD (genérico) — cadastro/edição por schema
+================================================ */
+const MODAL_SCHEMAS = {
+  logistica: {
+    titulo: 'item de logística',
+    campos: [
+      {key:'ITEM', label:'Nome do item', tipo:'text', obrigatorio:true},
+      {key:'SUBCATEGORIA', label:'Subcategoria', tipo:'select', opcoes:['Logística','Transporte','Alimentação','Catering','Ativações','Material Gráfico','Pessoal','Equipamentos']},
+      {key:'RESPONSÁVEL', label:'Responsável', tipo:'text'},
+      {key:'FORNECEDOR', label:'Fornecedor', tipo:'text'},
+      {key:'STATUS', label:'Status', tipo:'select', opcoes:['Aprovado','Planejado']},
+      {key:'CUSTO PREV. (R$)', label:'Valor previsto (R$)', tipo:'number'},
+      {key:'CUSTO EST. (R$)', label:'Valor executado (R$)', tipo:'number'},
+      {key:'PRAZO', label:'Prazo', tipo:'text', placeholder:'ex: 15/11/2025'},
+      {key:'STATUS CONCLUSÃO', label:'Status de conclusão', tipo:'select', opcoes:['Pendente','Pronto']},
+      {key:'OBSERVAÇÕES', label:'Observações', tipo:'textarea'},
+    ]
+  },
+  programacao: {
+    titulo: 'sessão da programação',
+    campos: [
+      {key:'DATA', label:'Data', tipo:'text', placeholder:'dd/mm/aaaa', obrigatorio:true},
+      {key:'PERÍODO', label:'Período', tipo:'select', opcoes:['Manhã','Tarde','Noite']},
+      {key:'INÍCIO', label:'Início', tipo:'text', placeholder:'HH:MM'},
+      {key:'FIM', label:'Fim', tipo:'text', placeholder:'HH:MM'},
+      {key:'TIPO DE ATIVIDADE', label:'Tipo de atividade', tipo:'select', opcoes:['Solenidade de Abertura','Palestra','Painel','Mesa Redonda','Coffee Break','Almoço','Credenciamento','Solenidade de Encerramento','Intervalo','Workshop']},
+      {key:'TEMA / TÍTULO', label:'Tema / Título', tipo:'text', obrigatorio:true},
+      {key:'RESPONSÁVEL', label:'Responsável', tipo:'text'},
+      {key:'LOCAL / SALA', label:'Local / Sala', tipo:'text'},
+      {key:'STATUS', label:'Status', tipo:'text'},
+    ]
+  },
+  agraciados: {
+    titulo: 'agraciado',
+    campos: [
+      {key:'NOME COMPLETO', label:'Nome completo', tipo:'text', obrigatorio:true},
+      {key:'Função', label:'Função / Cargo', tipo:'text'},
+      {key:'E-MAIL', label:'E-mail', tipo:'text'},
+      {key:'TELEFONE', label:'Telefone', tipo:'text'},
+      {key:'MEDALHA', label:'Medalha', tipo:'select', opcoes:['Ouro','Prata','Bronze','Comenda']},
+      {key:'STATUS', label:'Status', tipo:'text'},
+    ]
+  },
+  palestrantes: {
+    titulo: 'palestrante',
+    campos: [
+      {key:'NOME COMPLETO', label:'Nome completo', tipo:'text', obrigatorio:true},
+      {key:'TITULAÇÃO / CARGO', label:'Titulação / Cargo', tipo:'text'},
+      {key:'INSTITUIÇÃO', label:'Instituição', tipo:'text'},
+      {key:'TIPO', label:'Tipo', tipo:'text', placeholder:'ex: Palestrante Solo, Moderador, Painelista'},
+      {key:'TEMA / PAINEL', label:'Tema / Painel', tipo:'text'},
+      {key:'DIA', label:'Dia', tipo:'text', placeholder:'dd/mm/aaaa'},
+      {key:'HORÁRIO', label:'Horário', tipo:'text', placeholder:'ex: 09:30–10:20'},
+      {key:'STATUS', label:'Status', tipo:'text'},
+      {key:'CONTATO', label:'Contato', tipo:'text'},
+      {key:'PASSAGEM / HOSPEDAGEM', label:'Passagem / Hospedagem', tipo:'text'},
+      {key:'OBSERVAÇÕES', label:'Observações', tipo:'textarea'},
+    ]
+  },
+  patrocinadores: {
+    titulo: 'patrocinador',
+    campos: [
+      {key:'NOME DO PARCEIRO', label:'Nome do parceiro', tipo:'text', obrigatorio:true},
+      {key:'MODALIDADE', label:'Modalidade / Cota', tipo:'text', placeholder:'ex: Master, Gold, Silver, Bronze'},
+      {key:'ESTÁGIO', label:'Estágio', tipo:'text', placeholder:'ex: Confirmado, Em Negociação, Prospecção'},
+      {key:'DIVULGAÇÃO', label:'Divulgação', tipo:'text'},
+      {key:'CONTATO', label:'Contato', tipo:'text'},
+      {key:'CARGO / FUNÇÃO', label:'Cargo / Função', tipo:'text'},
+      {key:'VALOR (R$)', label:'Valor (R$)', tipo:'number'},
+      {key:'OBSERVAÇÕES', label:'Observações', tipo:'textarea'},
+    ]
+  },
+  financeiro: {
+    titulo: 'lançamento financeiro',
+    campos: [
+      {key:'TIPO', label:'Tipo', tipo:'select', opcoes:['Receita','Despesa'], obrigatorio:true},
+      {key:'CATEGORIA', label:'Categoria', tipo:'text', obrigatorio:true},
+      {key:'VALOR PREVISTO (R$)', label:'Valor previsto (R$)', tipo:'number'},
+      {key:'VALOR EXECUTADO (R$)', label:'Valor executado (R$)', tipo:'number'},
+      {key:'STATUS', label:'Status', tipo:'select', opcoes:['Aprovado','Planejado']},
+      {key:'OBSERVAÇÕES', label:'Observações', tipo:'textarea'},
+    ]
+  },
+  bancoPalestrantes: {
+    titulo: 'nome do banco de palestrantes',
+    campos: [
+      {key:'NOME COMPLETO', label:'Nome completo', tipo:'text', obrigatorio:true},
+      {key:'TELEFONE / WHATSAPP', label:'Telefone / WhatsApp', tipo:'text'},
+      {key:'E-MAIL', label:'E-mail', tipo:'text'},
+      {key:'TITULAÇÃO / CARGO', label:'Titulação / Cargo', tipo:'text'},
+      {key:'PALESTRA/NTE/PAINELISTA', label:'Tipo (Palestrante/Painelista)', tipo:'text'},
+      {key:'INSTITUIÇÃO / ORGANIZAÇÃO', label:'Instituição / Organização', tipo:'text'},
+      {key:'ÁREA DE ATUAÇÃO', label:'Área de atuação', tipo:'text'},
+      {key:'POSSÍVEL TEMA', label:'Possível tema', tipo:'text'},
+      {key:'EDIÇÃO SUGERIDA', label:'Edição sugerida', tipo:'text'},
+      {key:'STATUS', label:'Status', tipo:'text'},
+    ]
+  }
+};
+let modalState = { modulo:null, id:null };
+
+function campoId(key){ return 'mf-'+key.replace(/[^a-zA-Z0-9]/g,'_'); }
+function campoHtml(campo, valor){
+  const id=campoId(campo.key);
+  if(campo.tipo==='select'){
+    return `<select id="${id}"><option value="">—</option>${campo.opcoes.map(o=>`<option ${valor===o?'selected':''}>${o}</option>`).join('')}</select>`;
+  }
+  if(campo.tipo==='textarea'){
+    return `<textarea id="${id}">${valor||''}</textarea>`;
+  }
+  const v = valor!=null ? String(valor).replace(/"/g,'&quot;') : '';
+  return `<input type="${campo.tipo==='number'?'number':'text'}" id="${id}" value="${v}" ${campo.placeholder?`placeholder="${campo.placeholder}"`:''}>`;
+}
+function acoesHtml(modulo, id, ativo){
+  return `<button class="btn-link-text" onclick="abrirModal('${modulo}',${id})">Editar</button>
+    ${ativo===false
+      ? `<button class="btn-link-text" onclick="restaurarRegistro('${modulo}',${id})">Restaurar</button>`
+      : `<button class="btn-danger-text" onclick="arquivarRegistro('${modulo}',${id})">Arquivar</button>`}`;
+}
+// Junta a lista ativa (traduzida) com os arquivados (traduzidos sob demanda a
+// partir do Raw), conforme o filtro "Somente ativos/Todos/Somente arquivados".
+function baseComArquivados(modulo, mapper, filtroId){
+  const av = document.getElementById(filtroId).value;
+  const raw = D[modulo+'Raw'] || [];
+  const arquivados = raw.filter(x=>x['Ativo']===false).map(mapper);
+  if(av==='ativos') return D[modulo];
+  if(av==='arquivados') return arquivados;
+  return [...D[modulo], ...arquivados];
+}
+
+function abrirModal(modulo, id){
+  const schema=MODAL_SCHEMAS[modulo];
+  modalState={ modulo, id: id||null };
+  const fonte = D[modulo+'Raw'] || D[modulo];
+  const item = id ? fonte.find(x=>String(x.ID)===String(id)) : null;
+  document.getElementById('modal-title').textContent=(item?'Editar ':'Novo — ')+schema.titulo;
+  document.getElementById('modal-body').innerHTML=schema.campos.map(c=>`
+    <div class="modal-field">
+      <label>${c.label}${c.obrigatorio?' *':''}</label>
+      ${campoHtml(c, item?item[c.key]:'')}
+    </div>`).join('');
+  document.getElementById('modal-error').textContent='';
+  document.getElementById('modal-overlay').style.display='flex';
+}
+function abrirModalLogistica(id){ abrirModal('logistica', id); }
+function fecharModal(){ document.getElementById('modal-overlay').style.display='none'; }
+
+async function salvarModal(){
+  const { modulo, id } = modalState;
+  const schema = MODAL_SCHEMAS[modulo];
+  const registro = {};
+  for(const c of schema.campos){
+    const el=document.getElementById(campoId(c.key));
+    let v=el.value;
+    if(c.obrigatorio && !v.trim()){
+      document.getElementById('modal-error').textContent=`Preencha "${c.label}".`;
+      return;
+    }
+    if(c.tipo==='number') v = v===''?'':parseFloat(v.replace(',','.'));
+    registro[c.key]=v;
+  }
+  const btn=document.getElementById('modal-save-btn');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    if(id) await chamarApiEscrita({ action:'editar', modulo, id, registro:JSON.stringify(registro) });
+    else   await chamarApiEscrita({ action:'criar', modulo, registro:JSON.stringify(registro) });
+    fecharModal();
+    await sincronizarDados();
+  }catch(e){
+    document.getElementById('modal-error').textContent =
+      e.message==='senha_invalida' ? 'Sessão expirada — feche e faça login de novo.' :
+      'Não foi possível confirmar o salvamento (' + e.message + '). Feche este aviso e confira a tabela — se o item não aparecer, tente de novo.';
+    sincronizarDados();
+  }
+  btn.disabled=false; btn.textContent='Salvar';
+}
+
+async function arquivarRegistro(modulo, id){
+  if(!confirm('Arquivar este registro? Ele some da listagem ativa, mas não é excluído — dá pra restaurar depois.')) return;
+  await chamarApiEscrita({ action:'arquivar', modulo, id });
+  await sincronizarDados();
+}
+async function restaurarRegistro(modulo, id){
+  await chamarApiEscrita({ action:'restaurar', modulo, id });
+  await sincronizarDados();
+}
+
+/* ================================================
    RENDER ALL
 ================================================ */
 function renderAll(){
-  renderKPIs();renderGauge();renderGantt();renderRisco();renderFinVG();
+  renderKPIs();renderGauge();renderRisco();renderFinVG();renderLogisticaResumo();
   renderAlertas();renderProxSessoes();
   renderDayPills();renderGrade(currentDay);renderTimeline(currentDay);
   renderAgraciados(D.agraciados);renderPalestrantes(D.palestrantes);
   renderPatrocinadores(D.patrocinadores);renderFinDetail();
-  renderBanco(D.bancoPalestrantes);
+  renderBanco(D.bancoPalestrantes);filtrarLogistica();
   document.getElementById('footer-note').innerHTML=
     'Dashboard IBDM — Dados atualizados em: <strong>'+new Date().toLocaleString('pt-BR')+'</strong>';
 }
 
 /* ================================================
+   GATE DE SENHA
+================================================ */
+function mostrarGate(erro){
+  document.getElementById('loading-overlay').style.display='none';
+  document.getElementById('auth-gate').style.display='flex';
+  document.getElementById('auth-error').textContent=erro||'';
+  const input=document.getElementById('auth-input');
+  input.value='';
+  input.focus();
+}
+
+async function tentarEntrar(){
+  const input=document.getElementById('auth-input');
+  const btn=document.getElementById('auth-btn');
+  const tentativa=input.value;
+  if(!tentativa){ document.getElementById('auth-error').textContent='Informe a senha.'; return; }
+  btn.disabled=true; btn.textContent='Verificando...';
+  SENHA=tentativa;
+  try{
+    await fetchModulo('agraciados'); // qualquer módulo serve só pra validar a senha
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('loading-overlay').style.display='flex';
+    await carregarPainel();
+  }catch(e){
+    SENHA='';
+    document.getElementById('auth-error').textContent =
+      e.message==='senha_invalida' ? 'Senha incorreta.' : 'Não foi possível conectar ao Apps Script.';
+  }
+  btn.disabled=false; btn.textContent='Entrar';
+}
+
+document.getElementById('auth-input').addEventListener('keydown', e=>{ if(e.key==='Enter') tentarEntrar(); });
+
+/* ================================================
    INIT
 ================================================ */
-function init(){
-  carregarGidsSalvos();
+async function carregarPainel(){
   renderCfgFields();
   if(AUTO_REFRESH_MS>0) autoTimer=setInterval(sincronizarDados, AUTO_REFRESH_MS);
-  renderAll();
+  await sincronizarDados();
   document.getElementById('loading-overlay').style.display='none';
-  const algumGid=Object.values(SHEET_GIDS).some(g=>g&&g.trim()!=='');
-  document.getElementById('syncDot').className='sync-dot'+(algumGid?'':'warn');
-  document.getElementById('syncText').textContent=algumGid
-    ?'CSV_URL configurada — clique Atualizar'
-    :'Preencha os GIDs na aba Configurações';
+}
+
+function init(){
+  mostrarGate();
 }
 window.addEventListener('DOMContentLoaded',init);
 </script>
