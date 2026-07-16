@@ -433,6 +433,14 @@ table.dt tr:hover td{background:#f8fafc}
     Logística
   </button>
   <button class="nav-btn" onclick="showTab(8)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg>
+    Visitas Institucionais
+  </button>
+  <button class="nav-btn" onclick="showTab(9)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+    Clube de Benefícios
+  </button>
+  <button class="nav-btn" onclick="showTab(10)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
     Configurações
   </button>
@@ -700,8 +708,62 @@ table.dt tr:hover td{background:#f8fafc}
   </div>
 </div>
 
-<!-- ===================== TAB 8: CONFIGURAÇÕES ===================== -->
+<!-- ===================== TAB 8: VISITAS INSTITUCIONAIS ===================== -->
 <div class="tab-panel" id="tab-8">
+  <div class="section-hdr">
+    <div><h2>Visitas Institucionais</h2><p>Planejamento de visitas a autoridades e instituições parceiras</p></div>
+    <button class="view-btn active" onclick="abrirModal('visitas')">+ Adicionar visita</button>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar instituição..." oninput="filtrarVisitas()">
+      </div>
+      <select id="fil-visitas-status" onchange="filtrarVisitas()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option>Planejada</option><option>Confirmada</option><option>Realizada</option><option>Cancelada</option>
+      </select>
+      <select id="fil-visitas-ativo" onchange="filtrarVisitas()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
+      <span class="tbl-count" id="cnt-visitas">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-visitas"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 9: CLUBE DE BENEFÍCIOS ===================== -->
+<div class="tab-panel" id="tab-9">
+  <div class="section-hdr">
+    <div><h2>Clube de Benefícios</h2><p>Parceiros e potenciais parceiros em avaliação para o clube de benefícios</p></div>
+    <button class="view-btn active" onclick="abrirModal('beneficios')">+ Adicionar parceiro</button>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar empresa..." oninput="filtrarBeneficios()">
+      </div>
+      <select id="fil-beneficios-status" onchange="filtrarBeneficios()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="">Todos os status</option>
+        <option>Prospecção</option><option>Em Conversa</option><option>Confirmado</option><option>Recusado</option>
+      </select>
+      <select id="fil-beneficios-ativo" onchange="filtrarBeneficios()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;font-family:'Inter',sans-serif">
+        <option value="ativos">Somente ativos</option>
+        <option value="todos">Todos (incl. arquivados)</option>
+        <option value="arquivados">Somente arquivados</option>
+      </select>
+      <span class="tbl-count" id="cnt-beneficios">—</span>
+    </div>
+    <div class="tbl-scroll"><div id="tbl-beneficios"></div></div>
+  </div>
+</div>
+
+<!-- ===================== TAB 10: CONFIGURAÇÕES ===================== -->
+<div class="tab-panel" id="tab-10">
   <div class="section-hdr"><div><h2>Configurações</h2><p>Backend do painel e sincronização automática</p></div></div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
     <div class="macro-card">
@@ -887,7 +949,9 @@ let D = {
   programacao: [...DEMO.programacao],
   financeiro: {...DEMO.financeiro},
   bancoPalestrantes: [],
-  logistica: []
+  logistica: [],
+  visitas: [],
+  beneficios: []
 };
 let currentView = 'grade', currentDay = 'Todos', autoTimer = null;
 let chartsMap = {};
@@ -1157,8 +1221,13 @@ function renderProxSessoes(){
 /* ================================================
    PROGRAMAÇÃO — GRADE
 ================================================ */
+function horaParaMinutos(h){
+  const m=String(h||'').match(/(\d{1,2}):(\d{2})/);
+  return m?parseInt(m[1],10)*60+parseInt(m[2],10):9999;
+}
 function programacaoView(){
-  return baseComArquivados('programacao', x=>mapProgramacao(x,D.programacaoDiaMap), 'fil-programacao-ativo');
+  return baseComArquivados('programacao', x=>mapProgramacao(x,D.programacaoDiaMap), 'fil-programacao-ativo')
+    .sort((a,b)=>horaParaMinutos(a.hora)-horaParaMinutos(b.hora));
 }
 function miniAcoesHtml(modulo,id,ativo){
   return `<span style="font-size:11px;white-space:nowrap">
@@ -1571,6 +1640,13 @@ async function sincronizarDados(){
     const dLog = await fetchModulo('logistica');
     if(dLog.length){ D.logistica = dLog; ok=true; }
 
+    // Mesmo padrão "raw" da Logística — sem tradução de chaves.
+    const dVisitas = await fetchModulo('visitas');
+    if(dVisitas.length){ D.visitas = dVisitas; ok=true; }
+
+    const dBenef = await fetchModulo('beneficios');
+    if(dBenef.length){ D.beneficios = dBenef; ok=true; }
+
     // Integração Logística → Financeiro: soma centralizada no backend
     // (financeiroComLogistica em Code.gs), não recalculada aqui.
     D.financeiroResumo = await chamarApi({ action:'financeiroResumo' });
@@ -1667,6 +1743,82 @@ function filtrarLogistica(){
   renderLogistica(D.logistica.filter(x=>
     (!q || (x['ITEM']||'').toLowerCase().includes(q)) &&
     (!sub || x['SUBCATEGORIA']===sub) &&
+    (!st || x['STATUS']===st) &&
+    (av==='todos' || (av==='ativos' ? x['Ativo']!==false : x['Ativo']===false))
+  ));
+}
+
+/* ================================================
+   VISITAS INSTITUCIONAIS
+================================================ */
+function visitaStatusBadge(s){
+  if(s==='Realizada') return `<span class="bdg confirmado">✓ Realizada</span>`;
+  if(s==='Confirmada') return `<span class="bdg aguardando">Confirmada</span>`;
+  if(s==='Cancelada') return `<span class="bdg" style="background:#fee2e2;color:#991b1b">Cancelada</span>`;
+  return `<span class="bdg pendente">Planejada</span>`;
+}
+function renderVisitas(dados){
+  document.getElementById('tbl-visitas').innerHTML = `<table class="dt"><thead><tr>
+    <th>Instituição</th><th>Objetivo / Pauta</th><th>Responsável</th><th>Data prevista</th><th>Status</th><th></th>
+  </tr></thead><tbody>${dados.map(x=>`<tr class="${x['Ativo']===false?'row-inativa':''}">
+    <td style="font-weight:600">${x['INSTITUIÇÃO']||''}</td>
+    <td style="color:var(--text2);font-size:12px;max-width:260px">${x['OBJETIVO / PAUTA']||''}</td>
+    <td style="color:var(--text2)">${x['RESPONSÁVEL']||''}</td>
+    <td style="color:var(--text2);font-size:12px">${x['DATA PREVISTA']||''}</td>
+    <td>${visitaStatusBadge(x['STATUS'])}</td>
+    <td style="white-space:nowrap">
+      <button class="btn-link-text" onclick="abrirModal('visitas',${x.ID})">Editar</button>
+      ${x['Ativo']===false
+        ? `<button class="btn-link-text" onclick="restaurarRegistro('visitas',${x.ID})">Restaurar</button>`
+        : `<button class="btn-danger-text" onclick="arquivarRegistro('visitas',${x.ID})">Arquivar</button>`}
+    </td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-visitas').textContent = `${dados.length} de ${D.visitas.length}`;
+}
+function filtrarVisitas(){
+  const q=(document.querySelector('#tab-8 input')?.value||'').toLowerCase();
+  const st=document.getElementById('fil-visitas-status').value;
+  const av=document.getElementById('fil-visitas-ativo').value;
+  renderVisitas(D.visitas.filter(x=>
+    (!q || (x['INSTITUIÇÃO']||'').toLowerCase().includes(q)) &&
+    (!st || x['STATUS']===st) &&
+    (av==='todos' || (av==='ativos' ? x['Ativo']!==false : x['Ativo']===false))
+  ));
+}
+
+/* ================================================
+   CLUBE DE BENEFÍCIOS
+================================================ */
+function beneficioStatusBadge(s){
+  if(s==='Confirmado') return `<span class="bdg confirmado">✓ Confirmado</span>`;
+  if(s==='Em Conversa') return `<span class="bdg aguardando">Em Conversa</span>`;
+  if(s==='Recusado') return `<span class="bdg" style="background:#fee2e2;color:#991b1b">Recusado</span>`;
+  return `<span class="bdg pendente">Prospecção</span>`;
+}
+function renderBeneficios(dados){
+  document.getElementById('tbl-beneficios').innerHTML = `<table class="dt"><thead><tr>
+    <th>Empresa / Potencial Parceiro</th><th>Segmento</th><th>Contato</th><th>Benefício Oferecido</th><th>Status</th><th></th>
+  </tr></thead><tbody>${dados.map(x=>`<tr class="${x['Ativo']===false?'row-inativa':''}">
+    <td style="font-weight:600">${x['EMPRESA / POTENCIAL PARCEIRO']||''}</td>
+    <td style="color:var(--text2)">${x['SEGMENTO']||''}</td>
+    <td style="color:var(--text2)">${x['CONTATO']||''}</td>
+    <td style="color:var(--text2);font-size:12px;max-width:220px">${x['BENEFÍCIO OFERECIDO']||''}</td>
+    <td>${beneficioStatusBadge(x['STATUS'])}</td>
+    <td style="white-space:nowrap">
+      <button class="btn-link-text" onclick="abrirModal('beneficios',${x.ID})">Editar</button>
+      ${x['Ativo']===false
+        ? `<button class="btn-link-text" onclick="restaurarRegistro('beneficios',${x.ID})">Restaurar</button>`
+        : `<button class="btn-danger-text" onclick="arquivarRegistro('beneficios',${x.ID})">Arquivar</button>`}
+    </td>
+  </tr>`).join('')}</tbody></table>`;
+  document.getElementById('cnt-beneficios').textContent = `${dados.length} de ${D.beneficios.length}`;
+}
+function filtrarBeneficios(){
+  const q=(document.querySelector('#tab-9 input')?.value||'').toLowerCase();
+  const st=document.getElementById('fil-beneficios-status').value;
+  const av=document.getElementById('fil-beneficios-ativo').value;
+  renderBeneficios(D.beneficios.filter(x=>
+    (!q || (x['EMPRESA / POTENCIAL PARCEIRO']||'').toLowerCase().includes(q)) &&
     (!st || x['STATUS']===st) &&
     (av==='todos' || (av==='ativos' ? x['Ativo']!==false : x['Ativo']===false))
   ));
@@ -1772,6 +1924,28 @@ const MODAL_SCHEMAS = {
       {key:'EDIÇÃO SUGERIDA', label:'Edição sugerida', tipo:'text'},
       {key:'STATUS', label:'Status', tipo:'text'},
     ]
+  },
+  visitas: {
+    titulo: 'visita institucional',
+    campos: [
+      {key:'INSTITUIÇÃO', label:'Instituição / Autoridade', tipo:'text', obrigatorio:true},
+      {key:'OBJETIVO / PAUTA', label:'Objetivo / Pauta', tipo:'textarea'},
+      {key:'RESPONSÁVEL', label:'Responsável', tipo:'text'},
+      {key:'DATA PREVISTA', label:'Data prevista', tipo:'text', placeholder:'dd/mm/aaaa'},
+      {key:'STATUS', label:'Status', tipo:'select', opcoes:['Planejada','Confirmada','Realizada','Cancelada']},
+      {key:'RESULTADO / OBSERVAÇÕES', label:'Resultado / Observações', tipo:'textarea'},
+    ]
+  },
+  beneficios: {
+    titulo: 'parceiro do clube de benefícios',
+    campos: [
+      {key:'EMPRESA / POTENCIAL PARCEIRO', label:'Empresa / Potencial parceiro', tipo:'text', obrigatorio:true},
+      {key:'SEGMENTO', label:'Segmento', tipo:'text'},
+      {key:'CONTATO', label:'Contato', tipo:'text'},
+      {key:'BENEFÍCIO OFERECIDO', label:'Benefício oferecido', tipo:'text', placeholder:'ex: desconto, produto, serviço'},
+      {key:'STATUS', label:'Status', tipo:'select', opcoes:['Prospecção','Em Conversa','Confirmado','Recusado']},
+      {key:'OBSERVAÇÕES', label:'Observações', tipo:'textarea'},
+    ]
   }
 };
 let modalState = { modulo:null, id:null };
@@ -1871,7 +2045,7 @@ function renderAll(){
   renderDayPills();renderGrade(currentDay);renderTimeline(currentDay);
   renderAgraciados(D.agraciados);renderPalestrantes(D.palestrantes);
   renderPatrocinadores(D.patrocinadores);renderFinDetail();
-  renderBanco(D.bancoPalestrantes);filtrarLogistica();
+  renderBanco(D.bancoPalestrantes);filtrarLogistica();filtrarVisitas();filtrarBeneficios();
   document.getElementById('footer-note').innerHTML=
     'Dashboard IBDM — Dados atualizados em: <strong>'+new Date().toLocaleString('pt-BR')+'</strong>';
 }
