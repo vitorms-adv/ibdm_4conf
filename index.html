@@ -1266,13 +1266,14 @@ function renderAgraciados(dados){
   const medalhas=[...new Set(D.agraciados.map(a=>a.medalha).filter(m=>m))].sort();
   selMed.innerHTML='<option value="">Todas as medalhas</option>'+medalhas.map(m=>`<option value="${m}"${m===medalAtual?' selected':''}>${m}</option>`).join('');
   document.getElementById('tbl-agraciados').innerHTML=`<table class="dt"><thead><tr>
-    <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Status</th><th></th>
+    <th>#</th><th>Nome Completo</th><th>Função / Cargo</th><th>Telefone</th><th>Medalha</th><th>Grau</th><th>Status</th><th></th>
   </tr></thead><tbody>${dados.map((a,i)=>`<tr class="${a.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${a.nome}</td>
     <td style="color:var(--text2)">${a.funcao}</td>
     <td style="font-family:monospace;font-size:12px">${a.telefone}</td>
-    <td>${medTag(a.medalha)}</td>
+    <td>${a.medalha?medTag(a.medalha):''}</td>
+    <td style="color:var(--text2)">${a.grau}</td>
     <td>${stBadge(a.status)}</td>
     <td style="white-space:nowrap">${acoesHtml('agraciados',a.id,a.ativo)}</td>
   </tr>`).join('')}</tbody></table>`;
@@ -1287,8 +1288,8 @@ function filtrarAgraciados(q){
     (!m||a.medalha===m)&&(!st||a.status===st)));
 }
 function exportarAgraciados(){
-  const rows=[['Nome Completo','Função','Telefone','Medalha','Status']];
-  D.agraciados.forEach(a=>rows.push([a.nome,a.funcao,a.telefone,a.medalha,a.status]));
+  const rows=[['Nome Completo','Função','Telefone','Medalha','Grau','Status','Observações']];
+  D.agraciados.forEach(a=>rows.push([a.nome,a.funcao,a.telefone,a.medalha,a.grau,a.status,a.obs]));
   const b=new Blob(['\ufeff'+rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n')],{type:'text/csv;charset=utf-8'});
   const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='agraciados-ibdm-2025.csv';a.click();
 }
@@ -1324,15 +1325,15 @@ function filtrarPalestrantes(q){
 ================================================ */
 function renderPatrocinadores(dados){
   document.getElementById('tbl-patrocinadores').innerHTML=`<table class="dt"><thead><tr>
-    <th>#</th><th>Entidade</th><th>Cota</th><th>Status</th><th>Contato</th><th>Obs.</th><th></th>
+    <th>#</th><th>Entidade</th><th>Cota</th><th>Status</th><th>Contato</th><th></th><th>Valor</th>
   </tr></thead><tbody>${dados.map((p,i)=>`<tr class="${p.ativo===false?'row-inativa':''}">
     <td style="color:var(--text2)">${i+1}</td>
     <td style="font-weight:600">${p.entidade}</td>
     <td>${medTag(p.cota==='Diamante'?'Comenda':p.cota)}</td>
     <td>${stBadge(p.status)}</td>
     <td style="color:var(--text2)">${p.contato}</td>
-    <td style="color:var(--text2);font-size:12px">${p.obs}</td>
     <td style="white-space:nowrap">${acoesHtml('patrocinadores',p.id,p.ativo)}</td>
+    <td style="font-weight:600;font-family:monospace;font-size:12px">${p.valor?'R$ '+Number(p.valor).toLocaleString('pt-BR'):''}</td>
   </tr>`).join('')}</tbody></table>`;
   document.getElementById('cnt-patrocinadores').textContent=`${dados.length} de ${D.patrocinadores.length}`;
 }
@@ -1481,7 +1482,8 @@ function mapProgramacao(x, diaMap){
 function mapAgraciado(x){
   return { id:x.ID, ativo:x['Ativo'],
     nome:x['NOME COMPLETO']||'', funcao:x['Função']||'', email:x['E-MAIL']||'',
-    telefone:x['TELEFONE']||'', medalha:x['MEDALHA']||'', status:x['STATUS']||''
+    telefone:x['TELEFONE']||'', medalha:x['MEDALHA']||'', grau:x['GRAU']||'',
+    status:x['STATUS']||'', obs:x['OBSERVAÇÕES']||''
   };
 }
 function mapPalestrante(x){
@@ -1710,8 +1712,10 @@ const MODAL_SCHEMAS = {
       {key:'Função', label:'Função / Cargo', tipo:'text'},
       {key:'E-MAIL', label:'E-mail', tipo:'text'},
       {key:'TELEFONE', label:'Telefone', tipo:'text'},
-      {key:'MEDALHA', label:'Medalha', tipo:'select', opcoes:['Ouro','Prata','Bronze','Comenda']},
+      {key:'MEDALHA', label:'Medalha', tipo:'text', placeholder:'ex: Medalha do Mérito Militar'},
+      {key:'GRAU', label:'Grau', tipo:'text', placeholder:'ex: Grande Oficial, Comendador'},
       {key:'STATUS', label:'Status', tipo:'text'},
+      {key:'OBSERVAÇÕES', label:'Observações (requisitos para a concessão)', tipo:'textarea'},
     ]
   },
   palestrantes: {
